@@ -62,11 +62,12 @@ describe('AppComponent', () => {
     expect(fixture.componentInstance.isDarkMode).toBeFalse();
   });
 
-  it('should toggle back to dark mode on second click', () => {
+  it('should toggle back to dark mode on second click after animation clears', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const btn: HTMLElement = fixture.nativeElement.querySelector('[data-testid="theme-toggle"]');
     btn.click();
+    fixture.componentInstance.clearAnimation();
     btn.click();
     expect(fixture.componentInstance.isDarkMode).toBeTrue();
   });
