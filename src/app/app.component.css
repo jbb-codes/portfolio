@@ -1,3 +1,4 @@
+/* Used Claude to help generate */
 :host {
   display: flex;
   flex-direction: column;
@@ -41,7 +42,9 @@
   text-decoration: none;
   padding-bottom: 2px;
   border-bottom: 2px solid transparent;
-  transition: color 0.2s ease, border-color 0.2s ease;
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease;
 }
 
 .navbar__link:hover,
@@ -61,7 +64,10 @@
   background: transparent;
   color: var(--text-secondary);
   cursor: pointer;
-  transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease,
+    background 0.2s ease;
 }
 
 .navbar__theme-toggle:hover {
@@ -71,9 +77,15 @@
 }
 
 @keyframes theme-toggle-spin {
-  0%   { transform: rotate(0deg) scale(1); }
-  50%  { transform: rotate(180deg) scale(0.8); }
-  100% { transform: rotate(360deg) scale(1); }
+  0% {
+    transform: rotate(0deg) scale(1);
+  }
+  50% {
+    transform: rotate(180deg) scale(0.8);
+  }
+  100% {
+    transform: rotate(360deg) scale(1);
+  }
 }
 
 .navbar__theme-toggle.is-animating {

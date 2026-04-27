@@ -1,3 +1,5 @@
+/* Used Claude to help generate */
+
 /* ── Hero ────────────────────────────────────────────── */
 
 .hero {
@@ -50,7 +52,9 @@
   font-weight: 600;
   padding: 0.75rem 1.5rem;
   border-radius: 8px;
-  transition: opacity 0.2s ease, transform 0.2s ease;
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
 }
 
 .hero__cta:hover {

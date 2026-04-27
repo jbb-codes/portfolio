@@ -1,22 +1,26 @@
-*, *::before, *::after {
+/* Used Claude to help generate */
+
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
 :root {
-  --bg-primary: #0A0A0F;
-  --bg-surface: #1A1A2E;
-  --accent: #6C63FF;
-  --text-primary: #F0F0F5;
-  --text-secondary: #8A8A9A;
+  --bg-primary: #0a0a0f;
+  --bg-surface: #1a1a2e;
+  --accent: #6c63ff;
+  --text-primary: #f0f0f5;
+  --text-secondary: #8a8a9a;
   --border: rgba(108, 99, 255, 0.2);
 }
 
 [data-theme="light"] {
-  --bg-primary: #F8F8FF;
-  --bg-surface: #EDEDF5;
-  --accent: #5A52E0;
-  --text-primary: #1A1A2E;
-  --text-secondary: #6A6A7A;
+  --bg-primary: #f8f8ff;
+  --bg-surface: #ededf5;
+  --accent: #5a52e0;
+  --text-primary: #1a1a2e;
+  --text-secondary: #6a6a7a;
   --border: rgba(90, 82, 224, 0.2);
 }
 
@@ -27,9 +31,13 @@ body {
   height: 100%;
   background-color: var(--bg-primary);
   color: var(--text-primary);
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial,
+    sans-serif;
   -webkit-font-smoothing: antialiased;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
 }
 
 a {
