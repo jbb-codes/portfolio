@@ -104,6 +104,18 @@ describe('AppComponent', () => {
     expect(fixture.componentInstance.isDarkMode).toBe(initialMode);
   });
 
+  it('should clear isAnimating via timeout fallback when animationend does not fire', (done) => {
+    const fixture = TestBed.createComponent(AppComponent);
+    fixture.detectChanges();
+    const btn: HTMLElement = fixture.nativeElement.querySelector('[data-testid="theme-toggle"]');
+    btn.click();
+    expect(fixture.componentInstance.isAnimating).toBeTrue();
+    setTimeout(() => {
+      expect(fixture.componentInstance.isAnimating).toBeFalse();
+      done();
+    }, 450);
+  });
+
   it('should render 4 footer nav links', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
