@@ -1,0 +1,46 @@
+<section class="hero">
+  <div class="hero__inner">
+    <p class="hero__intro">Hi, I'm</p>
+    <h1 class="hero__headline">
+      Jarren Bess
+      <span class="hero__role">Full Stack Developer</span>
+    </h1>
+    <p class="hero__description">
+      I build modern, performant web applications with clean code and thoughtful design.
+      Passionate about creating seamless user experiences from front to back.
+    </p>
+    <a class="hero__cta" data-testid="cta-button" routerLink="/projects">
+      View My Projects <span aria-hidden="true">→</span>
+    </a>
+  </div>
+</section>
+
+<section class="bucket-list">
+  <div class="bucket-list__inner">
+    <div class="bucket-list__header">
+      <h2 class="bucket-list__title">My Bucket List</h2>
+      <p class="bucket-list__subtitle">
+        Personal goals, travel dreams, experiences, and achievements I want to accomplish
+      </p>
+    </div>
+    <div class="bucket-list__grid">
+      @for (item of bucketList; track item.id) {
+        <div class="bucket-list__item">
+          <div class="bucket-list__checkbox" [class.bucket-list__checkbox--checked]="item.completed">
+            @if (item.completed) {
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"
+                   fill="none" stroke="currentColor" stroke-width="3"
+                   stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+            }
+          </div>
+          <div class="bucket-list__item-content">
+            <p class="bucket-list__item-title">{{ item.title }}</p>
+            <p class="bucket-list__item-description">{{ item.description }}</p>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</section>
