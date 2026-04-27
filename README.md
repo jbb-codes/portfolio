@@ -1,27 +1,54 @@
 # Portfolio
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.0.3.
+An Angular 18 personal portfolio application with dark/light theme toggle and responsive home page.
 
-## Development server
+## Prerequisites
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+- Node.js 18+
+- npm 9+
+- Angular CLI 18: `npm install -g @angular/cli`
 
-## Code scaffolding
+## Setup
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+```bash
+npm install
+```
 
-## Build
+<!-- AUTO-GENERATED: scripts -->
+## Available Commands
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+| Command | Description |
+|---------|-------------|
+| `npm start` | Start development server at `http://localhost:4200` with hot reload |
+| `npm run build` | Production build — output goes to `dist/` |
+| `npm run watch` | Development build in watch mode |
+| `npm test` | Run unit tests via Karma/Jasmine |
+| `ng generate component <name>` | Scaffold a new component |
+<!-- END AUTO-GENERATED: scripts -->
 
-## Running unit tests
+## Project Structure
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+```
+src/
+  app/
+    pages/
+      home/          # Home page component
+    app.component.*  # Root component with theme toggle
+    app.routes.ts    # Route definitions
+  styles.css         # Global styles and CSS custom properties
+```
 
-## Running end-to-end tests
+## Testing
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+Tests use Karma + Jasmine. Run with:
 
-## Further help
+```bash
+npm test
+```
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Coverage reports are generated in `coverage/`.
+
+## Further Help
+
+- `ng help` — Angular CLI reference
+- [Angular CLI Overview](https://angular.dev/tools/cli)
