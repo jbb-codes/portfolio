@@ -21,6 +21,7 @@ export class AppComponent {
     } else {
       document.documentElement.setAttribute('data-theme', 'light');
     }
+    setTimeout(() => this.clearAnimation(), 400);
   }
 
   clearAnimation(): void {

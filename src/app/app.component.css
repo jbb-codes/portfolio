@@ -80,6 +80,12 @@
   animation: theme-toggle-spin 0.35s ease-in-out;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .navbar__theme-toggle.is-animating {
+    animation: none;
+  }
+}
+
 /* ── Main content ───────────────────────────────────── */
 
 .main-content {
