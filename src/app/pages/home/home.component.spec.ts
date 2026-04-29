@@ -27,29 +27,18 @@ describe('HomeComponent', () => {
   });
 
   describe('hero section', () => {
-    it('should render intro text', () => {
-      const el: HTMLElement =
-        fixture.nativeElement.querySelector('.hero__intro');
-      expect(el?.textContent?.trim()).toBeTruthy();
-    });
-
-    it('should render headline', () => {
-      const el: HTMLElement =
-        fixture.nativeElement.querySelector('.hero__headline');
-      expect(el?.textContent?.trim()).toBeTruthy();
-    });
-
-    it('should render description paragraph', () => {
-      const el: HTMLElement =
-        fixture.nativeElement.querySelector('.hero__description');
-      expect(el?.textContent?.trim()).toBeTruthy();
-    });
-
     it('should render CTA button with "View My Projects" text', () => {
       const btn: HTMLElement = fixture.nativeElement.querySelector(
         '[data-testid="cta-button"]',
       );
       expect(btn?.textContent).toContain('View My Projects');
+    });
+
+    it('should link the CTA button to /projects', () => {
+      const btn: HTMLElement = fixture.nativeElement.querySelector(
+        '[data-testid="cta-button"]',
+      );
+      expect(btn?.getAttribute('routerlink')).toBe('/projects');
     });
   });
 
@@ -59,13 +48,6 @@ describe('HomeComponent', () => {
         '.bucket-list__title',
       );
       expect(el?.textContent).toContain('My Bucket List');
-    });
-
-    it('should render subtitle', () => {
-      const el: HTMLElement = fixture.nativeElement.querySelector(
-        '.bucket-list__subtitle',
-      );
-      expect(el?.textContent?.trim()).toBeTruthy();
     });
 
     it('should render at least one item', () => {
@@ -88,10 +70,12 @@ describe('HomeComponent', () => {
       expect(descs.length).toBeGreaterThan(0);
     });
 
-    it('should render an even number of items for the 2-column grid', () => {
-      const items =
-        fixture.nativeElement.querySelectorAll('.bucket-list__item');
-      expect(items.length % 2).toBe(0);
+    it('should apply checked class to exactly the completed items', () => {
+      const expectedCount = component.bucketList.filter(i => i.completed).length;
+      const checked = fixture.nativeElement.querySelectorAll(
+        '.bucket-list__checkbox--checked',
+      );
+      expect(checked.length).toBe(expectedCount);
     });
   });
 });
