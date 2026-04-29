@@ -34,11 +34,6 @@ describe('AppComponent', () => {
     });
 
     describe('navigation links', () => {
-      it('should render 4 nav links', () => {
-        const links = fixture.nativeElement.querySelectorAll('.navbar__link');
-        expect(links.length).toBe(4);
-      });
-
       it('should render Home, About, Resume, and Projects links', () => {
         const links: NodeListOf<HTMLElement> =
           fixture.nativeElement.querySelectorAll('.navbar__link');
@@ -59,56 +54,61 @@ describe('AppComponent', () => {
         );
       });
 
+      afterEach(() => {
+        document.documentElement.removeAttribute('data-theme');
+      });
+
       it('should render the toggle button', () => {
         expect(btn).toBeTruthy();
       });
 
       describe('theme switching', () => {
         it('should default to dark mode', () => {
-          expect(component.isDarkMode).toBeTrue();
+          expect(document.documentElement.getAttribute('data-theme')).toBeNull();
+          expect(btn.getAttribute('aria-label')).toBe('Switch to light mode');
         });
 
         it('should switch to light mode on click', () => {
           btn.click();
-          expect(component.isDarkMode).toBeFalse();
+          fixture.detectChanges();
+          expect(document.documentElement.getAttribute('data-theme')).toBe('light');
+          expect(btn.getAttribute('aria-label')).toBe('Switch to dark mode');
         });
 
-        it('should switch back to dark mode on second click after animation clears', () => {
+        it('should switch back to dark mode after animation clears', (done) => {
           btn.click();
-          component.clearAnimation();
-          btn.click();
-          expect(component.isDarkMode).toBeTrue();
+          fixture.detectChanges();
+          setTimeout(() => {
+            btn.click();
+            fixture.detectChanges();
+            expect(document.documentElement.getAttribute('data-theme')).toBeNull();
+            expect(btn.getAttribute('aria-label')).toBe('Switch to light mode');
+            done();
+          }, 450);
         });
       });
 
       describe('animation', () => {
-        it('should start with isAnimating as false', () => {
-          expect(component.isAnimating).toBeFalse();
-        });
-
-        it('should set isAnimating to true immediately when clicked', () => {
-          btn.click();
-          expect(component.isAnimating).toBeTrue();
-        });
-
         it('should add is-animating class to the button when clicked', () => {
           btn.click();
           fixture.detectChanges();
           expect(btn.classList.contains('is-animating')).toBeTrue();
         });
 
-        it('should not re-trigger toggle if already animating', () => {
-          component.isAnimating = true;
-          const initialMode = component.isDarkMode;
-          component.toggleTheme();
-          expect(component.isDarkMode).toBe(initialMode);
+        it('should not change theme on rapid second click', () => {
+          btn.click();
+          btn.click();
+          fixture.detectChanges();
+          expect(document.documentElement.getAttribute('data-theme')).toBe('light');
         });
 
-        it('should clear isAnimating via timeout fallback when animationend does not fire', (done) => {
+        it('should remove is-animating class after animation timeout', (done) => {
           btn.click();
-          expect(component.isAnimating).toBeTrue();
+          fixture.detectChanges();
+          expect(btn.classList.contains('is-animating')).toBeTrue();
           setTimeout(() => {
-            expect(component.isAnimating).toBeFalse();
+            fixture.detectChanges();
+            expect(btn.classList.contains('is-animating')).toBeFalse();
             done();
           }, 450);
         });
