@@ -62,6 +62,19 @@ describe('AppComponent', () => {
         expect(btn).toBeTruthy();
       });
 
+      it('should render an svg icon inside the toggle button', () => {
+        const svg = btn.querySelector('svg');
+        expect(svg).toBeTruthy();
+      });
+
+      it('should render a different svg icon after switching to light mode', () => {
+        const darkSvg = btn.querySelector('svg')?.outerHTML;
+        btn.click();
+        fixture.detectChanges();
+        const lightSvg = btn.querySelector('svg')?.outerHTML;
+        expect(lightSvg).not.toBe(darkSvg);
+      });
+
       describe('theme switching', () => {
         it('should default to dark mode', () => {
           expect(document.documentElement.getAttribute('data-theme')).toBeNull();
