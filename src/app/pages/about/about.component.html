@@ -57,4 +57,18 @@
       </section>
     </div>
   </div>
+
+  <div class="about__interests">
+    @for (interest of interests; track interest.label; let i = $index) {
+      <div class="about__interest-card">
+        @switch (i) {
+          @case (0) { <svg lucideCodeXml [size]="32"></svg> }
+          @case (1) { <svg lucidePalette [size]="32"></svg> }
+          @case (2) { <svg lucideNetwork [size]="32"></svg> }
+          @case (3) { <svg lucideBot [size]="32"></svg> }
+        }
+        <span class="about__interest-label">{{ interest.label }}</span>
+      </div>
+    }
+  </div>
 </div>

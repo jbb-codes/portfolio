@@ -46,4 +46,21 @@ describe('AboutComponent', () => {
       expect(link).toBeTruthy();
     });
   });
+
+  describe('interests section', () => {
+    it('should render the interests section', () => {
+      const section = fixture.nativeElement.querySelector('.about__interests');
+      expect(section).toBeTruthy();
+    });
+
+    it('should render exactly four interest cards', () => {
+      const cards = fixture.nativeElement.querySelectorAll('.about__interest-card');
+      expect(cards.length).toBe(4);
+    });
+
+    it('should render an svg icon in each interest card', () => {
+      const cards: NodeListOf<HTMLElement> = fixture.nativeElement.querySelectorAll('.about__interest-card');
+      cards.forEach(card => expect(card.querySelector('svg')).toBeTruthy());
+    });
+  });
 });
