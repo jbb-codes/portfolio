@@ -1,3 +1,4 @@
+// Worked through TDD thought process with Claude for some of this component
 import { Component } from '@angular/core';
 
 interface Certification {
@@ -19,6 +20,9 @@ interface EducationEntry {
   details: string;
 }
 
+// ============================================================
+// USER IMPLEMENTED
+// ============================================================
 interface ExperienceCard {
   title: string;
   company: string;
@@ -47,13 +51,15 @@ export class ResumeComponent {
       name: 'AWS Certified Developer – Associate',
       issuer: 'Amazon Web Services',
       year: '2024',
-      details: 'Proficiency in developing and deploying cloud-based applications on AWS.',
+      details:
+        'Proficiency in developing and deploying cloud-based applications on AWS.',
     },
     {
       name: 'Angular Developer Certification',
       issuer: 'Google',
       year: '2023',
-      details: 'Demonstrated expertise in building scalable Angular applications.',
+      details:
+        'Demonstrated expertise in building scalable Angular applications.',
     },
   ];
 
@@ -81,6 +87,9 @@ export class ResumeComponent {
     },
   ];
 
+  // ============================================================
+  // field and keys written by user — Claude generated placeholder data inside
+  // ============================================================
   readonly experience: ExperienceCard[] = [
     {
       title: 'Frontend Developer',

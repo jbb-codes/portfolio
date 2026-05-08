@@ -1,4 +1,3 @@
-// Worked through TDD thought process with Claude; implemented independently
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ResumeComponent } from './resume.component';
@@ -23,8 +22,9 @@ describe('ResumeComponent', () => {
 
   // ============================================================
   // USER IMPLEMENTED
+  // Worked through TDD thought process with Claude; implemented
+  // with assistance
   // ============================================================
-
   describe('Experience section', () => {
     it('should display experience section', () => {
       const expSection = fixture.nativeElement.querySelector(
@@ -58,6 +58,7 @@ describe('ResumeComponent', () => {
       expect(dlBtn?.getAttribute('href')).toBe('/docs/resume.pdf');
     });
   });
+  // ============================================================
 
   describe('Learning Next section', () => {
     it('should render one entry per learning item', () => {
