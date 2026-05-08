@@ -3,7 +3,6 @@
 /* ── Hero ────────────────────────────────────────────── */
 
 .hero {
-  background-color: var(--bg-primary);
   padding: 5rem 2rem 4rem;
 }
 
@@ -65,7 +64,6 @@
 /* ── Bucket List ─────────────────────────────────────── */
 
 .bucket-list {
-  background-color: var(--bg-surface);
   padding: 4rem 2rem;
 }
 
@@ -107,8 +105,10 @@
   display: flex;
   align-items: flex-start;
   gap: 0.875rem;
-  background-color: var(--bg-primary);
-  border: 1px solid var(--border);
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
   border-radius: 10px;
   padding: 1rem 1.25rem;
   transition: border-color 0.2s ease;
