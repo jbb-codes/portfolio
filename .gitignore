@@ -37,6 +37,11 @@ yarn-error.log
 testem.log
 /typings
 
+# AI and tool config
+.claude/
+.playwright-mcp/
+CLAUDE.md
+
 # System files
 .DS_Store
 Thumbs.db
