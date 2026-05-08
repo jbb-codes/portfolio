@@ -28,7 +28,7 @@ describe('AboutComponent', () => {
   describe('profile card', () => {
     it('should render profile photo from smallProfile.jpg', () => {
       const img: HTMLImageElement = fixture.nativeElement.querySelector('img');
-      expect(img?.src).toContain('images/smallProfile.jpg');
+      expect(img?.src).toContain('assets/images/smallProfile.jpg');
     });
 
     it('should render an email social link', () => {
