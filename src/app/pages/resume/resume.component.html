@@ -1,12 +1,15 @@
 <div class="resume">
   <header class="resume__header">
-    <h1>Resume</h1>
+    <div class="resume__header-center">
+      <h1>Resume</h1>
+      <p class="resume__header-subtitle">Education · Experience · Skills · Certifications</p>
+    </div>
     <a
       class="resume__download-btn"
       href="/docs/resume.pdf"
       download
       data-testid="download-link"
-    >Download PDF</a>
+    >&#8595; Download PDF</a>
   </header>
 
   <div class="resume__grid">
@@ -28,6 +31,20 @@
 
     <section class="resume__col resume__col--right">
       <div class="resume__section">
+        <h2 class="resume__section-heading">Education</h2>
+        @for (edu of education; track edu.degree) {
+          <div class="resume__card" data-testid="education-entry">
+            <div class="resume__card-header">
+              <span class="resume__card-title">{{ edu.degree }}</span>
+              <span class="resume__card-dates">{{ edu.year }}</span>
+            </div>
+            <span class="resume__card-subtitle">{{ edu.institution }}</span>
+            <p class="resume__card-details">{{ edu.details }}</p>
+          </div>
+        }
+      </div>
+
+      <div class="resume__section">
         <h2 class="resume__section-heading">Skills</h2>
         @for (skill of skills; track skill.name) {
           <div class="resume__skill" data-testid="skill-entry">
@@ -37,16 +54,6 @@
             </div>
           </div>
         }
-      </div>
-
-      <div class="resume__section">
-        <h2 class="resume__section-heading">What I'm Learning Next</h2>
-        <p class="resume__section-subtitle"><em>Currently exploring</em></p>
-        <ul class="resume__learning-list">
-          @for (item of learningNext; track item) {
-            <li class="resume__learning-item" data-testid="learning-entry">{{ item }}</li>
-          }
-        </ul>
       </div>
 
       <div class="resume__section">
@@ -64,17 +71,13 @@
       </div>
 
       <div class="resume__section">
-        <h2 class="resume__section-heading">Education</h2>
-        @for (edu of education; track edu.degree) {
-          <div class="resume__card" data-testid="education-entry">
-            <div class="resume__card-header">
-              <span class="resume__card-title">{{ edu.degree }}</span>
-              <span class="resume__card-dates">{{ edu.year }}</span>
-            </div>
-            <span class="resume__card-subtitle">{{ edu.institution }}</span>
-            <p class="resume__card-details">{{ edu.details }}</p>
-          </div>
-        }
+        <h2 class="resume__section-heading">What I'm Learning Next</h2>
+        <p class="resume__section-subtitle"><em>Technologies &amp; concepts currently being explored</em></p>
+        <ul class="resume__learning-list">
+          @for (item of learningNext; track item) {
+            <li class="resume__learning-item" data-testid="learning-entry">{{ item }}</li>
+          }
+        </ul>
       </div>
     </section>
   </div>
