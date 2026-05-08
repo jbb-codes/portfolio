@@ -1,3 +1,4 @@
+// Collaborated with Claude on: public/ asset path vs src/assets/
 import { Component } from '@angular/core';
 import {
   LucideNetwork,

@@ -1,5 +1,11 @@
-// Used Claude to help generate
-import { ComponentFixture, discardPeriodicTasks, fakeAsync, TestBed, tick } from '@angular/core/testing';
+// Collaborated with Claude on: fakeAsync/tick() for time-based animation tests, behavioral assertions over implementation details
+import {
+  ComponentFixture,
+  discardPeriodicTasks,
+  fakeAsync,
+  TestBed,
+  tick,
+} from '@angular/core/testing';
 import { provideLocationMocks } from '@angular/common/testing';
 import { provideRouter, withDisabledInitialNavigation } from '@angular/router';
 import { HomeComponent } from './home.component';
@@ -66,7 +72,8 @@ describe('HomeComponent', () => {
       component.ngOnInit();
       tick(50 * 'Full Stack Developer'.length);
       fixture.detectChanges();
-      const role: HTMLElement = fixture.nativeElement.querySelector('.hero__role');
+      const role: HTMLElement =
+        fixture.nativeElement.querySelector('.hero__role');
       expect(role?.textContent).toContain('Full Stack Developer');
     }));
   });
@@ -93,15 +100,15 @@ describe('HomeComponent', () => {
     });
 
     it('should render a description for each item', () => {
-      const descs = fixture.nativeElement.querySelectorAll(
+      const descriptions = fixture.nativeElement.querySelectorAll(
         '.bucket-list__item-description',
       );
-      expect(descs.length).toBeGreaterThan(0);
+      expect(descriptions.length).toBeGreaterThan(0);
     });
 
     it('should apply checked class to exactly the completed items', () => {
       const expectedCount = component.bucketList.filter(
-        (i) => i.completed,
+        (item) => item.completed,
       ).length;
       const checked = fixture.nativeElement.querySelectorAll(
         '.bucket-list__checkbox--checked',

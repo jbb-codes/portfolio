@@ -1,4 +1,4 @@
-// Used Claude to help generate
+// Collaborated with Claude on: typing animation logic, ngOnDestroy cleanup pattern, fakeAsync/tick() test approach
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 

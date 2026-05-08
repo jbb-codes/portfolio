@@ -1,4 +1,4 @@
-// Used Claude to help generate
+// Collaborated with Claude on: animation guard pattern, prefers-reduced-motion fix, lucide-angular icon integration
 import { Component } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { LucideMoon, LucideSun } from '@lucide/angular';

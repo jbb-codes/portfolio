@@ -1,4 +1,4 @@
-// Used Claude to help generate
+// Collaborated with Claude on: DOM-based assertions over component internals, nested describe structure, reduced-motion test case
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideLocationMocks } from '@angular/common/testing';
 import { provideRouter, withDisabledInitialNavigation } from '@angular/router';
