@@ -36,7 +36,9 @@
 </nav>
 
 <main class="main-content">
-  <router-outlet />
+  <div class="route-animation-wrapper" [@routeFadeAnimation]="outlet.isActivated ? outlet.activatedRoute : ''">
+    <router-outlet #outlet="outlet" />
+  </div>
 </main>
 
 <footer class="footer">

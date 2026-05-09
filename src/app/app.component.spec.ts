@@ -2,6 +2,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideLocationMocks } from '@angular/common/testing';
 import { provideRouter, withDisabledInitialNavigation } from '@angular/router';
+import { provideAnimations } from '@angular/platform-browser/animations';
 import { AppComponent } from './app.component';
 
 describe('AppComponent', () => {
@@ -14,6 +15,7 @@ describe('AppComponent', () => {
       providers: [
         provideRouter([], withDisabledInitialNavigation()),
         provideLocationMocks(),
+        provideAnimations(),
       ],
     }).compileComponents();
 
@@ -162,6 +164,22 @@ describe('AppComponent', () => {
         );
         expect(el).toBeTruthy();
       });
+    });
+  });
+
+  describe('route animation', () => {
+    it('should have a route-animation-wrapper element in the main content area', () => {
+      const wrapper: HTMLElement = fixture.nativeElement.querySelector(
+        '.main-content .route-animation-wrapper',
+      );
+      expect(wrapper).toBeTruthy();
+    });
+
+    it('should have the router-outlet inside the animation wrapper', () => {
+      const outlet: HTMLElement = fixture.nativeElement.querySelector(
+        '.route-animation-wrapper router-outlet',
+      );
+      expect(outlet).toBeTruthy();
     });
   });
 });
