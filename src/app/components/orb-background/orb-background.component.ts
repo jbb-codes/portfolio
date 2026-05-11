@@ -1,9 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 
-export const MOVE_INTERVAL_MIN = 6_000;
-export const MOVE_INTERVAL_MAX = 8_000;
-export const ORB_RANGE_MIN = -20;
-export const ORB_RANGE_MAX = 100;
+export const MOVE_INTERVAL_MIN = 24_000;
+export const MOVE_INTERVAL_MAX = 26_000;
+export const ORB_RANGE_MIN = -10;
+export const ORB_RANGE_MAX = 70;
 export const EXCLUSION_MIN = 25;
 export const EXCLUSION_MAX = 75;
 
@@ -29,8 +29,8 @@ export function getRandomPosition(): OrbPosition {
   styleUrl: './orb-background.component.css',
 })
 export class OrbBackgroundComponent implements OnInit, OnDestroy {
-  orb1: OrbPosition = { x: -15, y: -20 };
-  orb2: OrbPosition = { x: 85, y: 75 };
+  orb1: OrbPosition = { x: -5, y: -8 };
+  orb2: OrbPosition = { x: 60, y: 10 };
 
   private timerId: ReturnType<typeof setTimeout> | null = null;
 
