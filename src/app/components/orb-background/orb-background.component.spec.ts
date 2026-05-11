@@ -2,7 +2,9 @@ import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import {
   EXCLUSION_MAX,
   EXCLUSION_MIN,
+  MIN_ORB_SEPARATION,
   MOVE_INTERVAL_MAX,
+  getOrbPositions,
   getRandomPosition,
   OrbBackgroundComponent,
 } from './orb-background.component';
@@ -14,6 +16,20 @@ describe('getRandomPosition', () => {
       const inExclusion =
         x >= EXCLUSION_MIN && x <= EXCLUSION_MAX && y >= EXCLUSION_MIN && y <= EXCLUSION_MAX;
       expect(inExclusion).withContext(`call ${i}: x=${x.toFixed(1)}, y=${y.toFixed(1)}`).toBeFalse();
+    }
+  });
+});
+
+describe('getOrbPositions', () => {
+  it('always returns two positions separated by at least MIN_ORB_SEPARATION across 100 calls', () => {
+    for (let i = 0; i < 100; i++) {
+      const [pos1, pos2] = getOrbPositions();
+      const dx = pos2.x - pos1.x;
+      const dy = pos2.y - pos1.y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      expect(dist)
+        .withContext(`call ${i}: dist=${dist.toFixed(1)}`)
+        .toBeGreaterThanOrEqual(MIN_ORB_SEPARATION);
     }
   });
 });
