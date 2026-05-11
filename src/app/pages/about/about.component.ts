@@ -5,6 +5,7 @@ import {
   LucidePalette,
   LucideBot,
 } from '@lucide/angular';
+import { ParticleBackgroundComponent } from '../../components/particle-background/particle-background.component';
 import { TimelineComponent } from '../../components/timeline/timeline.component';
 import { TimelineEntry } from '../../components/timeline/timeline-entry.interface';
 
@@ -16,7 +17,7 @@ interface InterestCard {
 @Component({
   selector: 'app-about',
   standalone: true,
-  imports: [LucideNetwork, LucideCodeXml, LucidePalette, LucideBot, TimelineComponent],
+  imports: [LucideNetwork, LucideCodeXml, LucidePalette, LucideBot, ParticleBackgroundComponent, TimelineComponent],
   templateUrl: './about.component.html',
   styleUrl: './about.component.css',
 })
