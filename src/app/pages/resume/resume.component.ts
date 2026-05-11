@@ -1,5 +1,6 @@
 // Worked through TDD thought process with Claude for some of this component
 import { Component } from '@angular/core';
+import { ParticleBackgroundComponent } from '../../components/particle-background/particle-background.component';
 
 interface Certification {
   name: string;
@@ -34,7 +35,7 @@ interface ExperienceCard {
 @Component({
   selector: 'app-resume',
   standalone: true,
-  imports: [],
+  imports: [ParticleBackgroundComponent],
   templateUrl: './resume.component.html',
   styleUrl: './resume.component.css',
 })

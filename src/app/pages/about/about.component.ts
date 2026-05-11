@@ -6,6 +6,7 @@ import {
   LucidePalette,
   LucideBot,
 } from '@lucide/angular';
+import { ParticleBackgroundComponent } from '../../components/particle-background/particle-background.component';
 
 interface InterestCard {
   label: string;
@@ -15,7 +16,7 @@ interface InterestCard {
 @Component({
   selector: 'app-about',
   standalone: true,
-  imports: [LucideNetwork, LucideCodeXml, LucidePalette, LucideBot],
+  imports: [LucideNetwork, LucideCodeXml, LucidePalette, LucideBot, ParticleBackgroundComponent],
   templateUrl: './about.component.html',
   styleUrl: './about.component.css',
 })
