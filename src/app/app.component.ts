@@ -1,20 +1,46 @@
 // Collaborated with Claude on: animation guard pattern, prefers-reduced-motion fix, lucide-angular icon integration
-import { Component } from '@angular/core';
-import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { AfterViewInit, Component, ElementRef, OnDestroy } from '@angular/core';
+import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { LucideMoon, LucideSun } from '@lucide/angular';
+import { Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators';
 import { routeFadeAnimation } from './route-animations';
+import { CustomCursorComponent } from './components/custom-cursor/custom-cursor.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, RouterLink, RouterLinkActive, LucideSun, LucideMoon],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, LucideSun, LucideMoon, CustomCursorComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
   animations: [routeFadeAnimation],
 })
-export class AppComponent {
+export class AppComponent implements AfterViewInit, OnDestroy {
   isDarkMode = true;
   isAnimating = false;
+
+  private routerSub!: Subscription;
+
+  constructor(private readonly router: Router, private readonly el: ElementRef) {}
+
+  ngAfterViewInit(): void {
+    this.updateUnderline();
+    this.routerSub = this.router.events
+      .pipe(filter(e => e instanceof NavigationEnd))
+      .subscribe(() => this.updateUnderline());
+  }
+
+  ngOnDestroy(): void {
+    this.routerSub?.unsubscribe();
+  }
+
+  private updateUnderline(): void {
+    const ul: HTMLElement | null = this.el.nativeElement.querySelector('.navbar__links');
+    const active: HTMLElement | null = ul?.querySelector('.navbar__link--active') ?? null;
+    if (!ul || !active) return;
+    ul.style.setProperty('--underline-left', `${active.offsetLeft}px`);
+    ul.style.setProperty('--underline-width', `${active.offsetWidth}px`);
+  }
 
   toggleTheme(): void {
     if (this.isAnimating) return;

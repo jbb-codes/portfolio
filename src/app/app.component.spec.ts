@@ -30,15 +30,14 @@ describe('AppComponent', () => {
 
   describe('navbar', () => {
     it('should render logo with name', () => {
-      const el: HTMLElement =
-        fixture.nativeElement.querySelector('.navbar__logo');
+      const el: HTMLElement = fixture.nativeElement.querySelector('[data-testid="navbar-logo"]');
       expect(el?.textContent?.trim()).toContain('Jarren Bess');
     });
 
     describe('navigation links', () => {
       it('should render Home, About, Resume, and Projects links', () => {
         const links: NodeListOf<HTMLElement> =
-          fixture.nativeElement.querySelectorAll('.navbar__link');
+          fixture.nativeElement.querySelectorAll('[data-testid="navbar-link"]');
         const texts = Array.from(links).map((l) => l.textContent?.trim());
         expect(texts).toContain('Home');
         expect(texts).toContain('About');
@@ -51,9 +50,7 @@ describe('AppComponent', () => {
       let btn: HTMLElement;
 
       beforeEach(() => {
-        btn = fixture.nativeElement.querySelector(
-          '[data-testid="theme-toggle"]',
-        );
+        btn = fixture.nativeElement.querySelector('[data-testid="theme-toggle"]');
       });
 
       afterEach(() => {
@@ -129,39 +126,45 @@ describe('AppComponent', () => {
         });
       });
     });
+
+    describe('sliding underline', () => {
+      it('should render exactly one nav-underline element', () => {
+        const underlines = fixture.nativeElement.querySelectorAll('[data-testid="nav-underline"]');
+        expect(underlines.length).toBe(1);
+      });
+
+      it('should render the underline inside the navbar-links container', () => {
+        const container: HTMLElement = fixture.nativeElement.querySelector('[data-testid="navbar-links"]');
+        const underline: HTMLElement | null = container?.querySelector('[data-testid="nav-underline"]') ?? null;
+        expect(underline).toBeTruthy();
+      });
+    });
   });
 
   describe('footer', () => {
     it('should render 4 footer nav links', () => {
-      const links = fixture.nativeElement.querySelectorAll('.footer__nav-link');
+      const links = fixture.nativeElement.querySelectorAll('[data-testid="footer-nav-link"]');
       expect(links.length).toBe(4);
     });
 
     it('should render copyright with year', () => {
-      const el: HTMLElement =
-        fixture.nativeElement.querySelector('.footer__copyright');
+      const el: HTMLElement = fixture.nativeElement.querySelector('[data-testid="footer-copyright"]');
       expect(el?.textContent).toContain('2026');
     });
 
     describe('social links', () => {
       it('should render GitHub link', () => {
-        const el = fixture.nativeElement.querySelector(
-          '[data-testid="footer-github"]',
-        );
+        const el = fixture.nativeElement.querySelector('[data-testid="footer-github"]');
         expect(el).toBeTruthy();
       });
 
       it('should render LinkedIn link', () => {
-        const el = fixture.nativeElement.querySelector(
-          '[data-testid="footer-linkedin"]',
-        );
+        const el = fixture.nativeElement.querySelector('[data-testid="footer-linkedin"]');
         expect(el).toBeTruthy();
       });
 
       it('should render Email link', () => {
-        const el = fixture.nativeElement.querySelector(
-          '[data-testid="footer-email"]',
-        );
+        const el = fixture.nativeElement.querySelector('[data-testid="footer-email"]');
         expect(el).toBeTruthy();
       });
     });
@@ -169,15 +172,13 @@ describe('AppComponent', () => {
 
   describe('route animation', () => {
     it('should have a route-animation-wrapper element in the main content area', () => {
-      const wrapper: HTMLElement = fixture.nativeElement.querySelector(
-        '.main-content .route-animation-wrapper',
-      );
+      const wrapper: HTMLElement = fixture.nativeElement.querySelector('[data-testid="route-animation-wrapper"]');
       expect(wrapper).toBeTruthy();
     });
 
     it('should have the router-outlet inside the animation wrapper', () => {
       const outlet: HTMLElement = fixture.nativeElement.querySelector(
-        '.route-animation-wrapper router-outlet',
+        '[data-testid="route-animation-wrapper"] router-outlet',
       );
       expect(outlet).toBeTruthy();
     });

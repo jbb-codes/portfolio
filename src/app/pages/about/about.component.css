@@ -1,6 +1,8 @@
 /* ── About ───────────────────────────────────────────── */
 
 .about {
+  position: relative;
+  overflow: hidden;
   background-color: var(--bg-primary);
   padding: 4rem 2rem;
 }
