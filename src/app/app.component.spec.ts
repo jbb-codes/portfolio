@@ -1,9 +1,11 @@
 // Collaborated with Claude on: DOM-based assertions over component internals, nested describe structure, reduced-motion test case
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, discardPeriodicTasks, fakeAsync, tick } from '@angular/core/testing';
 import { provideLocationMocks } from '@angular/common/testing';
-import { provideRouter, withDisabledInitialNavigation } from '@angular/router';
+import { provideRouter, Router, withDisabledInitialNavigation } from '@angular/router';
+import { ApplicationRef } from '@angular/core';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { AppComponent } from './app.component';
+import { routes } from './app.routes';
 
 describe('AppComponent', () => {
   let fixture: ComponentFixture<AppComponent>;
@@ -183,4 +185,53 @@ describe('AppComponent', () => {
       expect(outlet).toBeTruthy();
     });
   });
+});
+
+describe('AppComponent – underline positioning', () => {
+  let fixture: ComponentFixture<AppComponent>;
+  let router: Router;
+  let appRef: ApplicationRef;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [AppComponent],
+      providers: [
+        provideRouter(routes, withDisabledInitialNavigation()),
+        provideLocationMocks(),
+        provideAnimations(),
+      ],
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(AppComponent);
+    router = TestBed.inject(Router);
+    appRef = TestBed.inject(ApplicationRef);
+    fixture.detectChanges();
+  });
+
+  it('should position the underline indicator under the active link after initial navigation', fakeAsync(() => {
+    router.navigate(['/']);
+    tick();
+    appRef.tick();
+
+    const container: HTMLElement = fixture.nativeElement.querySelector('[data-testid="navbar-links"]');
+    expect(container.style.getPropertyValue('--underline-left')).not.toBe('');
+    expect(container.style.getPropertyValue('--underline-width')).not.toBe('');
+    discardPeriodicTasks();
+  }));
+
+  it('should reposition the underline indicator when navigating to a different route', fakeAsync(() => {
+    router.navigate(['/']);
+    tick();
+    appRef.tick();
+
+    const container: HTMLElement = fixture.nativeElement.querySelector('[data-testid="navbar-links"]');
+    const spy = spyOn(container.style, 'setProperty');
+
+    router.navigate(['/about']);
+    tick();
+    appRef.tick();
+
+    expect(spy).toHaveBeenCalled();
+    discardPeriodicTasks();
+  }));
 });
