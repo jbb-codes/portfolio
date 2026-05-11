@@ -1,6 +1,7 @@
 // Collaborated with Claude on: typing animation logic, ngOnDestroy cleanup pattern, fakeAsync/tick() test approach
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { ParticleBackgroundComponent } from '../../components/particle-background/particle-background.component';
 
 interface BucketListItem {
   id: string;
@@ -15,7 +16,7 @@ const TYPING_INTERVAL_MS = 50;
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [RouterLink],
+  imports: [RouterLink, ParticleBackgroundComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
 })
