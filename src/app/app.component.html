@@ -1,23 +1,22 @@
-
-<!-- Used Claude to help generate -->
-<!-- Used Claude to help generate -->
+<app-custom-cursor />
 <div class="gradient-bg" aria-hidden="true"></div>
 <nav class="navbar">
-  <a class="navbar__logo" routerLink="/">Jarren Bess</a>
-  <ul class="navbar__links">
+  <a class="navbar__logo" data-testid="navbar-logo" routerLink="/">Jarren Bess</a>
+  <ul class="navbar__links" data-testid="navbar-links">
     <li>
-      <a class="navbar__link" routerLink="/" routerLinkActive="navbar__link--active"
+      <a class="navbar__link" data-testid="navbar-link" routerLink="/" routerLinkActive="navbar__link--active"
          [routerLinkActiveOptions]="{ exact: true }">Home</a>
     </li>
     <li>
-      <a class="navbar__link" routerLink="/about" routerLinkActive="navbar__link--active">About</a>
+      <a class="navbar__link" data-testid="navbar-link" routerLink="/about" routerLinkActive="navbar__link--active">About</a>
     </li>
     <li>
-      <a class="navbar__link" routerLink="/resume" routerLinkActive="navbar__link--active">Resume</a>
+      <a class="navbar__link" data-testid="navbar-link" routerLink="/resume" routerLinkActive="navbar__link--active">Resume</a>
     </li>
     <li>
-      <a class="navbar__link" routerLink="/projects" routerLinkActive="navbar__link--active">Projects</a>
+      <a class="navbar__link" data-testid="navbar-link" routerLink="/projects" routerLinkActive="navbar__link--active">Projects</a>
     </li>
+    <div class="nav-underline" data-testid="nav-underline" aria-hidden="true"></div>
   </ul>
   <button
     class="navbar__theme-toggle"
@@ -36,7 +35,7 @@
 </nav>
 
 <main class="main-content">
-  <div class="route-animation-wrapper" [@routeFadeAnimation]="outlet.isActivated ? outlet.activatedRoute : ''">
+  <div class="route-animation-wrapper" data-testid="route-animation-wrapper" [@routeFadeAnimation]="outlet.isActivated ? outlet.activatedRoute : ''">
     <router-outlet #outlet="outlet" />
   </div>
 </main>
@@ -44,15 +43,15 @@
 <footer class="footer">
   <div class="footer__inner">
     <nav class="footer__nav">
-      <a class="footer__nav-link" routerLink="/">Home</a>
+      <a class="footer__nav-link" data-testid="footer-nav-link" routerLink="/">Home</a>
       <span class="footer__separator">·</span>
-      <a class="footer__nav-link" routerLink="/about">About</a>
+      <a class="footer__nav-link" data-testid="footer-nav-link" routerLink="/about">About</a>
       <span class="footer__separator">·</span>
-      <a class="footer__nav-link" routerLink="/resume">Resume</a>
+      <a class="footer__nav-link" data-testid="footer-nav-link" routerLink="/resume">Resume</a>
       <span class="footer__separator">·</span>
-      <a class="footer__nav-link" routerLink="/projects">Projects</a>
+      <a class="footer__nav-link" data-testid="footer-nav-link" routerLink="/projects">Projects</a>
     </nav>
-    <p class="footer__copyright">
+    <p class="footer__copyright" data-testid="footer-copyright">
       © 2026 Jarren Bess
       <span class="footer__separator">·</span>
       <a class="footer__social-link" data-testid="footer-github"
