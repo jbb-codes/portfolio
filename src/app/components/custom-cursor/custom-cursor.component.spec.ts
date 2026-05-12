@@ -19,8 +19,8 @@ describe('CustomCursorComponent', () => {
   });
 
   afterEach(() => {
-    doc.documentElement.style.removeProperty('--cursor-x');
-    doc.documentElement.style.removeProperty('--cursor-y');
+    const dot: HTMLElement = fixture.nativeElement.querySelector('.cursor-dot');
+    if (dot) dot.style.transform = '';
   });
 
   it('should create the component', () => {
@@ -44,20 +44,19 @@ describe('CustomCursorComponent', () => {
   });
 
   describe('mouse tracking', () => {
-    it('should set --cursor-x and --cursor-y on the document root after mousemove', () => {
-      const event = new MouseEvent('mousemove', { clientX: 150, clientY: 300 });
-      doc.dispatchEvent(event);
+    it('should set transform on the cursor dot after mousemove', () => {
+      doc.dispatchEvent(new MouseEvent('mousemove', { clientX: 150, clientY: 300 }));
 
-      expect(doc.documentElement.style.getPropertyValue('--cursor-x')).toBe('150px');
-      expect(doc.documentElement.style.getPropertyValue('--cursor-y')).toBe('300px');
+      const dot: HTMLElement = fixture.nativeElement.querySelector('.cursor-dot');
+      expect(dot.style.transform).toBe('translate(146px, 296px)');
     });
 
-    it('should update position on each successive mousemove', () => {
+    it('should update transform on each successive mousemove', () => {
       doc.dispatchEvent(new MouseEvent('mousemove', { clientX: 10, clientY: 20 }));
       doc.dispatchEvent(new MouseEvent('mousemove', { clientX: 50, clientY: 80 }));
 
-      expect(doc.documentElement.style.getPropertyValue('--cursor-x')).toBe('50px');
-      expect(doc.documentElement.style.getPropertyValue('--cursor-y')).toBe('80px');
+      const dot: HTMLElement = fixture.nativeElement.querySelector('.cursor-dot');
+      expect(dot.style.transform).toBe('translate(46px, 76px)');
     });
   });
 

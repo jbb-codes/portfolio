@@ -1,5 +1,5 @@
 import { DOCUMENT } from '@angular/common';
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, ElementRef, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-custom-cursor',
@@ -8,6 +8,8 @@ import { Component, inject, OnDestroy, OnInit } from '@angular/core';
   styleUrl: './custom-cursor.component.css',
 })
 export class CustomCursorComponent implements OnInit, OnDestroy {
+  @ViewChild('cursorDot') private readonly cursorDot!: ElementRef<HTMLElement>;
+
   private readonly doc = inject(DOCUMENT);
   private readonly mouseMoveHandler = (event: MouseEvent) => this.updatePosition(event);
 
@@ -20,7 +22,8 @@ export class CustomCursorComponent implements OnInit, OnDestroy {
   }
 
   private updatePosition(event: MouseEvent): void {
-    this.doc.documentElement.style.setProperty('--cursor-x', `${event.clientX}px`);
-    this.doc.documentElement.style.setProperty('--cursor-y', `${event.clientY}px`);
+    const halfSize = 4;
+    this.cursorDot.nativeElement.style.transform =
+      `translate(${event.clientX - halfSize}px, ${event.clientY - halfSize}px)`;
   }
 }
