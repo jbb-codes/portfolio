@@ -1,19 +1,19 @@
 .cursor-dot {
   position: fixed;
-  left: var(--cursor-x, -100px);
-  top: var(--cursor-y, -100px);
+  top: 0;
+  left: 0;
   width: 8px;
   height: 8px;
   border-radius: 50%;
   background-color: var(--color-accent, #6366f1);
   pointer-events: none;
-  transform: translate(-50%, -50%);
+  will-change: transform;
   z-index: 9999;
 }
 
-@media (prefers-reduced-motion: no-preference) {
+@media (prefers-reduced-motion: reduce) {
   .cursor-dot {
-    transition: left 0.08s linear, top 0.08s linear;
+    display: none;
   }
 }
 
