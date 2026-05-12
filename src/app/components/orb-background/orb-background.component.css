@@ -27,10 +27,3 @@
   filter: blur(150px);
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .orb-background__orb {
-    transition:
-      left 25s ease-in-out,
-      top 25s ease-in-out;
-  }
-}

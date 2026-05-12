@@ -1,40 +1,45 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, ElementRef, NgZone, OnDestroy, OnInit } from '@angular/core';
 
-export const MOVE_INTERVAL_MIN = 24_000;
-export const MOVE_INTERVAL_MAX = 26_000;
 export const ORB_RANGE_MIN = -10;
 export const ORB_RANGE_MAX = 70;
-export const EXCLUSION_MIN = 25;
-export const EXCLUSION_MAX = 75;
-export const MIN_ORB_SEPARATION = 40;
+export const ORB_DRIFT_SPEED = 0.012; // % of viewport per frame at 60fps
 
-export interface OrbPosition {
-  x: number;
-  y: number;
+export interface OrbState {
+  left: number;
+  top: number;
+  driftX: number;
+  driftY: number;
 }
 
-export function getRandomPosition(): OrbPosition {
-  let x: number;
-  let y: number;
-  do {
-    x = ORB_RANGE_MIN + Math.random() * (ORB_RANGE_MAX - ORB_RANGE_MIN);
-    y = ORB_RANGE_MIN + Math.random() * (ORB_RANGE_MAX - ORB_RANGE_MIN);
-  } while (x >= EXCLUSION_MIN && x <= EXCLUSION_MAX && y >= EXCLUSION_MIN && y <= EXCLUSION_MAX);
-  return { x, y };
+export function makeOrbState(left: number, top: number): OrbState {
+  const angle = Math.random() * Math.PI * 2;
+  return {
+    left,
+    top,
+    driftX: Math.cos(angle) * ORB_DRIFT_SPEED,
+    driftY: Math.sin(angle) * ORB_DRIFT_SPEED,
+  };
 }
 
-export function getOrbPositions(): [OrbPosition, OrbPosition] {
-  let pos1: OrbPosition;
-  let pos2: OrbPosition;
-  let separated = false;
-  do {
-    pos1 = getRandomPosition();
-    pos2 = getRandomPosition();
-    const dx = pos2.x - pos1.x;
-    const dy = pos2.y - pos1.y;
-    separated = Math.sqrt(dx * dx + dy * dy) >= MIN_ORB_SEPARATION;
-  } while (!separated);
-  return [pos1, pos2];
+export function stepOrb(orb: Readonly<OrbState>): OrbState {
+  let { left, top, driftX, driftY } = orb;
+  left += driftX;
+  top += driftY;
+  if (left < ORB_RANGE_MIN) {
+    driftX = -driftX;
+    left = ORB_RANGE_MIN;
+  } else if (left > ORB_RANGE_MAX) {
+    driftX = -driftX;
+    left = ORB_RANGE_MAX;
+  }
+  if (top < ORB_RANGE_MIN) {
+    driftY = -driftY;
+    top = ORB_RANGE_MIN;
+  } else if (top > ORB_RANGE_MAX) {
+    driftY = -driftY;
+    top = ORB_RANGE_MAX;
+  }
+  return { left, top, driftX, driftY };
 }
 
 @Component({
@@ -44,30 +49,54 @@ export function getOrbPositions(): [OrbPosition, OrbPosition] {
   styleUrl: './orb-background.component.css',
 })
 export class OrbBackgroundComponent implements OnInit, OnDestroy {
-  orb1: OrbPosition = { x: -5, y: -8 };
-  orb2: OrbPosition = { x: 60, y: 10 };
+  private orb1State: OrbState = makeOrbState(-5, -8);
+  private orb2State: OrbState = makeOrbState(60, 10);
+  private rafId: number | null = null;
 
-  private timerId: ReturnType<typeof setTimeout> | null = null;
+  constructor(
+    private readonly el: ElementRef,
+    private readonly zone: NgZone,
+  ) {}
 
   ngOnInit(): void {
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (!reducedMotion) {
-      this.scheduleMovement();
-    }
+    if (reducedMotion) return;
+
+    this.zone.runOutsideAngular(() => this.startAnimation());
   }
 
   ngOnDestroy(): void {
-    if (this.timerId !== null) {
-      clearTimeout(this.timerId);
-      this.timerId = null;
+    if (this.rafId !== null) {
+      cancelAnimationFrame(this.rafId);
+      this.rafId = null;
     }
   }
 
-  private scheduleMovement(): void {
-    const delay = MOVE_INTERVAL_MIN + Math.random() * (MOVE_INTERVAL_MAX - MOVE_INTERVAL_MIN);
-    this.timerId = setTimeout(() => {
-      [this.orb1, this.orb2] = getOrbPositions();
-      this.scheduleMovement();
-    }, delay);
+  private startAnimation(): void {
+    const orb1El = this.el.nativeElement.querySelector(
+      '.orb-background__orb--1',
+    ) as HTMLElement;
+    const orb2El = this.el.nativeElement.querySelector(
+      '.orb-background__orb--2',
+    ) as HTMLElement;
+
+    orb1El.style.left = `${this.orb1State.left}%`;
+    orb1El.style.top = `${this.orb1State.top}%`;
+    orb2El.style.left = `${this.orb2State.left}%`;
+    orb2El.style.top = `${this.orb2State.top}%`;
+
+    const loop = () => {
+      this.orb1State = stepOrb(this.orb1State);
+      this.orb2State = stepOrb(this.orb2State);
+
+      orb1El.style.left = `${this.orb1State.left}%`;
+      orb1El.style.top = `${this.orb1State.top}%`;
+      orb2El.style.left = `${this.orb2State.left}%`;
+      orb2El.style.top = `${this.orb2State.top}%`;
+
+      this.rafId = requestAnimationFrame(loop);
+    };
+
+    this.rafId = requestAnimationFrame(loop);
   }
 }

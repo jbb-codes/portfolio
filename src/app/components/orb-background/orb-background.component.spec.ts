@@ -1,36 +1,60 @@
-import { fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import {
-  EXCLUSION_MAX,
-  EXCLUSION_MIN,
-  MIN_ORB_SEPARATION,
-  MOVE_INTERVAL_MAX,
-  getOrbPositions,
-  getRandomPosition,
+  ORB_RANGE_MAX,
+  ORB_RANGE_MIN,
+  OrbState,
+  stepOrb,
   OrbBackgroundComponent,
 } from './orb-background.component';
 
-describe('getRandomPosition', () => {
-  it('never returns a position inside the center exclusion zone across 1000 calls', () => {
-    for (let i = 0; i < 1000; i++) {
-      const { x, y } = getRandomPosition();
-      const inExclusion =
-        x >= EXCLUSION_MIN && x <= EXCLUSION_MAX && y >= EXCLUSION_MIN && y <= EXCLUSION_MAX;
-      expect(inExclusion).withContext(`call ${i}: x=${x.toFixed(1)}, y=${y.toFixed(1)}`).toBeFalse();
-    }
+describe('stepOrb', () => {
+  it('advances position by drift amount', () => {
+    const orb: OrbState = { left: 10, top: 20, driftX: 0.5, driftY: 0.3 };
+    const next = stepOrb(orb);
+    expect(next.left).toBeCloseTo(10.5);
+    expect(next.top).toBeCloseTo(20.3);
   });
-});
 
-describe('getOrbPositions', () => {
-  it('always returns two positions separated by at least MIN_ORB_SEPARATION across 100 calls', () => {
-    for (let i = 0; i < 100; i++) {
-      const [pos1, pos2] = getOrbPositions();
-      const dx = pos2.x - pos1.x;
-      const dy = pos2.y - pos1.y;
-      const dist = Math.sqrt(dx * dx + dy * dy);
-      expect(dist)
-        .withContext(`call ${i}: dist=${dist.toFixed(1)}`)
-        .toBeGreaterThanOrEqual(MIN_ORB_SEPARATION);
-    }
+  it('does not mutate the input', () => {
+    const orb: OrbState = { left: 10, top: 20, driftX: 0.5, driftY: 0.3 };
+    const snapshot = { ...orb };
+    stepOrb(orb);
+    expect(orb).toEqual(snapshot);
+  });
+
+  it('bounces off the left wall and clamps left', () => {
+    const orb: OrbState = { left: -9.8, top: 30, driftX: -0.5, driftY: 0 };
+    const next = stepOrb(orb);
+    expect(next.driftX).toBeGreaterThan(0);
+    expect(next.left).toBe(ORB_RANGE_MIN);
+  });
+
+  it('bounces off the right wall and clamps left', () => {
+    const orb: OrbState = { left: 69.8, top: 30, driftX: 0.5, driftY: 0 };
+    const next = stepOrb(orb);
+    expect(next.driftX).toBeLessThan(0);
+    expect(next.left).toBe(ORB_RANGE_MAX);
+  });
+
+  it('bounces off the top wall and clamps top', () => {
+    const orb: OrbState = { left: 30, top: -9.8, driftX: 0, driftY: -0.5 };
+    const next = stepOrb(orb);
+    expect(next.driftY).toBeGreaterThan(0);
+    expect(next.top).toBe(ORB_RANGE_MIN);
+  });
+
+  it('bounces off the bottom wall and clamps top', () => {
+    const orb: OrbState = { left: 30, top: 69.8, driftX: 0, driftY: 0.5 };
+    const next = stepOrb(orb);
+    expect(next.driftY).toBeLessThan(0);
+    expect(next.top).toBe(ORB_RANGE_MAX);
+  });
+
+  it('preserves drift when not hitting a wall', () => {
+    const orb: OrbState = { left: 30, top: 30, driftX: 0.5, driftY: -0.3 };
+    const next = stepOrb(orb);
+    expect(next.driftX).toBe(0.5);
+    expect(next.driftY).toBe(-0.3);
   });
 });
 
@@ -51,25 +75,24 @@ describe('OrbBackgroundComponent', () => {
       fixture.destroy();
     });
 
-    it('updates orb positions after one interval elapses', fakeAsync(() => {
+    it('starts a requestAnimationFrame loop', () => {
       spyOn(window, 'matchMedia').and.returnValue({ matches: false } as MediaQueryList);
+      const rafSpy = spyOn(window, 'requestAnimationFrame').and.returnValue(1);
       const fixture = TestBed.createComponent(OrbBackgroundComponent);
-      const component = fixture.componentInstance;
       fixture.detectChanges();
-      const initialOrb1 = { ...component.orb1 };
-      tick(MOVE_INTERVAL_MAX + 1);
+      expect(rafSpy).toHaveBeenCalled();
       fixture.destroy();
-      expect(component.orb1).not.toEqual(initialOrb1);
-    }));
+    });
 
-    it('clears the timer on destroy', fakeAsync(() => {
+    it('cancels the animation frame on destroy', () => {
       spyOn(window, 'matchMedia').and.returnValue({ matches: false } as MediaQueryList);
+      spyOn(window, 'requestAnimationFrame').and.returnValue(42);
+      const cancelSpy = spyOn(window, 'cancelAnimationFrame');
       const fixture = TestBed.createComponent(OrbBackgroundComponent);
       fixture.detectChanges();
-      const clearSpy = spyOn(window, 'clearTimeout').and.callThrough();
       fixture.destroy();
-      expect(clearSpy).toHaveBeenCalled();
-    }));
+      expect(cancelSpy).toHaveBeenCalledWith(42);
+    });
   });
 
   describe('with reduced motion', () => {
@@ -82,16 +105,13 @@ describe('OrbBackgroundComponent', () => {
       fixture.destroy();
     });
 
-    it('does not update orb positions after one interval elapses', fakeAsync(() => {
+    it('does not start a requestAnimationFrame loop', () => {
       spyOn(window, 'matchMedia').and.returnValue({ matches: true } as MediaQueryList);
+      const rafSpy = spyOn(window, 'requestAnimationFrame');
       const fixture = TestBed.createComponent(OrbBackgroundComponent);
-      const component = fixture.componentInstance;
       fixture.detectChanges();
-      const initialOrb1 = { ...component.orb1 };
-      tick(MOVE_INTERVAL_MAX + 1);
-      fixture.detectChanges();
-      expect(component.orb1).toEqual(initialOrb1);
+      expect(rafSpy).not.toHaveBeenCalled();
       fixture.destroy();
-    }));
+    });
   });
 });
