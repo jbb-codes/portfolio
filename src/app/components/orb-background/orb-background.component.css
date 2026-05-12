@@ -1,0 +1,29 @@
+:host {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.orb-background__orb {
+  position: absolute;
+  border-radius: 50%;
+}
+
+.orb-background__orb--1 {
+  width: 600px;
+  height: 600px;
+  background: var(--accent);
+  opacity: 0.18;
+  filter: blur(140px);
+}
+
+.orb-background__orb--2 {
+  width: 520px;
+  height: 520px;
+  background: var(--accent);
+  opacity: 0.13;
+  filter: blur(150px);
+}
+
