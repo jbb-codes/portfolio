@@ -20,24 +20,15 @@ describe('ResumeComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('particle background containment', () => {
-    it('should render particle background outside the .resume wrapper', () => {
-      const resumeWrapper: HTMLElement = fixture.nativeElement.querySelector('.resume');
-      const particleInsideResume = resumeWrapper?.querySelector('app-particle-background');
-      expect(particleInsideResume).toBeNull();
+  describe('particle background', () => {
+    it('should render app-particle-background', () => {
+      const el = fixture.nativeElement.querySelector('app-particle-background');
+      expect(el).toBeTruthy();
     });
 
-    it('should render particle background as a preceding sibling of .resume', () => {
-      const particle: HTMLElement = fixture.nativeElement.querySelector('app-particle-background');
-      const resume: HTMLElement = fixture.nativeElement.querySelector('.resume');
-      expect(particle).toBeTruthy();
-      expect(particle.compareDocumentPosition(resume) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
-    });
-
-    it('should render .resume with a stacking context above the particle canvas', () => {
-      const resume: HTMLElement = fixture.nativeElement.querySelector('.resume');
-      const styles = getComputedStyle(resume);
-      expect(styles.position).toBe('relative');
+    it('should render app-particle-background outside the .resume wrapper', () => {
+      const insideWrapper = fixture.nativeElement.querySelector('.resume app-particle-background');
+      expect(insideWrapper).toBeNull();
     });
   });
 

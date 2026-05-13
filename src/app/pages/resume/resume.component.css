@@ -1,6 +1,5 @@
 .resume {
-  position: relative;
-  z-index: 1;
+  background-color: var(--bg-primary);
   padding: 4rem 2rem;
 }
 
