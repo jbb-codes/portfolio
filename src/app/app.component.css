@@ -132,6 +132,10 @@
 
 /* ── Main content ───────────────────────────────────── */
 
+.route-animation-wrapper {
+  position: relative;
+}
+
 /* ── Footer ─────────────────────────────────────────── */
 
 .footer {
