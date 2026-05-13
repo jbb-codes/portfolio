@@ -2,7 +2,7 @@ import { Component, ElementRef, NgZone, OnDestroy, OnInit } from '@angular/core'
 
 export const ORB_RANGE_MIN = -10;
 export const ORB_RANGE_MAX = 70;
-export const ORB_DRIFT_SPEED = 0.012; // % of viewport per frame at 60fps
+const ORB_DRIFT_SPEED = 0.012; // % of viewport per frame at 60fps
 
 export interface OrbState {
   left: number;
@@ -11,7 +11,7 @@ export interface OrbState {
   driftY: number;
 }
 
-export function makeOrbState(left: number, top: number): OrbState {
+function makeOrbState(left: number, top: number): OrbState {
   const angle = Math.random() * Math.PI * 2;
   return {
     left,
