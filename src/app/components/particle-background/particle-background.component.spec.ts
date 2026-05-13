@@ -81,6 +81,19 @@ describe('ParticleBackgroundComponent', () => {
     });
   });
 
+  describe('drawing', () => {
+    it('reads dot color from the --particle-color CSS variable', () => {
+      const expectedColor = 'rgba(64, 56, 200, 0.5)';
+      spyOn(window, 'getComputedStyle').and.returnValue({
+        getPropertyValue: (prop: string) => prop === '--particle-color' ? expectedColor : '',
+      } as CSSStyleDeclaration);
+
+      (component as any).draw();
+
+      expect(mockCtx.fillStyle).toBe(expectedColor);
+    });
+  });
+
   describe('prefers-reduced-motion', () => {
     it('should not start the animation loop when no-preference does not match', () => {
       // matches: false → '(prefers-reduced-motion: no-preference)' does not match → reduced motion

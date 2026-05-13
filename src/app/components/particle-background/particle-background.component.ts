@@ -10,7 +10,6 @@ interface Dot {
 
 const DOT_COUNT = 60;
 const DOT_RADIUS = 1.5;
-const DOT_COLOR = 'rgba(255, 255, 255, 0.2)';
 const DOT_SPEED = 0.3;
 
 @Component({
@@ -72,7 +71,9 @@ export class ParticleBackgroundComponent implements OnInit, OnDestroy {
     if (!ctx) return;
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = DOT_COLOR;
+    ctx.fillStyle = getComputedStyle(this.doc.documentElement)
+      .getPropertyValue('--particle-color')
+      .trim();
 
     for (const dot of this.dots) {
       dot.x += dot.vx;
