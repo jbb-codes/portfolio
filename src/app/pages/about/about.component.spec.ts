@@ -47,6 +47,27 @@ describe('AboutComponent', () => {
     });
   });
 
+  describe('particle background containment', () => {
+    it('should render particle background outside the .about wrapper', () => {
+      const aboutWrapper: HTMLElement = fixture.nativeElement.querySelector('.about');
+      const particleInsideAbout = aboutWrapper?.querySelector('app-particle-background');
+      expect(particleInsideAbout).toBeNull();
+    });
+
+    it('should render particle background as a preceding sibling of .about', () => {
+      const particle: HTMLElement = fixture.nativeElement.querySelector('app-particle-background');
+      const about: HTMLElement = fixture.nativeElement.querySelector('.about');
+      expect(particle).toBeTruthy();
+      expect(particle.compareDocumentPosition(about) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    });
+
+    it('should render .about with a stacking context above the particle canvas', () => {
+      const about: HTMLElement = fixture.nativeElement.querySelector('.about');
+      const styles = getComputedStyle(about);
+      expect(styles.position).toBe('relative');
+    });
+  });
+
   describe('interests section', () => {
     it('should render the interests section', () => {
       const section = fixture.nativeElement.querySelector('.about__interests');
