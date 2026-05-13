@@ -68,19 +68,19 @@
 .timeline__title {
   font-size: 1rem;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-on-surface);
   margin: 0;
 }
 
 .timeline__organization {
   font-size: 0.875rem;
-  color: var(--text-secondary);
+  color: var(--text-on-surface-secondary);
   font-weight: 500;
 }
 
 .timeline__description {
   font-size: 0.875rem;
-  color: var(--text-secondary);
+  color: var(--text-on-surface-secondary);
   line-height: 1.6;
   margin: 0.25rem 0 0;
 }

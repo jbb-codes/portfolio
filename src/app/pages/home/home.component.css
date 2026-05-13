@@ -139,13 +139,13 @@
 .bucket-list__item-title {
   font-size: 0.9375rem;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-on-surface);
   margin: 0 0 0.25rem;
 }
 
 .bucket-list__item-description {
   font-size: 0.8125rem;
-  color: var(--text-secondary);
+  color: var(--text-on-surface-secondary);
   margin: 0;
   line-height: 1.5;
 }
