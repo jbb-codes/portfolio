@@ -6,6 +6,8 @@ describe('ParticleBackgroundComponent', () => {
   let fixture: ComponentFixture<ParticleBackgroundComponent>;
   let component: ParticleBackgroundComponent;
   let win: Window & typeof globalThis;
+  let mockResizeObserver: { observe: jasmine.Spy; disconnect: jasmine.Spy };
+  let originalResizeObserver: typeof ResizeObserver;
 
   const mockCtx = {
     clearRect: jasmine.createSpy('clearRect'),
@@ -16,6 +18,10 @@ describe('ParticleBackgroundComponent', () => {
   };
 
   beforeEach(async () => {
+    originalResizeObserver = window.ResizeObserver;
+    mockResizeObserver = { observe: jasmine.createSpy('observe'), disconnect: jasmine.createSpy('disconnect') };
+    (window as unknown as Record<string, unknown>)['ResizeObserver'] = jasmine.createSpy('ResizeObserver').and.returnValue(mockResizeObserver);
+
     spyOn(HTMLCanvasElement.prototype, 'getContext').and.returnValue(mockCtx as unknown as CanvasRenderingContext2D);
     spyOn(window, 'requestAnimationFrame').and.returnValue(42);
     spyOn(window, 'cancelAnimationFrame');
@@ -30,6 +36,10 @@ describe('ParticleBackgroundComponent', () => {
     component = fixture.componentInstance;
     win = TestBed.inject(DOCUMENT).defaultView as Window & typeof globalThis;
     fixture.detectChanges();
+  });
+
+  afterEach(() => {
+    (window as unknown as Record<string, unknown>)['ResizeObserver'] = originalResizeObserver;
   });
 
   it('should create', () => {
@@ -60,11 +70,14 @@ describe('ParticleBackgroundComponent', () => {
   });
 
   describe('resize handling', () => {
-    it('should remove the resize listener from the window on destroy', () => {
-      // spyOn intercepts win.removeEventListener; 'resize' is the event name argument
-      const removeListenerSpy = spyOn(win, 'removeEventListener');
+    it('should observe the canvas element via ResizeObserver on init', () => {
+      const canvas = fixture.nativeElement.querySelector('[data-testid="particle-canvas"]');
+      expect(mockResizeObserver.observe).toHaveBeenCalledWith(canvas);
+    });
+
+    it('should disconnect the ResizeObserver on destroy', () => {
       fixture.destroy();
-      expect(removeListenerSpy).toHaveBeenCalledWith('resize', jasmine.any(Function));
+      expect(mockResizeObserver.disconnect).toHaveBeenCalled();
     });
   });
 

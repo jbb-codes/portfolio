@@ -26,11 +26,14 @@ export class ParticleBackgroundComponent implements OnInit, OnDestroy {
   private readonly win = this.doc.defaultView!;
   private animationId = 0;
   private dots: Dot[] = [];
-  private readonly resizeHandler = () => this.resizeCanvas();
+  private resizeObserver!: ResizeObserver;
 
   ngOnInit(): void {
-    this.resizeCanvas();
-    this.win.addEventListener('resize', this.resizeHandler);
+    this.resizeObserver = new ResizeObserver((entries) => {
+      const entry = entries[0];
+      if (entry) this.resizeCanvas(entry.contentRect.width, entry.contentRect.height);
+    });
+    this.resizeObserver.observe(this.canvasRef.nativeElement);
 
     if (this.win.matchMedia('(prefers-reduced-motion: no-preference)').matches) {
       this.scheduleFrame();
@@ -38,15 +41,16 @@ export class ParticleBackgroundComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.win.removeEventListener('resize', this.resizeHandler);
+    this.resizeObserver?.disconnect();
     this.win.cancelAnimationFrame(this.animationId);
   }
 
-  private resizeCanvas(): void {
+  private resizeCanvas(width: number, height: number): void {
     const canvas = this.canvasRef.nativeElement;
-    canvas.width = canvas.offsetWidth;
-    canvas.height = canvas.offsetHeight;
-    this.initDots(canvas.width, canvas.height);
+    if (canvas.width === width && canvas.height === height) return;
+    canvas.width = width;
+    canvas.height = height;
+    this.initDots(width, height);
   }
 
   private initDots(width: number, height: number): void {
