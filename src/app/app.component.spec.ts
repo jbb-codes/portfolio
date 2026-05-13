@@ -172,6 +172,13 @@ describe('AppComponent', () => {
     });
   });
 
+  describe('particle background', () => {
+    it('should render app-particle-background', () => {
+      const el = fixture.nativeElement.querySelector('[data-testid="particle-background"]');
+      expect(el).toBeTruthy();
+    });
+  });
+
   describe('route animation', () => {
     it('should have a route-animation-wrapper element in the main content area', () => {
       const wrapper: HTMLElement = fixture.nativeElement.querySelector('[data-testid="route-animation-wrapper"]');

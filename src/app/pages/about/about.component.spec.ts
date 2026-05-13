@@ -47,18 +47,6 @@ describe('AboutComponent', () => {
     });
   });
 
-  describe('particle background', () => {
-    it('should render app-particle-background', () => {
-      const el = fixture.nativeElement.querySelector('app-particle-background');
-      expect(el).toBeTruthy();
-    });
-
-    it('should render app-particle-background outside the .about wrapper', () => {
-      const insideWrapper = fixture.nativeElement.querySelector('.about app-particle-background');
-      expect(insideWrapper).toBeNull();
-    });
-  });
-
   describe('interests section', () => {
     it('should render the interests section', () => {
       const section = fixture.nativeElement.querySelector('.about__interests');

@@ -7,11 +7,12 @@ import { filter } from 'rxjs/operators';
 import { routeFadeAnimation } from './route-animations';
 import { CustomCursorComponent } from './components/custom-cursor/custom-cursor.component';
 import { OrbBackgroundComponent } from './components/orb-background/orb-background.component';
+import { ParticleBackgroundComponent } from './components/particle-background/particle-background.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, RouterLink, RouterLinkActive, LucideSun, LucideMoon, CustomCursorComponent, OrbBackgroundComponent],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, LucideSun, LucideMoon, CustomCursorComponent, OrbBackgroundComponent, ParticleBackgroundComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
   animations: [routeFadeAnimation],
