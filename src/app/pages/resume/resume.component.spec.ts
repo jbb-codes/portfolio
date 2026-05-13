@@ -20,6 +20,18 @@ describe('ResumeComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  describe('particle background', () => {
+    it('should render app-particle-background', () => {
+      const el = fixture.nativeElement.querySelector('app-particle-background');
+      expect(el).toBeTruthy();
+    });
+
+    it('should render app-particle-background outside the .resume wrapper', () => {
+      const insideWrapper = fixture.nativeElement.querySelector('.resume app-particle-background');
+      expect(insideWrapper).toBeNull();
+    });
+  });
+
   // ============================================================
   // USER IMPLEMENTED
   // Worked through TDD thought process with Claude; implemented
