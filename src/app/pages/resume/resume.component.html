@@ -27,9 +27,7 @@
           </div>
         }
       </div>
-    </section>
 
-    <section class="resume__col resume__col--right">
       <div class="resume__section">
         <h2 class="resume__section-heading">Education</h2>
         @for (edu of education; track edu.degree) {
@@ -45,18 +43,6 @@
       </div>
 
       <div class="resume__section">
-        <h2 class="resume__section-heading">Skills</h2>
-        @for (skill of skills; track skill.name) {
-          <div class="resume__skill" data-testid="skill-entry">
-            <span class="resume__skill-label">{{ skill.name }}</span>
-            <div class="resume__skill-bar">
-              <div class="resume__skill-fill" [style.width.%]="skill.level"></div>
-            </div>
-          </div>
-        }
-      </div>
-
-      <div class="resume__section">
         <h2 class="resume__section-heading">Certifications & Courses</h2>
         @for (cert of certifications; track cert.name) {
           <div class="resume__card" data-testid="certification-entry">
@@ -66,6 +52,20 @@
             </div>
             <span class="resume__card-subtitle">{{ cert.issuer }}</span>
             <p class="resume__card-details">{{ cert.details }}</p>
+          </div>
+        }
+      </div>
+    </section>
+
+    <section class="resume__col resume__col--right">
+      <div class="resume__section">
+        <h2 class="resume__section-heading">Skills</h2>
+        @for (skill of skills; track skill.name) {
+          <div class="resume__skill" data-testid="skill-entry">
+            <span class="resume__skill-label">{{ skill.name }}</span>
+            <div class="resume__skill-bar">
+              <div class="resume__skill-fill" [style.width.%]="skill.level"></div>
+            </div>
           </div>
         }
       </div>
