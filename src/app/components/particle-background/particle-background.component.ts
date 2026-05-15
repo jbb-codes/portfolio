@@ -2,10 +2,10 @@ import { DOCUMENT } from '@angular/common';
 import { Component, ElementRef, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 
 interface Dot {
-  x: number;
-  y: number;
-  vx: number;
-  vy: number;
+  positionX: number;
+  positionY: number;
+  velocityX: number;
+  velocityY: number;
 }
 
 const DOT_COUNT = 60;
@@ -54,10 +54,10 @@ export class ParticleBackgroundComponent implements OnInit, OnDestroy {
 
   private initDots(width: number, height: number): void {
     this.dots = Array.from({ length: DOT_COUNT }, () => ({
-      x: Math.random() * width,
-      y: Math.random() * height,
-      vx: (Math.random() - 0.5) * DOT_SPEED * 2,
-      vy: (Math.random() - 0.5) * DOT_SPEED * 2,
+      positionX: Math.random() * width,
+      positionY: Math.random() * height,
+      velocityX: (Math.random() - 0.5) * DOT_SPEED * 2,
+      velocityY: (Math.random() - 0.5) * DOT_SPEED * 2,
     }));
   }
 
@@ -76,16 +76,16 @@ export class ParticleBackgroundComponent implements OnInit, OnDestroy {
       .trim();
 
     for (const dot of this.dots) {
-      dot.x += dot.vx;
-      dot.y += dot.vy;
+      dot.positionX += dot.velocityX;
+      dot.positionY += dot.velocityY;
 
-      if (dot.x < 0) dot.x += canvas.width;
-      if (dot.x > canvas.width) dot.x -= canvas.width;
-      if (dot.y < 0) dot.y += canvas.height;
-      if (dot.y > canvas.height) dot.y -= canvas.height;
+      if (dot.positionX < 0) dot.positionX += canvas.width;
+      if (dot.positionX > canvas.width) dot.positionX -= canvas.width;
+      if (dot.positionY < 0) dot.positionY += canvas.height;
+      if (dot.positionY > canvas.height) dot.positionY -= canvas.height;
 
       ctx.beginPath();
-      ctx.arc(dot.x, dot.y, DOT_RADIUS, 0, Math.PI * 2);
+      ctx.arc(dot.positionX, dot.positionY, DOT_RADIUS, 0, Math.PI * 2);
       ctx.fill();
     }
 
