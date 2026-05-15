@@ -8,22 +8,20 @@
 
 .orb-background__orb {
   position: absolute;
+  width: 400px;
+  height: 400px;
   border-radius: 50%;
+  background: var(--orb-color);
+  opacity: var(--orb-opacity);
+  filter: blur(100px);
 }
 
 .orb-background__orb--1 {
-  width: 600px;
-  height: 600px;
-  background: var(--orb-color-1);
-  opacity: var(--orb-opacity-1);
-  filter: blur(140px);
+  top: -150px;
+  left: -150px;
 }
 
 .orb-background__orb--2 {
-  width: 520px;
-  height: 520px;
-  background: var(--orb-color-2);
-  opacity: var(--orb-opacity-2);
-  filter: blur(150px);
+  bottom: -150px;
+  right: -150px;
 }
-
