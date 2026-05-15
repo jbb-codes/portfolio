@@ -16,8 +16,10 @@
 /* ── Profile card ────────────────────────────────────── */
 
 .about__card {
-  background-color: var(--bg-surface);
-  border: 1px solid var(--border);
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
   border-radius: 12px;
   padding: 2rem;
 }
@@ -109,8 +111,10 @@
 }
 
 .about__interest-card {
-  background-color: var(--bg-surface);
-  border: 1px solid var(--border);
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
   border-radius: 12px;
   padding: 2rem 1.5rem;
   display: flex;
@@ -119,11 +123,16 @@
   gap: 1rem;
   text-align: center;
   color: var(--accent);
-  transition: border-color 0.2s ease;
 }
 
 .about__interest-card:hover {
   border-color: var(--accent);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .about__interest-card {
+    transition: border-color 0.2s ease;
+  }
 }
 
 .about__interest-label {
