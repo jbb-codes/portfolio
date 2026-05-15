@@ -25,9 +25,14 @@ export class ParticleBackgroundComponent implements OnInit, OnDestroy {
   private readonly win = this.doc.defaultView!;
   private animationId = 0;
   private dots: Dot[] = [];
+  private pixelScale = 1;
+  private logicalWidth = 0;
+  private logicalHeight = 0;
   private resizeObserver!: ResizeObserver;
 
   ngOnInit(): void {
+    this.resizeCanvas(this.win.innerWidth, this.win.innerHeight);
+
     this.resizeObserver = new ResizeObserver((entries) => {
       const entry = entries[0];
       if (entry) this.resizeCanvas(entry.contentRect.width, entry.contentRect.height);
@@ -46,9 +51,17 @@ export class ParticleBackgroundComponent implements OnInit, OnDestroy {
 
   private resizeCanvas(width: number, height: number): void {
     const canvas = this.canvasRef.nativeElement;
-    if (canvas.width === width && canvas.height === height) return;
-    canvas.width = width;
-    canvas.height = height;
+    this.pixelScale = this.win.devicePixelRatio || 1;
+    const physicalWidth = Math.round(width * this.pixelScale);
+    const physicalHeight = Math.round(height * this.pixelScale);
+
+    if (canvas.width === physicalWidth && canvas.height === physicalHeight) return;
+
+    this.logicalWidth = width;
+    this.logicalHeight = height;
+    canvas.width = physicalWidth;
+    canvas.height = physicalHeight;
+
     this.initDots(width, height);
   }
 
@@ -70,6 +83,8 @@ export class ParticleBackgroundComponent implements OnInit, OnDestroy {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
+    const { pixelScale, logicalWidth, logicalHeight } = this;
+
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.fillStyle = getComputedStyle(this.doc.documentElement)
       .getPropertyValue('--particle-color')
@@ -79,13 +94,13 @@ export class ParticleBackgroundComponent implements OnInit, OnDestroy {
       dot.positionX += dot.velocityX;
       dot.positionY += dot.velocityY;
 
-      if (dot.positionX < 0) dot.positionX += canvas.width;
-      if (dot.positionX > canvas.width) dot.positionX -= canvas.width;
-      if (dot.positionY < 0) dot.positionY += canvas.height;
-      if (dot.positionY > canvas.height) dot.positionY -= canvas.height;
+      if (dot.positionX < 0) dot.positionX += logicalWidth;
+      if (dot.positionX > logicalWidth) dot.positionX -= logicalWidth;
+      if (dot.positionY < 0) dot.positionY += logicalHeight;
+      if (dot.positionY > logicalHeight) dot.positionY -= logicalHeight;
 
       ctx.beginPath();
-      ctx.arc(dot.positionX, dot.positionY, DOT_RADIUS, 0, Math.PI * 2);
+      ctx.arc(dot.positionX * pixelScale, dot.positionY * pixelScale, DOT_RADIUS * pixelScale, 0, Math.PI * 2);
       ctx.fill();
     }
 

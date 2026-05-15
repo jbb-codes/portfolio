@@ -14,6 +14,7 @@ describe('ParticleBackgroundComponent', () => {
     beginPath: jasmine.createSpy('beginPath'),
     arc: jasmine.createSpy('arc'),
     fill: jasmine.createSpy('fill'),
+    scale: jasmine.createSpy('scale'),
     fillStyle: '',
   };
 
@@ -79,9 +80,51 @@ describe('ParticleBackgroundComponent', () => {
       fixture.destroy();
       expect(mockResizeObserver.disconnect).toHaveBeenCalled();
     });
+
+    it('sizes the canvas from window.innerWidth and window.innerHeight on init', () => {
+      const originalInnerWidth = window.innerWidth;
+      const originalInnerHeight = window.innerHeight;
+      Object.defineProperty(window, 'innerWidth', { value: 1200, configurable: true });
+      Object.defineProperty(window, 'innerHeight', { value: 800, configurable: true });
+
+      const initFixture = TestBed.createComponent(ParticleBackgroundComponent);
+      initFixture.detectChanges();
+
+      const canvas: HTMLCanvasElement = initFixture.nativeElement.querySelector('[data-testid="particle-canvas"]');
+      expect(canvas.width).toBe(1200);
+      expect(canvas.height).toBe(800);
+
+      initFixture.destroy();
+      Object.defineProperty(window, 'innerWidth', { value: originalInnerWidth, configurable: true });
+      Object.defineProperty(window, 'innerHeight', { value: originalInnerHeight, configurable: true });
+    });
+
+    it('sets canvas physical dimensions to logical dimensions multiplied by the pixel scale', () => {
+      Object.defineProperty(window, 'devicePixelRatio', { value: 2, configurable: true });
+      const canvas: HTMLCanvasElement = fixture.nativeElement.querySelector('[data-testid="particle-canvas"]');
+
+      (component as any).resizeCanvas(800, 600);
+
+      expect(canvas.width).toBe(1600);
+      expect(canvas.height).toBe(1200);
+
+      Object.defineProperty(window, 'devicePixelRatio', { value: 1, configurable: true });
+    });
   });
 
   describe('drawing', () => {
+    it('clears the full physical canvas dimensions on each frame', () => {
+      Object.defineProperty(window, 'devicePixelRatio', { value: 2, configurable: true });
+      (component as any).resizeCanvas(400, 300);
+      mockCtx.clearRect.calls.reset();
+
+      (component as any).draw();
+
+      expect(mockCtx.clearRect).toHaveBeenCalledWith(0, 0, 800, 600);
+
+      Object.defineProperty(window, 'devicePixelRatio', { value: 1, configurable: true });
+    });
+
     it('reads dot color from the --particle-color CSS variable', () => {
       const expectedColor = 'rgba(64, 56, 200, 0.5)';
       spyOn(window, 'getComputedStyle').and.returnValue({
