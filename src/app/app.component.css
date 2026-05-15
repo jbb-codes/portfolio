@@ -31,8 +31,6 @@
   justify-content: space-between;
   padding: 0 2rem;
   height: 64px;
-  background-color: var(--bg-surface);
-  border-bottom: 1px solid var(--border);
   position: sticky;
   top: 0;
   z-index: 100;
@@ -139,8 +137,6 @@
 /* ── Footer ─────────────────────────────────────────── */
 
 .footer {
-  background-color: var(--bg-surface);
-  border-top: 1px solid var(--border);
   padding: 1.5rem 2rem;
 }
 
