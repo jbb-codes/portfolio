@@ -22,16 +22,12 @@ export class AppComponent implements OnDestroy {
   isAnimating = false;
 
   private routerSub!: Subscription;
-  private readonly prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  private readonly leaveAnimationDuration = 300;
-
   constructor(private readonly router: Router, private readonly el: ElementRef, private readonly injector: Injector) {
     afterNextRender(() => this.updateUnderline());
     this.routerSub = this.router.events
       .pipe(filter(e => e instanceof NavigationEnd))
       .subscribe(() => {
-        const delay = this.prefersReducedMotion ? 0 : this.leaveAnimationDuration;
-        setTimeout(() => window.scrollTo({ top: 0 }), delay);
+        window.scrollTo({ top: 0 });
         afterNextRender(() => this.updateUnderline(), { injector: this.injector });
       });
   }
