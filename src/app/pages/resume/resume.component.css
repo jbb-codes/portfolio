@@ -63,8 +63,10 @@
 /* ── Cards ───────────────────────────────────────────── */
 
 .resume__card {
-  background-color: var(--bg-surface);
-  border: 1px solid var(--border);
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
   border-radius: 12px;
   padding: 1.25rem 1.5rem;
   margin-bottom: 1rem;
@@ -120,15 +122,19 @@
 /* ── Sections ────────────────────────────────────────── */
 
 .resume__section {
-  background-color: var(--bg-surface);
-  border: 1px solid var(--border);
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
   border-radius: 12px;
   padding: 1.5rem;
   margin-bottom: 1.5rem;
 }
 
 .resume__section .resume__card {
-  background-color: var(--bg-surface-alt);
+  background-color: var(--card-nested-bg);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
   margin-bottom: 0.75rem;
 }
 

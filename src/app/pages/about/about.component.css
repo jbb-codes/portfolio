@@ -16,8 +16,10 @@
 /* ── Profile card ────────────────────────────────────── */
 
 .about__card {
-  background-color: var(--bg-surface);
-  border: 1px solid var(--border);
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
   border-radius: 12px;
   padding: 2rem;
 }
@@ -113,6 +115,38 @@
   gap: 1.5rem;
 }
 
+.about__interest-card {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  padding: 2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  text-align: center;
+  color: var(--accent);
+}
+
+.about__interest-card:hover {
+  border-color: var(--accent);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .about__interest-card {
+    transition: border-color 0.2s ease;
+  }
+}
+
+.about__interest-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-on-surface);
+  line-height: 1.4;
+}
+
 /* ── Timeline section ────────────────────────────────── */
 
 .about__timeline-section {
@@ -125,36 +159,6 @@
   font-weight: 600;
   color: var(--text-primary);
   margin: 0 0 1.5rem 0;
-}
-
-.about__interest-card {
-  background-color: var(--bg-surface-alt);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 2rem 1.5rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem;
-  text-align: center;
-  color: var(--accent);
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .about__interest-card {
-    transition: border-color 0.2s ease;
-  }
-}
-
-.about__interest-card:hover {
-  border-color: var(--accent);
-}
-
-.about__interest-label {
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: var(--text-on-surface);
-  line-height: 1.4;
 }
 
 /* ── Responsive ──────────────────────────────────────── */
