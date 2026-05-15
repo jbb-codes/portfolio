@@ -36,32 +36,32 @@
 }
 
 [data-theme="light"] {
-  --bg-primary: #d6d0ff;
-  --bg-surface: #edeaff;
+  --bg-primary: #f8f7ff;
+  --bg-surface: #ffffff;
   --accent: #6c63ff;
   --text-primary: #0f0e1a;
-  --text-secondary: #5c5870;
+  --text-secondary: #5c5875;
   --text-on-surface: #0f0e1a;
-  --text-on-surface-secondary: #4a4468;
-  --border: rgba(108, 99, 255, 0.22);
-  --card-nested-bg: #e4e0ff;
-  --surface-hover-bg: rgba(108, 99, 255, 0.1);
+  --text-on-surface-secondary: #6b6882;
+  --border: rgba(108, 99, 255, 0.15);
+  --card-nested-bg: #f0eeff;
+  --surface-hover-bg: rgba(108, 99, 255, 0.06);
 
   /* Glassmorphism */
-  --glass-bg: rgba(237, 234, 255, 0.88);
+  --glass-bg: rgba(255, 255, 255, 0.82);
   --glass-blur: blur(12px);
-  --glass-border: rgba(108, 99, 255, 0.25);
+  --glass-border: rgba(108, 99, 255, 0.18);
 
   /* Gradient orbs */
-  --orb-1: rgba(108, 99, 255, 0.1);
-  --orb-2: rgba(124, 58, 237, 0.08);
+  --orb-1: rgba(108, 99, 255, 0.07);
+  --orb-2: rgba(124, 58, 237, 0.05);
 
   /* Background effects */
-  --particle-color: rgba(80, 70, 200, 0.6);
-  --orb-color-1: #4338ca;
-  --orb-color-2: #7c3aed;
-  --orb-opacity-1: 0.55;
-  --orb-opacity-2: 0.42;
+  --particle-color: rgba(108, 99, 255, 0.6);
+  --orb-color-1: #6c63ff;
+  --orb-color-2: #8b5cf6;
+  --orb-opacity-1: 0.52;
+  --orb-opacity-2: 0.38;
 }
 
 html,
