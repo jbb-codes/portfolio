@@ -128,7 +128,7 @@
 }
 
 .resume__section .resume__card {
-  background-color: var(--card-nested-bg);
+  background-color: var(--bg-surface-alt);
   margin-bottom: 0.75rem;
 }
 
