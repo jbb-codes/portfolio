@@ -17,11 +17,15 @@
 }
 
 .orb-background__orb--1 {
-  top: -150px;
-  left: -150px;
+  transform: translate(-150px, -150px);
 }
 
 .orb-background__orb--2 {
-  bottom: -150px;
-  right: -150px;
+  transform: translate(calc(100vw - 250px), calc(100vh - 250px));
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .orb-background__orb {
+    will-change: transform;
+  }
 }

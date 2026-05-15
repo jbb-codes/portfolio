@@ -80,19 +80,19 @@ export class OrbBackgroundComponent implements OnInit, OnDestroy {
       '.orb-background__orb--2',
     ) as HTMLElement;
 
-    orb1El.style.left = `${this.orb1State.left}%`;
-    orb1El.style.top = `${this.orb1State.top}%`;
-    orb2El.style.left = `${this.orb2State.left}%`;
-    orb2El.style.top = `${this.orb2State.top}%`;
+    const setTransform = (el: HTMLElement, left: number, top: number) => {
+      el.style.transform = `translate(${left}vw, ${top}vh)`;
+    };
+
+    setTransform(orb1El, this.orb1State.left, this.orb1State.top);
+    setTransform(orb2El, this.orb2State.left, this.orb2State.top);
 
     const loop = () => {
       this.orb1State = stepOrb(this.orb1State);
       this.orb2State = stepOrb(this.orb2State);
 
-      orb1El.style.left = `${this.orb1State.left}%`;
-      orb1El.style.top = `${this.orb1State.top}%`;
-      orb2El.style.left = `${this.orb2State.left}%`;
-      orb2El.style.top = `${this.orb2State.top}%`;
+      setTransform(orb1El, this.orb1State.left, this.orb1State.top);
+      setTransform(orb2El, this.orb2State.left, this.orb2State.top);
 
       this.rafId = requestAnimationFrame(loop);
     };
