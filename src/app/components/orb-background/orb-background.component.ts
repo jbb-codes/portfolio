@@ -49,8 +49,8 @@ export function stepOrb(orb: Readonly<OrbState>): OrbState {
   styleUrl: './orb-background.component.css',
 })
 export class OrbBackgroundComponent implements OnInit, OnDestroy {
-  private orb1State: OrbState = makeOrbState(-5, -8);
-  private orb2State: OrbState = makeOrbState(60, 10);
+  private orb1State: OrbState = makeOrbState(15, 15);
+  private orb2State: OrbState = makeOrbState(65, 55);
   private rafId: number | null = null;
 
   constructor(
