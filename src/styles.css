@@ -16,7 +16,13 @@
   --text-on-surface: #f0f0f5;
   --text-on-surface-secondary: #8a8a9a;
   --border: rgba(108, 99, 255, 0.2);
+  --card-nested-bg: rgba(255, 255, 255, 0.05);
   --surface-hover-bg: rgba(108, 99, 255, 0.08);
+
+  /* Glassmorphism */
+  --glass-bg: rgba(26, 26, 46, 0.5);
+  --glass-blur: blur(12px);
+  --glass-border: rgba(108, 99, 255, 0.25);
 
   /* Background effects */
   --particle-color: rgba(255, 255, 255, 0.35);
@@ -34,7 +40,13 @@
   --text-on-surface: #0f0e1a;
   --text-on-surface-secondary: #6b6882;
   --border: rgba(108, 99, 255, 0.15);
+  --card-nested-bg: #f0eeff;
   --surface-hover-bg: rgba(108, 99, 255, 0.06);
+
+  /* Glassmorphism */
+  --glass-bg: rgba(255, 255, 255, 0.82);
+  --glass-blur: blur(12px);
+  --glass-border: rgba(108, 99, 255, 0.18);
 
   /* Background effects */
   --particle-color: rgba(108, 99, 255, 0.6);
