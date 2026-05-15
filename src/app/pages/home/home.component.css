@@ -51,9 +51,14 @@
   font-weight: 600;
   padding: 0.75rem 1.5rem;
   border-radius: 8px;
-  transition:
-    opacity 0.2s ease,
-    transform 0.2s ease;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero__cta {
+    transition:
+      opacity 0.2s ease,
+      transform 0.2s ease;
+  }
 }
 
 .hero__cta:hover {
@@ -105,13 +110,16 @@
   display: flex;
   align-items: flex-start;
   gap: 0.875rem;
-  background: var(--glass-bg);
-  backdrop-filter: var(--glass-blur);
-  -webkit-backdrop-filter: var(--glass-blur);
-  border: 1px solid var(--glass-border);
+  background: var(--bg-surface-alt);
+  border: 1px solid var(--border);
   border-radius: 10px;
   padding: 1rem 1.25rem;
-  transition: border-color 0.2s ease;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .bucket-list__item {
+    transition: border-color 0.2s ease;
+  }
 }
 
 .bucket-list__item:hover {

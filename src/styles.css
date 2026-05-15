@@ -9,19 +9,14 @@
 :root {
   --bg-primary: #0a0a0f;
   --bg-surface: #1a1a2e;
+  --bg-surface-alt: #1e1e34;
   --accent: #6c63ff;
   --text-primary: #f0f0f5;
   --text-secondary: #8a8a9a;
   --text-on-surface: #f0f0f5;
   --text-on-surface-secondary: #8a8a9a;
   --border: rgba(108, 99, 255, 0.2);
-  --card-nested-bg: rgba(255, 255, 255, 0.05);
   --surface-hover-bg: rgba(108, 99, 255, 0.08);
-
-  /* Glassmorphism */
-  --glass-bg: rgba(26, 26, 46, 0.5);
-  --glass-blur: blur(12px);
-  --glass-border: rgba(108, 99, 255, 0.25);
 
   /* Background effects */
   --particle-color: rgba(255, 255, 255, 0.35);
@@ -32,19 +27,14 @@
 [data-theme="light"] {
   --bg-primary: #f8f7ff;
   --bg-surface: #ffffff;
+  --bg-surface-alt: #f0eeff;
   --accent: #6c63ff;
   --text-primary: #0f0e1a;
   --text-secondary: #5c5875;
   --text-on-surface: #0f0e1a;
   --text-on-surface-secondary: #6b6882;
   --border: rgba(108, 99, 255, 0.15);
-  --card-nested-bg: #f0eeff;
   --surface-hover-bg: rgba(108, 99, 255, 0.06);
-
-  /* Glassmorphism */
-  --glass-bg: rgba(255, 255, 255, 0.82);
-  --glass-blur: blur(12px);
-  --glass-border: rgba(108, 99, 255, 0.18);
 
   /* Background effects */
   --particle-color: rgba(108, 99, 255, 0.6);
