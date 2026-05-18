@@ -51,6 +51,15 @@ describe('resolveOrbCollisions', () => {
     expect(next2.driftX).toBe(-orb2.driftX);
   });
 
+  it('does not reverse drift when orbs overlap but are already moving apart', () => {
+    // Centers at x=400 and x=600 → within collision range, but drifting away from each other
+    const orb1: OrbState = { left: 40, top: 50, driftX: -0.1, driftY: 0 };
+    const orb2: OrbState = { left: 60, top: 50, driftX: 0.1, driftY: 0 };
+    const [next1, next2] = resolveOrbCollisions(orb1, orb2, VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
+    expect(next1.driftX).toBe(orb1.driftX);
+    expect(next2.driftX).toBe(orb2.driftX);
+  });
+
   it('does not mutate either input', () => {
     const orb1: OrbState = { left: 40, top: 50, driftX: 0.1, driftY: 0 };
     const orb2: OrbState = { left: 60, top: 50, driftX: -0.1, driftY: 0 };
