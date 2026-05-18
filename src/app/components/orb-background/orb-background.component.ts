@@ -9,7 +9,7 @@ import {
 export const ORB_RANGE_MIN = -10;
 export const ORB_RANGE_MAX = 70;
 export const ORB_RADIUS_PX = 200;
-const ORB_DRIFT_SPEED = 0.3; // % of viewport per frame, normalized to 60fps
+const ORB_DRIFT_SPEED = 0.1; // % of viewport per frame, normalized to 60fps
 const FRAME_BASELINE_MS = 1000 / 60; // 16.67ms — reference frame duration for speed normalization
 
 export interface OrbState {
@@ -51,8 +51,18 @@ export function stepOrb(
   const rangeMinY = (-ORB_RADIUS_PX / viewportHeight) * 100;
   const rangeMaxY = ((viewportHeight - ORB_RADIUS_PX) / viewportHeight) * 100;
 
-  const x = bounceAxis(orb.left + orb.driftX * deltaScale, orb.driftX, rangeMinX, rangeMaxX);
-  const y = bounceAxis(orb.top + orb.driftY * deltaScale, orb.driftY, rangeMinY, rangeMaxY);
+  const x = bounceAxis(
+    orb.left + orb.driftX * deltaScale,
+    orb.driftX,
+    rangeMinX,
+    rangeMaxX,
+  );
+  const y = bounceAxis(
+    orb.top + orb.driftY * deltaScale,
+    orb.driftY,
+    rangeMinY,
+    rangeMaxY,
+  );
 
   return { left: x.pos, top: y.pos, driftX: x.drift, driftY: y.drift };
 }
@@ -139,10 +149,12 @@ export class OrbBackgroundComponent implements OnInit, OnDestroy {
     let lastTime: number | null = null;
 
     const loop = (timestamp: number) => {
-      const deltaMs = lastTime === null ? FRAME_BASELINE_MS : timestamp - lastTime;
+      const deltaMs =
+        lastTime === null ? FRAME_BASELINE_MS : timestamp - lastTime;
       lastTime = timestamp;
       // Clamp to 3× baseline so a suspended tab doesn't cause a huge position jump.
-      const deltaScale = Math.min(deltaMs, FRAME_BASELINE_MS * 3) / FRAME_BASELINE_MS;
+      const deltaScale =
+        Math.min(deltaMs, FRAME_BASELINE_MS * 3) / FRAME_BASELINE_MS;
 
       const vw = window.innerWidth;
       const vh = window.innerHeight;
