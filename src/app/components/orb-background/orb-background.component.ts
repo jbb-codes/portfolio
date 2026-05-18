@@ -1,9 +1,16 @@
-import { Component, ElementRef, NgZone, OnDestroy, OnInit } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  NgZone,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 
 export const ORB_RANGE_MIN = -10;
 export const ORB_RANGE_MAX = 70;
 export const ORB_RADIUS_PX = 200;
-const ORB_DRIFT_SPEED = 0.012; // % of viewport per frame at 60fps
+const ORB_DRIFT_SPEED = 0.3; // % of viewport per frame, normalized to 60fps
+const FRAME_BASELINE_MS = 1000 / 60; // 16.67ms — reference frame duration for speed normalization
 
 export interface OrbState {
   left: number;
@@ -22,25 +29,32 @@ function makeOrbState(left: number, top: number): OrbState {
   };
 }
 
-export function stepOrb(orb: Readonly<OrbState>): OrbState {
-  let { left, top, driftX, driftY } = orb;
-  left += driftX;
-  top += driftY;
-  if (left < ORB_RANGE_MIN) {
-    driftX = -driftX;
-    left = ORB_RANGE_MIN;
-  } else if (left > ORB_RANGE_MAX) {
-    driftX = -driftX;
-    left = ORB_RANGE_MAX;
-  }
-  if (top < ORB_RANGE_MIN) {
-    driftY = -driftY;
-    top = ORB_RANGE_MIN;
-  } else if (top > ORB_RANGE_MAX) {
-    driftY = -driftY;
-    top = ORB_RANGE_MAX;
-  }
-  return { left, top, driftX, driftY };
+function bounceAxis(
+  pos: number,
+  drift: number,
+  min: number,
+  max: number,
+): { pos: number; drift: number } {
+  if (pos < min) return { pos: min, drift: Math.abs(drift) };
+  if (pos > max) return { pos: max, drift: -Math.abs(drift) };
+  return { pos, drift };
+}
+
+export function stepOrb(
+  orb: Readonly<OrbState>,
+  deltaScale: number,
+  viewportWidth: number,
+  viewportHeight: number,
+): OrbState {
+  const rangeMinX = (-ORB_RADIUS_PX / viewportWidth) * 100;
+  const rangeMaxX = ((viewportWidth - ORB_RADIUS_PX) / viewportWidth) * 100;
+  const rangeMinY = (-ORB_RADIUS_PX / viewportHeight) * 100;
+  const rangeMaxY = ((viewportHeight - ORB_RADIUS_PX) / viewportHeight) * 100;
+
+  const x = bounceAxis(orb.left + orb.driftX * deltaScale, orb.driftX, rangeMinX, rangeMaxX);
+  const y = bounceAxis(orb.top + orb.driftY * deltaScale, orb.driftY, rangeMinY, rangeMaxY);
+
+  return { left: x.pos, top: y.pos, driftX: x.drift, driftY: y.drift };
 }
 
 export function resolveOrbCollisions(
@@ -61,7 +75,9 @@ export function resolveOrbCollisions(
   // the orbs are closing the gap. Skip the bounce if they are already separating
   // to prevent repeated reversals while centers are still overlapping.
   const isMovingTowardEachOther =
-    deltaX * (orb2.driftX - orb1.driftX) + deltaY * (orb2.driftY - orb1.driftY) < 0;
+    deltaX * (orb2.driftX - orb1.driftX) +
+      deltaY * (orb2.driftY - orb1.driftY) <
+    0;
 
   if (distance >= ORB_RADIUS_PX * 2 || !isMovingTowardEachOther) {
     return [orb1, orb2];
@@ -90,7 +106,9 @@ export class OrbBackgroundComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const reducedMotion = window.matchMedia(
+      '(prefers-reduced-motion: reduce)',
+    ).matches;
     if (reducedMotion) return;
 
     this.zone.runOutsideAngular(() => this.startAnimation());
@@ -118,9 +136,18 @@ export class OrbBackgroundComponent implements OnInit, OnDestroy {
     setTransform(orb1El, this.orb1State.left, this.orb1State.top);
     setTransform(orb2El, this.orb2State.left, this.orb2State.top);
 
-    const loop = () => {
-      this.orb1State = stepOrb(this.orb1State);
-      this.orb2State = stepOrb(this.orb2State);
+    let lastTime: number | null = null;
+
+    const loop = (timestamp: number) => {
+      const deltaMs = lastTime === null ? FRAME_BASELINE_MS : timestamp - lastTime;
+      lastTime = timestamp;
+      // Clamp to 3× baseline so a suspended tab doesn't cause a huge position jump.
+      const deltaScale = Math.min(deltaMs, FRAME_BASELINE_MS * 3) / FRAME_BASELINE_MS;
+
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+      this.orb1State = stepOrb(this.orb1State, deltaScale, vw, vh);
+      this.orb2State = stepOrb(this.orb2State, deltaScale, vw, vh);
 
       [this.orb1State, this.orb2State] = resolveOrbCollisions(
         this.orb1State,

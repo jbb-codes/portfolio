@@ -1,7 +1,5 @@
 import { TestBed } from '@angular/core/testing';
 import {
-  ORB_RANGE_MAX,
-  ORB_RANGE_MIN,
   ORB_RADIUS_PX,
   OrbState,
   resolveOrbCollisions,
@@ -72,53 +70,89 @@ describe('resolveOrbCollisions', () => {
 });
 
 describe('stepOrb', () => {
+  // 1000x1000 viewport: left/top bound = -ORB_RADIUS_PX/1000*100 = -20
+  //                    right/bottom bound = (1000-ORB_RADIUS_PX)/1000*100 = 80
+  const VW = 1000;
+  const VH = 1000;
+
   it('advances position by drift amount', () => {
     const orb: OrbState = { left: 10, top: 20, driftX: 0.5, driftY: 0.3 };
-    const next = stepOrb(orb);
+    const next = stepOrb(orb, 1, VW, VH);
     expect(next.left).toBeCloseTo(10.5);
     expect(next.top).toBeCloseTo(20.3);
   });
 
+  // contract: immutability
   it('does not mutate the input', () => {
     const orb: OrbState = { left: 10, top: 20, driftX: 0.5, driftY: 0.3 };
     const snapshot = { ...orb };
-    stepOrb(orb);
+    stepOrb(orb, 1, VW, VH);
     expect(orb).toEqual(snapshot);
   });
 
-  it('bounces off the left wall and clamps left', () => {
-    const orb: OrbState = { left: -9.8, top: 30, driftX: -0.5, driftY: 0 };
-    const next = stepOrb(orb);
+  it('bounces off the left wall and clamps position', () => {
+    const orb: OrbState = { left: -19.6, top: 30, driftX: -0.5, driftY: 0 };
+    const next = stepOrb(orb, 1, VW, VH);
     expect(next.driftX).toBeGreaterThan(0);
-    expect(next.left).toBe(ORB_RANGE_MIN);
+    expect(next.left).toBeCloseTo(-ORB_RADIUS_PX / VW * 100);
   });
 
-  it('bounces off the right wall and clamps left', () => {
-    const orb: OrbState = { left: 69.8, top: 30, driftX: 0.5, driftY: 0 };
-    const next = stepOrb(orb);
+  it('bounces off the right wall and clamps position', () => {
+    const orb: OrbState = { left: 79.6, top: 30, driftX: 0.5, driftY: 0 };
+    const next = stepOrb(orb, 1, VW, VH);
     expect(next.driftX).toBeLessThan(0);
-    expect(next.left).toBe(ORB_RANGE_MAX);
+    expect(next.left).toBeCloseTo((VW - ORB_RADIUS_PX) / VW * 100);
   });
 
-  it('bounces off the top wall and clamps top', () => {
-    const orb: OrbState = { left: 30, top: -9.8, driftX: 0, driftY: -0.5 };
-    const next = stepOrb(orb);
+  it('bounces off the top wall and clamps position', () => {
+    const orb: OrbState = { left: 30, top: -19.6, driftX: 0, driftY: -0.5 };
+    const next = stepOrb(orb, 1, VW, VH);
     expect(next.driftY).toBeGreaterThan(0);
-    expect(next.top).toBe(ORB_RANGE_MIN);
+    expect(next.top).toBeCloseTo(-ORB_RADIUS_PX / VH * 100);
   });
 
-  it('bounces off the bottom wall and clamps top', () => {
-    const orb: OrbState = { left: 30, top: 69.8, driftX: 0, driftY: 0.5 };
-    const next = stepOrb(orb);
+  it('bounces off the bottom wall and clamps position', () => {
+    const orb: OrbState = { left: 30, top: 79.6, driftX: 0, driftY: 0.5 };
+    const next = stepOrb(orb, 1, VW, VH);
     expect(next.driftY).toBeLessThan(0);
-    expect(next.top).toBe(ORB_RANGE_MAX);
+    expect(next.top).toBeCloseTo((VH - ORB_RADIUS_PX) / VH * 100);
   });
 
   it('preserves drift when not hitting a wall', () => {
     const orb: OrbState = { left: 30, top: 30, driftX: 0.5, driftY: -0.3 };
-    const next = stepOrb(orb);
+    const next = stepOrb(orb, 1, VW, VH);
     expect(next.driftX).toBe(0.5);
     expect(next.driftY).toBe(-0.3);
+  });
+
+  it('scales movement proportionally when deltaScale is 2', () => {
+    const orb: OrbState = { left: 10, top: 20, driftX: 0.5, driftY: 0.3 };
+    const single = stepOrb(orb, 1, VW, VH);
+    const doubled = stepOrb(orb, 2, VW, VH);
+    expect(doubled.left).toBeCloseTo(single.left + 0.5);
+    expect(doubled.top).toBeCloseTo(single.top + 0.3);
+  });
+
+  it('does not move when deltaScale is 0', () => {
+    const orb: OrbState = { left: 10, top: 20, driftX: 0.5, driftY: 0.3 };
+    const next = stepOrb(orb, 0, VW, VH);
+    expect(next.left).toBeCloseTo(10);
+    expect(next.top).toBeCloseTo(20);
+  });
+
+  it('adapts right bound to a wider viewport', () => {
+    // 2000x1000: right bound = (2000-200)/2000*100 = 90
+    const orb: OrbState = { left: 89.6, top: 30, driftX: 0.5, driftY: 0 };
+    const next = stepOrb(orb, 1, 2000, 1000);
+    expect(next.driftX).toBeLessThan(0);
+    expect(next.left).toBeCloseTo((2000 - ORB_RADIUS_PX) / 2000 * 100);
+  });
+
+  it('does not bounce before the viewport-aware right bound', () => {
+    // 1000x1000: right bound = 80. Position 70.5 is past old static bound (70) but inside new bound.
+    const orb: OrbState = { left: 70.5, top: 30, driftX: 0.5, driftY: 0 };
+    const next = stepOrb(orb, 1, VW, VH);
+    expect(next.driftX).toBeGreaterThan(0);
   });
 });
 
