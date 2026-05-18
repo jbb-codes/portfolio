@@ -14,7 +14,7 @@
 
   <div class="resume__grid">
     <section class="resume__col resume__col--left">
-      <div class="resume__section">
+      <div class="resume__section glass">
         <h2 class="resume__section-heading">Experience</h2>
         @for (exp of experience; track exp.title) {
           <div class="resume__card" data-testid="experience-entry">
@@ -28,7 +28,7 @@
         }
       </div>
 
-      <div class="resume__section">
+      <div class="resume__section glass">
         <h2 class="resume__section-heading">Education</h2>
         @for (edu of education; track edu.degree) {
           <div class="resume__card" data-testid="education-entry">
@@ -42,7 +42,7 @@
         }
       </div>
 
-      <div class="resume__section">
+      <div class="resume__section glass">
         <h2 class="resume__section-heading">Certifications & Courses</h2>
         @for (cert of certifications; track cert.name) {
           <div class="resume__card" data-testid="certification-entry">
@@ -58,7 +58,7 @@
     </section>
 
     <section class="resume__col resume__col--right">
-      <div class="resume__section">
+      <div class="resume__section glass">
         <h2 class="resume__section-heading">Skills</h2>
         @for (skill of skills; track skill.name) {
           <div class="resume__skill" data-testid="skill-entry">
@@ -70,7 +70,7 @@
         }
       </div>
 
-      <div class="resume__section">
+      <div class="resume__section glass">
         <h2 class="resume__section-heading">What I'm Learning Next</h2>
         <p class="resume__section-subtitle"><em>Technologies &amp; concepts currently being explored</em></p>
         <ul class="resume__learning-list">

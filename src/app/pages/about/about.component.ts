@@ -8,9 +8,9 @@ import {
   LucideDynamicIcon,
 } from '@lucide/angular';
 import { TimelineComponent } from '../../components/timeline/timeline.component';
+import { TimelineEntry } from '../../components/timeline/timeline-entry.interface';
 import {
   InterestCard,
-  TimelineEntry,
   INTERESTS,
   TIMELINE_ENTRIES,
 } from '../../data/portfolio-content';

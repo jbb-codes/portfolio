@@ -16,9 +16,6 @@
 /* ── Profile card ────────────────────────────────────── */
 
 .about__card {
-  background: var(--glass-bg);
-  backdrop-filter: var(--glass-blur);
-  -webkit-backdrop-filter: var(--glass-blur);
   border: 1px solid var(--glass-border);
   border-radius: 12px;
   padding: 2rem;
@@ -116,9 +113,6 @@
 }
 
 .about__interest-card {
-  background: var(--glass-bg);
-  backdrop-filter: var(--glass-blur);
-  -webkit-backdrop-filter: var(--glass-blur);
   border: 1px solid var(--glass-border);
   border-radius: 12px;
   padding: 2rem 1.5rem;

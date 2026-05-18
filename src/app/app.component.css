@@ -7,20 +7,10 @@
 
 /* ── Layout stacking ─────────────────────────────────── */
 
-.navbar {
-  position: relative;
-  z-index: 100;
-}
-
 .main-content {
   position: relative;
   z-index: 1;
   flex: 1;
-}
-
-.footer {
-  position: relative;
-  z-index: 1;
 }
 
 /* ── Navbar ─────────────────────────────────────────── */
@@ -136,6 +126,8 @@
 /* ── Footer ─────────────────────────────────────────── */
 
 .footer {
+  position: relative;
+  z-index: 1;
   padding: 1.5rem 2rem;
 }
 
