@@ -2,6 +2,7 @@ import { Component, ElementRef, NgZone, OnDestroy, OnInit } from '@angular/core'
 
 export const ORB_RANGE_MIN = -10;
 export const ORB_RANGE_MAX = 70;
+export const ORB_RADIUS_PX = 200;
 const ORB_DRIFT_SPEED = 0.012; // % of viewport per frame at 60fps
 
 export interface OrbState {
@@ -40,6 +41,30 @@ export function stepOrb(orb: Readonly<OrbState>): OrbState {
     top = ORB_RANGE_MAX;
   }
   return { left, top, driftX, driftY };
+}
+
+export function resolveOrbCollisions(
+  orb1: Readonly<OrbState>,
+  orb2: Readonly<OrbState>,
+  viewportWidth: number,
+  viewportHeight: number,
+): [OrbState, OrbState] {
+  const orb1X = (orb1.left * viewportWidth) / 100;
+  const orb1Y = (orb1.top * viewportHeight) / 100;
+  const orb2X = (orb2.left * viewportWidth) / 100;
+  const orb2Y = (orb2.top * viewportHeight) / 100;
+  const deltaX = orb2X - orb1X;
+  const deltaY = orb2Y - orb1Y;
+  const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+
+  if (distance >= ORB_RADIUS_PX * 2) {
+    return [orb1, orb2];
+  }
+
+  return [
+    { ...orb1, driftX: -orb1.driftX, driftY: -orb1.driftY },
+    { ...orb2, driftX: -orb2.driftX, driftY: -orb2.driftY },
+  ];
 }
 
 @Component({
@@ -90,6 +115,13 @@ export class OrbBackgroundComponent implements OnInit, OnDestroy {
     const loop = () => {
       this.orb1State = stepOrb(this.orb1State);
       this.orb2State = stepOrb(this.orb2State);
+
+      [this.orb1State, this.orb2State] = resolveOrbCollisions(
+        this.orb1State,
+        this.orb2State,
+        window.innerWidth,
+        window.innerHeight,
+      );
 
       setTransform(orb1El, this.orb1State.left, this.orb1State.top);
       setTransform(orb2El, this.orb2State.left, this.orb2State.top);
