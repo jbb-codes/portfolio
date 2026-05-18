@@ -54,6 +54,7 @@
     data-testid="theme-toggle"
     (click)="themeService.toggle()"
     [class.is-animating]="isAnimating()"
+    (animationend)="themeService.clearAnimation()"
     [attr.aria-label]="
       isDarkMode() ? 'Switch to light mode' : 'Switch to dark mode'
     "

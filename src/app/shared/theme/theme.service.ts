@@ -5,6 +5,7 @@ import { BehaviorSubject } from 'rxjs';
 export class ThemeService {
   private readonly isDarkModeSubject = new BehaviorSubject<boolean>(true);
   private readonly isAnimatingSubject = new BehaviorSubject<boolean>(false);
+  private animationTimeout: ReturnType<typeof setTimeout> | null = null;
 
   readonly isDarkMode$ = this.isDarkModeSubject.asObservable();
   readonly isAnimating$ = this.isAnimatingSubject.asObservable();
@@ -22,6 +23,14 @@ export class ThemeService {
       document.documentElement.setAttribute('data-theme', 'light');
     }
 
-    setTimeout(() => this.isAnimatingSubject.next(false), 400);
+    this.animationTimeout = setTimeout(() => this.clearAnimation(), 400);
+  }
+
+  clearAnimation(): void {
+    if (this.animationTimeout !== null) {
+      clearTimeout(this.animationTimeout);
+      this.animationTimeout = null;
+    }
+    this.isAnimatingSubject.next(false);
   }
 }

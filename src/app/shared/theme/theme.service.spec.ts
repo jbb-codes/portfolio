@@ -19,27 +19,51 @@ describe('ThemeService', () => {
 
   describe('isDarkMode$', () => {
     it('should default to true (dark mode)', () => {
-      let value!: boolean;
-      service.isDarkMode$.subscribe(v => (value = v));
-      expect(value).toBeTrue();
+      let isDark!: boolean;
+      service.isDarkMode$.subscribe(isDarkMode => (isDark = isDarkMode));
+      expect(isDark).toBeTrue();
     });
 
     it('should emit false after first toggle', fakeAsync(() => {
-      const emitted: boolean[] = [];
-      service.isDarkMode$.subscribe(v => emitted.push(v));
+      const emissions: boolean[] = [];
+      service.isDarkMode$.subscribe(isDarkMode => emissions.push(isDarkMode));
       service.toggle();
       tick(400);
-      expect(emitted).toEqual([true, false]);
+      expect(emissions).toEqual([true, false]);
     }));
 
     it('should emit true again after a second toggle once animation clears', fakeAsync(() => {
-      const emitted: boolean[] = [];
-      service.isDarkMode$.subscribe(v => emitted.push(v));
+      const emissions: boolean[] = [];
+      service.isDarkMode$.subscribe(isDarkMode => emissions.push(isDarkMode));
       service.toggle();
       tick(400);
       service.toggle();
       tick(400);
-      expect(emitted).toEqual([true, false, true]);
+      expect(emissions).toEqual([true, false, true]);
+    }));
+  });
+
+  describe('clearAnimation()', () => {
+    it('should set isAnimating to false', fakeAsync(() => {
+      let isAnimating!: boolean;
+      service.isAnimating$.subscribe(animating => (isAnimating = animating));
+      service.toggle();
+      service.clearAnimation();
+      expect(isAnimating).toBeFalse();
+      tick(400);
+    }));
+
+    it('should cancel the pending timeout so a subsequent toggle is not prematurely cleared', fakeAsync(() => {
+      let isAnimating!: boolean;
+      service.isAnimating$.subscribe(animating => (isAnimating = animating));
+      service.toggle();
+      tick(350); // simulate animationend at 350ms
+      service.clearAnimation(); // cancels the original 400ms timeout
+      service.toggle(); // new toggle: timer now fires at t=750ms
+      tick(50); // t=400 — where the cancelled timer would have fired
+      expect(isAnimating).toBeTrue(); // new animation still running
+      tick(400); // t=800 — new timer has fired
+      expect(isAnimating).toBeFalse();
     }));
   });
 
@@ -66,12 +90,12 @@ describe('ThemeService', () => {
     }));
 
     it('should not emit an extra isDarkMode value on a debounced rapid call', fakeAsync(() => {
-      const emitted: boolean[] = [];
-      service.isDarkMode$.subscribe(v => emitted.push(v));
+      const emissions: boolean[] = [];
+      service.isDarkMode$.subscribe(isDarkMode => emissions.push(isDarkMode));
       service.toggle();
       service.toggle(); // ignored
       tick(400);
-      expect(emitted).toEqual([true, false]);
+      expect(emissions).toEqual([true, false]);
     }));
   });
 });
