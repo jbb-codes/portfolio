@@ -57,7 +57,13 @@ export function resolveOrbCollisions(
   const deltaY = orb2Y - orb1Y;
   const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
 
-  if (distance >= ORB_RADIUS_PX * 2) {
+  // Dot product of the separation vector and relative velocity: negative means
+  // the orbs are closing the gap. Skip the bounce if they are already separating
+  // to prevent repeated reversals while centers are still overlapping.
+  const isMovingTowardEachOther =
+    deltaX * (orb2.driftX - orb1.driftX) + deltaY * (orb2.driftY - orb1.driftY) < 0;
+
+  if (distance >= ORB_RADIUS_PX * 2 || !isMovingTowardEachOther) {
     return [orb1, orb2];
   }
 
