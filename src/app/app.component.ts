@@ -1,6 +1,6 @@
-// Collaborated with Claude on: animation guard pattern, prefers-reduced-motion fix, lucide-angular icon integration
 import { Component, ElementRef, Injector, OnDestroy, afterNextRender } from '@angular/core';
 import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { LucideMoon, LucideSun } from '@lucide/angular';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
@@ -8,6 +8,7 @@ import { routeFadeAnimation } from './route-animations';
 import { CustomCursorComponent } from './components/custom-cursor/custom-cursor.component';
 import { OrbBackgroundComponent } from './components/orb-background/orb-background.component';
 import { ParticleBackgroundComponent } from './components/particle-background/particle-background.component';
+import { ThemeService } from './shared/theme/theme.service';
 
 @Component({
   selector: 'app-root',
@@ -18,11 +19,16 @@ import { ParticleBackgroundComponent } from './components/particle-background/pa
   animations: [routeFadeAnimation],
 })
 export class AppComponent implements OnDestroy {
-  isDarkMode = true;
-  isAnimating = false;
+  readonly isDarkMode = toSignal(this.themeService.isDarkMode$, { requireSync: true });
+  readonly isAnimating = toSignal(this.themeService.isAnimating$, { requireSync: true });
 
   private routerSub!: Subscription;
-  constructor(private readonly router: Router, private readonly el: ElementRef, private readonly injector: Injector) {
+  constructor(
+    private readonly router: Router,
+    private readonly el: ElementRef,
+    private readonly injector: Injector,
+    readonly themeService: ThemeService,
+  ) {
     afterNextRender(() => this.updateUnderline());
     this.routerSub = this.router.events
       .pipe(filter(e => e instanceof NavigationEnd))
@@ -42,21 +48,5 @@ export class AppComponent implements OnDestroy {
     if (!ul || !active) return;
     ul.style.setProperty('--underline-left', `${active.offsetLeft}px`);
     ul.style.setProperty('--underline-width', `${active.offsetWidth}px`);
-  }
-
-  toggleTheme(): void {
-    if (this.isAnimating) return;
-    this.isAnimating = true;
-    this.isDarkMode = !this.isDarkMode;
-    if (this.isDarkMode) {
-      document.documentElement.removeAttribute('data-theme');
-    } else {
-      document.documentElement.setAttribute('data-theme', 'light');
-    }
-    setTimeout(() => this.clearAnimation(), 400);
-  }
-
-  clearAnimation(): void {
-    this.isAnimating = false;
   }
 }

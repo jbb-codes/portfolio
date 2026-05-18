@@ -52,14 +52,13 @@
   <button
     class="navbar__theme-toggle"
     data-testid="theme-toggle"
-    (click)="toggleTheme()"
-    [class.is-animating]="isAnimating"
-    (animationend)="clearAnimation()"
+    (click)="themeService.toggle()"
+    [class.is-animating]="isAnimating()"
     [attr.aria-label]="
-      isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'
+      isDarkMode() ? 'Switch to light mode' : 'Switch to dark mode'
     "
   >
-    @if (isDarkMode) {
+    @if (isDarkMode()) {
       <svg lucideSun [size]="18"></svg>
     } @else {
       <svg lucideMoon [size]="18"></svg>
