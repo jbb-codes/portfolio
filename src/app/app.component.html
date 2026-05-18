@@ -2,22 +2,52 @@
 <app-orb-background />
 <app-particle-background data-testid="particle-background" />
 <nav class="navbar">
-  <a class="navbar__logo" data-testid="navbar-logo" routerLink="/">Jarren Bess</a>
+  <a class="navbar__logo" data-testid="navbar-logo" routerLink="/"
+    >Jarren Bess</a
+  >
   <ul class="navbar__links" data-testid="navbar-links">
     <li>
-      <a class="navbar__link" data-testid="navbar-link" routerLink="/" routerLinkActive="navbar__link--active"
-         [routerLinkActiveOptions]="{ exact: true }">Home</a>
+      <a
+        class="navbar__link"
+        data-testid="navbar-link"
+        routerLink="/"
+        routerLinkActive="navbar__link--active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        >Home</a
+      >
     </li>
     <li>
-      <a class="navbar__link" data-testid="navbar-link" routerLink="/about" routerLinkActive="navbar__link--active">About</a>
+      <a
+        class="navbar__link"
+        data-testid="navbar-link"
+        routerLink="/about"
+        routerLinkActive="navbar__link--active"
+        >About</a
+      >
     </li>
     <li>
-      <a class="navbar__link" data-testid="navbar-link" routerLink="/resume" routerLinkActive="navbar__link--active">Resume</a>
+      <a
+        class="navbar__link"
+        data-testid="navbar-link"
+        routerLink="/resume"
+        routerLinkActive="navbar__link--active"
+        >Resume</a
+      >
     </li>
     <li>
-      <a class="navbar__link" data-testid="navbar-link" routerLink="/projects" routerLinkActive="navbar__link--active">Projects</a>
+      <a
+        class="navbar__link"
+        data-testid="navbar-link"
+        routerLink="/projects"
+        routerLinkActive="navbar__link--active"
+        >Projects</a
+      >
     </li>
-    <div class="nav-underline" data-testid="nav-underline" aria-hidden="true"></div>
+    <div
+      class="nav-underline"
+      data-testid="nav-underline"
+      aria-hidden="true"
+    ></div>
   </ul>
   <button
     class="navbar__theme-toggle"
@@ -25,7 +55,9 @@
     (click)="toggleTheme()"
     [class.is-animating]="isAnimating"
     (animationend)="clearAnimation()"
-    [attr.aria-label]="isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'"
+    [attr.aria-label]="
+      isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'
+    "
   >
     @if (isDarkMode) {
       <svg lucideSun [size]="18"></svg>
@@ -36,7 +68,11 @@
 </nav>
 
 <main class="main-content">
-  <div class="route-animation-wrapper" data-testid="route-animation-wrapper" [@routeFadeAnimation]="outlet.isActivated ? outlet.activatedRoute : ''">
+  <div
+    class="route-animation-wrapper"
+    data-testid="route-animation-wrapper"
+    [@routeFadeAnimation]="outlet.isActivated ? outlet.activatedRoute : ''"
+  >
     <router-outlet #outlet="outlet" />
   </div>
 </main>
@@ -44,25 +80,58 @@
 <footer class="footer">
   <div class="footer__inner">
     <nav class="footer__nav">
-      <a class="footer__nav-link" data-testid="footer-nav-link" routerLink="/">Home</a>
+      <a class="footer__nav-link" data-testid="footer-nav-link" routerLink="/"
+        >Home</a
+      >
       <span class="footer__separator">·</span>
-      <a class="footer__nav-link" data-testid="footer-nav-link" routerLink="/about">About</a>
+      <a
+        class="footer__nav-link"
+        data-testid="footer-nav-link"
+        routerLink="/about"
+        >About</a
+      >
       <span class="footer__separator">·</span>
-      <a class="footer__nav-link" data-testid="footer-nav-link" routerLink="/resume">Resume</a>
+      <a
+        class="footer__nav-link"
+        data-testid="footer-nav-link"
+        routerLink="/resume"
+        >Resume</a
+      >
       <span class="footer__separator">·</span>
-      <a class="footer__nav-link" data-testid="footer-nav-link" routerLink="/projects">Projects</a>
+      <a
+        class="footer__nav-link"
+        data-testid="footer-nav-link"
+        routerLink="/projects"
+        >Projects</a
+      >
     </nav>
     <p class="footer__copyright" data-testid="footer-copyright">
       © 2026 Jarren Bess
       <span class="footer__separator">·</span>
-      <a class="footer__social-link" data-testid="footer-github"
-         href="https://github.com/jarrenbess" target="_blank" rel="noopener noreferrer">GitHub</a>
+      <a
+        class="footer__social-link"
+        data-testid="footer-github"
+        href="https://github.com/jarrenbess"
+        target="_blank"
+        rel="noopener noreferrer"
+        >GitHub</a
+      >
       <span class="footer__separator">·</span>
-      <a class="footer__social-link" data-testid="footer-linkedin"
-         href="https://linkedin.com/in/jarrenbess" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+      <a
+        class="footer__social-link"
+        data-testid="footer-linkedin"
+        href="https://linkedin.com/in/jarrenbess"
+        target="_blank"
+        rel="noopener noreferrer"
+        >LinkedIn</a
+      >
       <span class="footer__separator">·</span>
-      <a class="footer__social-link" data-testid="footer-email"
-         href="mailto:bessjarren@yahoo.com">Email</a>
+      <a
+        class="footer__social-link"
+        data-testid="footer-email"
+        href="mailto:bessjarren@yahoo.com"
+        >Email</a
+      >
     </p>
   </div>
 </footer>
