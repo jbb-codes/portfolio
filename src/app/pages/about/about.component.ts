@@ -1,5 +1,6 @@
-import { Component, Type } from '@angular/core';
+import { Component } from '@angular/core';
 import {
+  LucideIcon,
   LucideNetwork,
   LucideCodeXml,
   LucidePalette,
@@ -22,7 +23,7 @@ import {
   styleUrl: './about.component.css',
 })
 export class AboutComponent {
-  readonly iconMap: Record<string, Type<unknown>> = {
+  readonly iconMap: Record<string, LucideIcon> = {
     'code-xml': LucideCodeXml,
     'palette': LucidePalette,
     'network': LucideNetwork,
