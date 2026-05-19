@@ -19,8 +19,7 @@ describe('CustomCursorComponent', () => {
   });
 
   afterEach(() => {
-    const dot: HTMLElement = fixture.nativeElement.querySelector('.cursor-dot');
-    if (dot) dot.style.transform = '';
+    fixture.destroy();
   });
 
   it('should create the component', () => {
@@ -29,12 +28,12 @@ describe('CustomCursorComponent', () => {
 
   describe('cursor dot element', () => {
     it('should render a cursor dot in the DOM', () => {
-      const dot: HTMLElement = fixture.nativeElement.querySelector('.cursor-dot');
+      const dot = fixture.nativeElement.querySelector('[data-testid="cursor-dot"]');
       expect(dot).toBeTruthy();
     });
 
     it('should mark the cursor dot as aria-hidden', () => {
-      const dot: HTMLElement = fixture.nativeElement.querySelector('.cursor-dot');
+      const dot = fixture.nativeElement.querySelector('[data-testid="cursor-dot"]');
       expect(dot.getAttribute('aria-hidden')).toBe('true');
     });
 
@@ -47,7 +46,7 @@ describe('CustomCursorComponent', () => {
     it('should set transform on the cursor dot after mousemove', () => {
       doc.dispatchEvent(new MouseEvent('mousemove', { clientX: 150, clientY: 300 }));
 
-      const dot: HTMLElement = fixture.nativeElement.querySelector('.cursor-dot');
+      const dot: HTMLElement = fixture.nativeElement.querySelector('[data-testid="cursor-dot"]');
       expect(dot.style.transform).toBe('translate(146px, 296px)');
     });
 
@@ -55,16 +54,86 @@ describe('CustomCursorComponent', () => {
       doc.dispatchEvent(new MouseEvent('mousemove', { clientX: 10, clientY: 20 }));
       doc.dispatchEvent(new MouseEvent('mousemove', { clientX: 50, clientY: 80 }));
 
-      const dot: HTMLElement = fixture.nativeElement.querySelector('.cursor-dot');
+      const dot: HTMLElement = fixture.nativeElement.querySelector('[data-testid="cursor-dot"]');
       expect(dot.style.transform).toBe('translate(46px, 76px)');
+    });
+  });
+
+  describe('proximity click', () => {
+    it('does nothing extra when the click target is already an interactive element', () => {
+      const button = doc.createElement('button');
+      doc.body.appendChild(button);
+      const proximityClickSpy = spyOn(button, 'click');
+
+      button.dispatchEvent(new MouseEvent('click', { bubbles: true, clientX: 100, clientY: 100 }));
+
+      expect(proximityClickSpy).not.toHaveBeenCalled();
+      doc.body.removeChild(button);
+    });
+
+    it('clicks the nearest interactive element when a non-interactive area is clicked nearby', () => {
+      const nonInteractiveDiv = doc.createElement('div');
+      const nearbyButton = doc.createElement('button');
+      doc.body.appendChild(nonInteractiveDiv);
+      doc.body.appendChild(nearbyButton);
+
+      const clickSpy = spyOn(nearbyButton, 'click');
+      spyOn(doc, 'elementFromPoint').and.callFake((x: number, y: number) => {
+        // Simulate the button sitting just outside the exact click point
+        return x === 100 && y === 100 ? nonInteractiveDiv : nearbyButton;
+      });
+
+      nonInteractiveDiv.dispatchEvent(
+        new MouseEvent('click', { bubbles: true, clientX: 100, clientY: 100 }),
+      );
+
+      expect(clickSpy).toHaveBeenCalledTimes(1);
+      doc.body.removeChild(nonInteractiveDiv);
+      doc.body.removeChild(nearbyButton);
+    });
+
+    it('does nothing when no interactive element is within the ring radius', () => {
+      const nonInteractiveDiv = doc.createElement('div');
+      doc.body.appendChild(nonInteractiveDiv);
+
+      spyOn(doc, 'elementFromPoint').and.returnValue(nonInteractiveDiv);
+      const clickCount = { value: 0 };
+      nonInteractiveDiv.addEventListener('click', () => clickCount.value++);
+
+      nonInteractiveDiv.dispatchEvent(
+        new MouseEvent('click', { bubbles: true, clientX: 200, clientY: 200 }),
+      );
+
+      // Only the original user click fires — no synthetic click from proximity logic
+      expect(clickCount.value).toBe(1);
+      doc.body.removeChild(nonInteractiveDiv);
+    });
+
+    it('does nothing extra when an ancestor of the click target is interactive', () => {
+      const button = doc.createElement('button');
+      const span = doc.createElement('span');
+      button.appendChild(span);
+      doc.body.appendChild(button);
+      const proximityClickSpy = spyOn(button, 'click');
+
+      span.dispatchEvent(new MouseEvent('click', { bubbles: true, clientX: 50, clientY: 50 }));
+
+      expect(proximityClickSpy).not.toHaveBeenCalled();
+      doc.body.removeChild(button);
     });
   });
 
   describe('cleanup', () => {
     it('should remove the mousemove listener from the document on destroy', () => {
-      const spy = spyOn(doc, 'removeEventListener');
+      const spy = spyOn(doc, 'removeEventListener').and.callThrough();
       fixture.destroy();
       expect(spy).toHaveBeenCalledWith('mousemove', jasmine.any(Function));
+    });
+
+    it('should remove the click listener from the document on destroy', () => {
+      const spy = spyOn(doc, 'removeEventListener').and.callThrough();
+      fixture.destroy();
+      expect(spy).toHaveBeenCalledWith('click', jasmine.any(Function), { capture: true });
     });
   });
 });
