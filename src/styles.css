@@ -54,6 +54,10 @@
   --orb-opacity: 0.52;
 }
 
+html {
+  scrollbar-gutter: stable;
+}
+
 html,
 body {
   margin: 0;
