@@ -5,11 +5,13 @@ describe('ThemeService', () => {
   let service: ThemeService;
 
   beforeEach(() => {
+    localStorage.clear();
     TestBed.configureTestingModule({});
     service = TestBed.inject(ThemeService);
   });
 
   afterEach(() => {
+    localStorage.clear();
     document.documentElement.removeAttribute('data-theme');
   });
 
@@ -96,6 +98,40 @@ describe('ThemeService', () => {
       service.toggle(); // ignored
       tick(400);
       expect(emissions).toEqual([true, false]);
+    }));
+  });
+
+  describe('localStorage persistence', () => {
+    it('should default to dark mode when no localStorage entry exists', () => {
+      let isDark!: boolean;
+      service.isDarkMode$.subscribe(v => (isDark = v));
+      expect(isDark).toBeTrue();
+    });
+
+    it('should apply light mode on init when localStorage has theme=light', () => {
+      localStorage.setItem('theme', 'light');
+      TestBed.resetTestingModule();
+      TestBed.configureTestingModule({});
+      const freshService = TestBed.inject(ThemeService);
+
+      let isDark!: boolean;
+      freshService.isDarkMode$.subscribe(v => (isDark = v));
+      expect(isDark).toBeFalse();
+      expect(document.documentElement.getAttribute('data-theme')).toBe('light');
+    });
+
+    it('should persist theme=light to localStorage when toggling to light mode', fakeAsync(() => {
+      service.toggle(); // dark → light
+      tick(400);
+      expect(localStorage.getItem('theme')).toBe('light');
+    }));
+
+    it('should remove the light value from localStorage when toggling back to dark mode', fakeAsync(() => {
+      service.toggle(); // dark → light
+      tick(400);
+      service.toggle(); // light → dark
+      tick(400);
+      expect(localStorage.getItem('theme')).not.toBe('light');
     }));
   });
 });
