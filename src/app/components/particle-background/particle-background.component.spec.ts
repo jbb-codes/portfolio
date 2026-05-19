@@ -10,6 +10,10 @@ describe('ParticleBackgroundComponent', () => {
   let originalResizeObserver: typeof ResizeObserver;
   let resizeCallback: (entries: Partial<ResizeObserverEntry>[]) => void;
 
+  let mockMutationObserver: { observe: jasmine.Spy; disconnect: jasmine.Spy };
+  let originalMutationObserver: typeof MutationObserver;
+  let mutationCallback: () => void;
+
   const mockCtx = {
     clearRect: jasmine.createSpy('clearRect'),
     beginPath: jasmine.createSpy('beginPath'),
@@ -31,6 +35,17 @@ describe('ParticleBackgroundComponent', () => {
     MockResizeObserver.prototype = {};
     (window as unknown as Record<string, unknown>)['ResizeObserver'] = MockResizeObserver;
 
+    originalMutationObserver = window.MutationObserver;
+    mockMutationObserver = { observe: jasmine.createSpy('observe'), disconnect: jasmine.createSpy('disconnect') };
+
+    const capturedMockMutationObserver = mockMutationObserver;
+    function MockMutationObserver(cb: () => void) {
+      mutationCallback = cb;
+      return capturedMockMutationObserver;
+    }
+    MockMutationObserver.prototype = {};
+    (window as unknown as Record<string, unknown>)['MutationObserver'] = MockMutationObserver;
+
     spyOn(HTMLCanvasElement.prototype, 'getContext').and.returnValue(mockCtx as unknown as CanvasRenderingContext2D);
     spyOn(window, 'requestAnimationFrame').and.returnValue(42);
     spyOn(window, 'cancelAnimationFrame');
@@ -48,6 +63,7 @@ describe('ParticleBackgroundComponent', () => {
 
   afterEach(() => {
     (window as unknown as Record<string, unknown>)['ResizeObserver'] = originalResizeObserver;
+    (window as unknown as Record<string, unknown>)['MutationObserver'] = originalMutationObserver;
   });
 
   it('should create', () => {
@@ -230,6 +246,20 @@ describe('ParticleBackgroundComponent', () => {
       expect(mockCtx.arc).toHaveBeenCalled();
       reducedFixture.destroy();
     }));
+
+    it('redraws particles statically when the theme changes while reduced motion is preferred', () => {
+      (win.matchMedia as jasmine.Spy).and.returnValue({ matches: false } as MediaQueryList);
+
+      mockCtx.arc.calls.reset();
+      const reducedFixture = TestBed.createComponent(ParticleBackgroundComponent);
+      reducedFixture.detectChanges();
+
+      mockCtx.arc.calls.reset();
+      mutationCallback();
+
+      expect(mockCtx.arc).toHaveBeenCalled();
+      reducedFixture.destroy();
+    });
 
     it('draws particles at the same positions after resize when reduced motion is preferred', fakeAsync(() => {
       (win.matchMedia as jasmine.Spy).and.returnValue({ matches: false } as MediaQueryList);
