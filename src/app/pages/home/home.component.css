@@ -56,13 +56,13 @@
 @media (prefers-reduced-motion: no-preference) {
   .hero__cta {
     transition:
-      opacity 0.2s ease,
+      filter 0.2s ease,
       transform 0.2s ease;
   }
 }
 
 .hero__cta:hover {
-  opacity: 0.88;
+  filter: brightness(0.88);
   transform: translateY(-1px);
 }
 
