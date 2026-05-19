@@ -25,7 +25,13 @@ export interface Certification {
   details: string;
 }
 
-import type { TimelineEntry } from '../components/timeline/timeline-entry.interface';
+export interface TimelineEntry {
+  date: string;
+  title: string;
+  organization: string;
+  description: string;
+  type: 'experience' | 'education';
+}
 
 export interface InterestCard {
   label: string;

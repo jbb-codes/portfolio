@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TimelineComponent } from './timeline.component';
-import { TimelineEntry } from './timeline-entry.interface';
+import { TimelineEntry } from '../../data/portfolio-content';
 
 const EXPERIENCE_ENTRY: TimelineEntry = {
   date: '2023 – Present',
