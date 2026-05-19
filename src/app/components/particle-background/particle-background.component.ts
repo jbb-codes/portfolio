@@ -32,6 +32,7 @@ export class ParticleBackgroundComponent implements OnInit, OnDestroy {
   private logicalWidth = 0;
   private logicalHeight = 0;
   private resizeObserver!: ResizeObserver;
+  private themeObserver!: MutationObserver;
   private resizeDebounceTimer: ReturnType<typeof setTimeout> | null = null;
 
   private readonly prefersReducedMotion =
@@ -55,6 +56,8 @@ export class ParticleBackgroundComponent implements OnInit, OnDestroy {
 
     if (this.prefersReducedMotion) {
       this.drawStatic();
+      this.themeObserver = new MutationObserver(() => this.drawStatic());
+      this.themeObserver.observe(this.doc.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
     } else {
       this.animationLoop.start(() => this.draw());
     }
@@ -62,6 +65,7 @@ export class ParticleBackgroundComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.resizeObserver?.disconnect();
+    this.themeObserver?.disconnect();
     if (this.resizeDebounceTimer !== null) clearTimeout(this.resizeDebounceTimer);
     this.animationLoop.stop();
   }
