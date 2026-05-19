@@ -54,6 +54,12 @@
   --orb-opacity: 0.52;
 }
 
+@media (pointer: fine) {
+  * {
+    cursor: none;
+  }
+}
+
 html {
   scrollbar-gutter: stable;
 }

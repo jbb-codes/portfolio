@@ -1,24 +1,40 @@
-.cursor-dot {
+.custom-cursor__dot {
   position: fixed;
   top: 0;
   left: 0;
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background-color: var(--color-accent, #6366f1);
+  background-color: var(--accent);
   pointer-events: none;
   will-change: transform;
   z-index: 9999;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .cursor-dot {
-    display: none;
+.custom-cursor__ring {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1.5px solid var(--accent);
+  pointer-events: none;
+  will-change: transform;
+  z-index: 9998;
+  opacity: 0.6;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .custom-cursor__ring {
+    display: block;
   }
 }
 
 @media (pointer: coarse) {
-  .cursor-dot {
+  .custom-cursor__dot,
+  .custom-cursor__ring {
     display: none;
   }
 }
