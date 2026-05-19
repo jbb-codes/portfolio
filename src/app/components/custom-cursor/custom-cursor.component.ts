@@ -34,6 +34,8 @@ export class CustomCursorComponent implements OnInit, AfterViewInit, OnDestroy {
     this.onMouseMove(event);
   private readonly clickHandler = (event: MouseEvent) =>
     this.onProximityClick(event);
+  private readonly mouseOverHandler = (event: MouseEvent) =>
+    this.onMouseOver(event);
 
   private mouseX = 0;
   private mouseY = 0;
@@ -46,6 +48,7 @@ export class CustomCursorComponent implements OnInit, AfterViewInit, OnDestroy {
     this.zone.runOutsideAngular(() => {
       this.doc.addEventListener("mousemove", this.mouseMoveHandler, { passive: true });
       this.doc.addEventListener("click", this.clickHandler, { capture: true });
+      this.doc.addEventListener("mouseover", this.mouseOverHandler, { passive: true });
     });
   }
 
@@ -56,7 +59,14 @@ export class CustomCursorComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnDestroy(): void {
     this.doc.removeEventListener("mousemove", this.mouseMoveHandler);
     this.doc.removeEventListener("click", this.clickHandler, { capture: true });
+    this.doc.removeEventListener("mouseover", this.mouseOverHandler);
     cancelAnimationFrame(this.rafId);
+  }
+
+  private onMouseOver(event: MouseEvent): void {
+    const isInteractive = !!(event.target as Element).closest(INTERACTIVE_SELECTOR);
+    this.cursorDot?.nativeElement.classList.toggle("custom-cursor__dot--on-interactive", isInteractive);
+    this.cursorRing?.nativeElement.classList.toggle("custom-cursor__ring--on-interactive", isInteractive);
   }
 
   private onProximityClick(event: MouseEvent): void {
