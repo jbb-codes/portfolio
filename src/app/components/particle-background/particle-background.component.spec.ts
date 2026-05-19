@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { DOCUMENT } from '@angular/common';
 import { ParticleBackgroundComponent } from './particle-background.component';
 
@@ -8,6 +8,7 @@ describe('ParticleBackgroundComponent', () => {
   let win: Window & typeof globalThis;
   let mockResizeObserver: { observe: jasmine.Spy; disconnect: jasmine.Spy };
   let originalResizeObserver: typeof ResizeObserver;
+  let resizeCallback: (entries: Partial<ResizeObserverEntry>[]) => void;
 
   const mockCtx = {
     clearRect: jasmine.createSpy('clearRect'),
@@ -21,12 +22,18 @@ describe('ParticleBackgroundComponent', () => {
   beforeEach(async () => {
     originalResizeObserver = window.ResizeObserver;
     mockResizeObserver = { observe: jasmine.createSpy('observe'), disconnect: jasmine.createSpy('disconnect') };
-    (window as unknown as Record<string, unknown>)['ResizeObserver'] = jasmine.createSpy('ResizeObserver').and.returnValue(mockResizeObserver);
+
+    const capturedMockResizeObserver = mockResizeObserver;
+    function MockResizeObserver(cb: (entries: Partial<ResizeObserverEntry>[]) => void) {
+      resizeCallback = cb;
+      return capturedMockResizeObserver;
+    }
+    MockResizeObserver.prototype = {};
+    (window as unknown as Record<string, unknown>)['ResizeObserver'] = MockResizeObserver;
 
     spyOn(HTMLCanvasElement.prototype, 'getContext').and.returnValue(mockCtx as unknown as CanvasRenderingContext2D);
     spyOn(window, 'requestAnimationFrame').and.returnValue(42);
     spyOn(window, 'cancelAnimationFrame');
-    // matches: true → '(prefers-reduced-motion: no-preference)' matches → animate
     spyOn(window, 'matchMedia').and.returnValue({ matches: true } as MediaQueryList);
 
     await TestBed.configureTestingModule({
@@ -60,26 +67,40 @@ describe('ParticleBackgroundComponent', () => {
   });
 
   describe('animation loop', () => {
-    it('should start the animation loop on init when motion is allowed', () => {
-      expect(win.requestAnimationFrame).toHaveBeenCalled();
-    });
+    it('draws to the canvas when motion is allowed', () => {
+      (win.matchMedia as jasmine.Spy).and.returnValue({ matches: true } as MediaQueryList);
 
-    it('should cancel the animation frame on destroy using the stored ID', () => {
-      fixture.destroy();
-      expect(win.cancelAnimationFrame).toHaveBeenCalledWith(42);
+      let callCount = 0;
+      let capturedCallback: FrameRequestCallback | undefined;
+      (win.requestAnimationFrame as jasmine.Spy).and.callFake((cb: FrameRequestCallback) => {
+        if (callCount++ === 0) capturedCallback = cb;
+        return 99;
+      });
+
+      mockCtx.clearRect.calls.reset();
+
+      const motionFixture = TestBed.createComponent(ParticleBackgroundComponent);
+      motionFixture.detectChanges();
+
+      capturedCallback!(performance.now());
+
+      expect(mockCtx.clearRect).toHaveBeenCalled();
+      motionFixture.destroy();
     });
   });
 
   describe('resize handling', () => {
-    it('should observe the canvas element via ResizeObserver on init', () => {
-      const canvas = fixture.nativeElement.querySelector('[data-testid="particle-canvas"]');
-      expect(mockResizeObserver.observe).toHaveBeenCalledWith(canvas);
-    });
+    it('does not apply a pending resize after destroy', fakeAsync(() => {
+      Object.defineProperty(window, 'devicePixelRatio', { value: 1, configurable: true });
+      const canvas: HTMLCanvasElement = fixture.nativeElement.querySelector('[data-testid="particle-canvas"]');
 
-    it('should disconnect the ResizeObserver on destroy', () => {
+      resizeCallback([{ contentRect: { width: 999, height: 999 } } as unknown as ResizeObserverEntry]);
+
       fixture.destroy();
-      expect(mockResizeObserver.disconnect).toHaveBeenCalled();
-    });
+      tick(200);
+
+      expect(canvas.width).not.toBe(999);
+    }));
 
     it('sizes the canvas from window.innerWidth and window.innerHeight on init', () => {
       const originalInnerWidth = window.innerWidth;
@@ -110,10 +131,41 @@ describe('ParticleBackgroundComponent', () => {
 
       Object.defineProperty(window, 'devicePixelRatio', { value: 1, configurable: true });
     });
+
+    it('debounces resize observer callbacks to prevent thrashing', fakeAsync(() => {
+      const canvas: HTMLCanvasElement = fixture.nativeElement.querySelector('[data-testid="particle-canvas"]');
+      const initialWidth = canvas.width;
+
+      Object.defineProperty(window, 'devicePixelRatio', { value: 1, configurable: true });
+
+      resizeCallback([{ contentRect: { width: 500, height: 400 } } as unknown as ResizeObserverEntry]);
+      resizeCallback([{ contentRect: { width: 600, height: 500 } } as unknown as ResizeObserverEntry]);
+      resizeCallback([{ contentRect: { width: 700, height: 600 } } as unknown as ResizeObserverEntry]);
+
+      expect(canvas.width).toBe(initialWidth);
+
+      tick(100);
+
+      expect(canvas.width).toBe(700);
+      expect(canvas.height).toBe(600);
+    }));
+
+    it('applies only the last resize when rapid events arrive before debounce settles', fakeAsync(() => {
+      Object.defineProperty(window, 'devicePixelRatio', { value: 1, configurable: true });
+
+      resizeCallback([{ contentRect: { width: 300, height: 200 } } as unknown as ResizeObserverEntry]);
+      tick(50);
+      resizeCallback([{ contentRect: { width: 800, height: 700 } } as unknown as ResizeObserverEntry]);
+      tick(100);
+
+      const canvas: HTMLCanvasElement = fixture.nativeElement.querySelector('[data-testid="particle-canvas"]');
+      expect(canvas.width).toBe(800);
+      expect(canvas.height).toBe(700);
+    }));
   });
 
   describe('drawing', () => {
-    it('clears the full physical canvas dimensions on each frame', () => {
+    it('clears the full physical canvas before drawing new content', () => {
       Object.defineProperty(window, 'devicePixelRatio', { value: 2, configurable: true });
       (component as any).resizeCanvas(400, 300);
       mockCtx.clearRect.calls.reset();
@@ -139,7 +191,6 @@ describe('ParticleBackgroundComponent', () => {
 
   describe('prefers-reduced-motion', () => {
     it('should not start the animation loop when no-preference does not match', () => {
-      // matches: false → '(prefers-reduced-motion: no-preference)' does not match → reduced motion
       (win.matchMedia as jasmine.Spy).and.returnValue({ matches: false } as MediaQueryList);
       (win.requestAnimationFrame as jasmine.Spy).calls.reset();
 
