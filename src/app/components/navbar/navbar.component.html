@@ -1,0 +1,65 @@
+<nav class="navbar">
+  <a class="navbar__logo" data-testid="navbar-logo" routerLink="/"
+    >Jarren Bess</a
+  >
+  <ul class="navbar__links" data-testid="navbar-links">
+    <li>
+      <a
+        class="navbar__link"
+        data-testid="navbar-link"
+        routerLink="/"
+        routerLinkActive="navbar__link--active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        >Home</a
+      >
+    </li>
+    <li>
+      <a
+        class="navbar__link"
+        data-testid="navbar-link"
+        routerLink="/about"
+        routerLinkActive="navbar__link--active"
+        >About</a
+      >
+    </li>
+    <li>
+      <a
+        class="navbar__link"
+        data-testid="navbar-link"
+        routerLink="/resume"
+        routerLinkActive="navbar__link--active"
+        >Resume</a
+      >
+    </li>
+    <li>
+      <a
+        class="navbar__link"
+        data-testid="navbar-link"
+        routerLink="/projects"
+        routerLinkActive="navbar__link--active"
+        >Projects</a
+      >
+    </li>
+    <div
+      class="nav-underline"
+      data-testid="nav-underline"
+      aria-hidden="true"
+    ></div>
+  </ul>
+  <button
+    class="navbar__theme-toggle"
+    data-testid="theme-toggle"
+    (click)="themeService.toggle()"
+    [class.is-animating]="isAnimating()"
+    (animationend)="themeService.clearAnimation()"
+    [attr.aria-label]="
+      isDarkMode() ? 'Switch to light mode' : 'Switch to dark mode'
+    "
+  >
+    @if (isDarkMode()) {
+      <svg lucideSun [size]="18"></svg>
+    } @else {
+      <svg lucideMoon [size]="18"></svg>
+    }
+  </button>
+</nav>
