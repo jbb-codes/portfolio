@@ -1,7 +1,9 @@
 <app-custom-cursor />
 <app-orb-background />
 <app-particle-background data-testid="particle-background" />
-<app-navbar />
+@if (showNavbar()) {
+  <app-navbar />
+}
 
 <main class="main-content">
   <div
