@@ -51,6 +51,7 @@ describe('NavbarComponent', () => {
 
     afterEach(() => {
       document.documentElement.removeAttribute('data-theme');
+      localStorage.removeItem('theme');
     });
 
     it('should label the button as switching to light mode when in dark mode', () => {
