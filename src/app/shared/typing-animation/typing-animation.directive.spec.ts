@@ -16,12 +16,14 @@ describe('TypingAnimationDirective', () => {
   let fixture: ComponentFixture<TestHostComponent>;
   let host: TestHostComponent;
   let el: HTMLElement;
+  let matchMediaSpy: jasmine.Spy;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [TestHostComponent],
     }).compileComponents();
 
+    matchMediaSpy = spyOn(window, 'matchMedia').and.returnValue({ matches: true } as MediaQueryList);
     jasmine.clock().install();
     fixture = TestBed.createComponent(TestHostComponent);
     host = fixture.componentInstance;
@@ -83,6 +85,27 @@ describe('TypingAnimationDirective', () => {
       fixture.destroy();
       jasmine.clock().tick(50 * 10);
       expect(el.textContent).toBe(textAtDestroy);
+    });
+  });
+
+  describe('reduced motion', () => {
+    let reducedFixture: ComponentFixture<TestHostComponent>;
+    let reducedEl: HTMLElement;
+
+    beforeEach(() => {
+      matchMediaSpy.and.returnValue({ matches: false } as MediaQueryList);
+      reducedFixture = TestBed.createComponent(TestHostComponent);
+      reducedFixture.detectChanges();
+      reducedEl = reducedFixture.debugElement.query(By.css('[data-testid="typing-span"]')).nativeElement;
+    });
+
+    it('should display the last string immediately without waiting for ticks', () => {
+      expect(reducedEl.textContent).toBe('CD');
+    });
+
+    it('should not animate characters over time', () => {
+      jasmine.clock().tick(50 * 10);
+      expect(reducedEl.textContent).toBe('CD');
     });
   });
 });

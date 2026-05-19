@@ -22,6 +22,11 @@ export class TypingAnimationDirective implements OnInit, OnDestroy {
 
     if (this.frames.length === 0) return;
 
+    if (!window.matchMedia('(prefers-reduced-motion: no-preference)').matches) {
+      this.el.nativeElement.textContent = this.strings[this.strings.length - 1] ?? '';
+      return;
+    }
+
     this.interval = setInterval(() => {
       this.el.nativeElement.textContent = this.frames[this.frameIndex++];
       if (this.frameIndex >= this.frames.length) {
