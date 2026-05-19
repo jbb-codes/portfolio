@@ -83,6 +83,7 @@ export class ParticleBackgroundComponent implements OnInit, OnDestroy {
   }
 
   private initDots(width: number, height: number): void {
+    if (this.dots.length > 0) return;
     this.dots = Array.from({ length: DOT_COUNT }, () => ({
       positionX: Math.random() * width,
       positionY: Math.random() * height,
