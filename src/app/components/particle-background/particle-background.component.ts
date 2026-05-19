@@ -34,6 +34,9 @@ export class ParticleBackgroundComponent implements OnInit, OnDestroy {
   private resizeObserver!: ResizeObserver;
   private resizeDebounceTimer: ReturnType<typeof setTimeout> | null = null;
 
+  private readonly prefersReducedMotion =
+    !this.win.matchMedia('(prefers-reduced-motion: no-preference)').matches;
+
   ngOnInit(): void {
     this.resizeCanvas(this.win.innerWidth, this.win.innerHeight);
 
@@ -44,12 +47,17 @@ export class ParticleBackgroundComponent implements OnInit, OnDestroy {
       if (this.resizeDebounceTimer !== null) clearTimeout(this.resizeDebounceTimer);
       this.resizeDebounceTimer = setTimeout(() => {
         this.resizeCanvas(entry.contentRect.width, entry.contentRect.height);
+        if (this.prefersReducedMotion) this.drawStatic();
         this.resizeDebounceTimer = null;
       }, RESIZE_DEBOUNCE_MS);
     });
     this.resizeObserver.observe(this.canvasRef.nativeElement);
 
-    this.animationLoop.start(() => this.draw());
+    if (this.prefersReducedMotion) {
+      this.drawStatic();
+    } else {
+      this.animationLoop.start(() => this.draw());
+    }
   }
 
   ngOnDestroy(): void {
@@ -104,6 +112,25 @@ export class ParticleBackgroundComponent implements OnInit, OnDestroy {
       if (dot.positionY < 0) dot.positionY += logicalHeight;
       if (dot.positionY > logicalHeight) dot.positionY -= logicalHeight;
 
+      ctx.beginPath();
+      ctx.arc(dot.positionX * pixelScale, dot.positionY * pixelScale, DOT_RADIUS * pixelScale, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+
+  private drawStatic(): void {
+    const canvas = this.canvasRef.nativeElement;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    const { pixelScale } = this;
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = getComputedStyle(this.doc.documentElement)
+      .getPropertyValue('--particle-color')
+      .trim();
+
+    for (const dot of this.dots) {
       ctx.beginPath();
       ctx.arc(dot.positionX * pixelScale, dot.positionY * pixelScale, DOT_RADIUS * pixelScale, 0, Math.PI * 2);
       ctx.fill();
