@@ -60,7 +60,7 @@
 
   <div class="about__interests">
     @for (interest of interests; track interest.label) {
-      <div class="about__interest-card glass">
+      <div class="about__interest-card glass" data-cursor-hover>
         <svg [lucideIcon]="iconMap[interest.iconName]" [size]="32"></svg>
         <span class="about__interest-label">{{ interest.label }}</span>
       </div>

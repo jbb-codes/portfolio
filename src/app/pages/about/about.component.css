@@ -124,7 +124,8 @@
   color: var(--accent);
 }
 
-.about__interest-card:hover {
+.about__interest-card:hover,
+.about__interest-card.cursor-ring-active {
   border-color: var(--accent);
 }
 
