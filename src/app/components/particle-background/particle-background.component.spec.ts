@@ -230,5 +230,23 @@ describe('ParticleBackgroundComponent', () => {
       expect(mockCtx.arc).toHaveBeenCalled();
       reducedFixture.destroy();
     }));
+
+    it('draws particles at the same positions after resize when reduced motion is preferred', fakeAsync(() => {
+      (win.matchMedia as jasmine.Spy).and.returnValue({ matches: false } as MediaQueryList);
+      Object.defineProperty(window, 'devicePixelRatio', { value: 1, configurable: true });
+
+      mockCtx.arc.calls.reset();
+      const reducedFixture = TestBed.createComponent(ParticleBackgroundComponent);
+      reducedFixture.detectChanges();
+
+      const initialArcCalls = mockCtx.arc.calls.allArgs();
+      mockCtx.arc.calls.reset();
+
+      resizeCallback([{ contentRect: { width: 1000, height: 800 } } as unknown as ResizeObserverEntry]);
+      tick(100);
+
+      expect(mockCtx.arc.calls.allArgs()).toEqual(initialArcCalls);
+      reducedFixture.destroy();
+    }));
   });
 });
