@@ -7,6 +7,7 @@ const TYPING_MS = 50;
 const BLINK_MS = 500;
 
 @Component({
+  selector: 'test-host',
   standalone: true,
   imports: [TypingAnimationDirective],
   template: `<span data-testid="typing-span" appTypingAnimation [strings]="strings"></span>`,
@@ -16,6 +17,7 @@ class TestHostComponent {
 }
 
 @Component({
+  selector: 'single-string-host',
   standalone: true,
   imports: [TypingAnimationDirective],
   template: `<span data-testid="typing-span" appTypingAnimation [strings]="strings"></span>`,
