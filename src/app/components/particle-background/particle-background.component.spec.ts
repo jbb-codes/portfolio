@@ -200,5 +200,35 @@ describe('ParticleBackgroundComponent', () => {
       expect(win.requestAnimationFrame).not.toHaveBeenCalled();
       reducedFixture.destroy();
     });
+
+    it('draws particles statically on init when reduced motion is preferred', () => {
+      (win.matchMedia as jasmine.Spy).and.returnValue({ matches: false } as MediaQueryList);
+      mockCtx.clearRect.calls.reset();
+      mockCtx.arc.calls.reset();
+
+      const reducedFixture = TestBed.createComponent(ParticleBackgroundComponent);
+      reducedFixture.detectChanges();
+
+      expect(mockCtx.clearRect).toHaveBeenCalled();
+      expect(mockCtx.arc).toHaveBeenCalled();
+      reducedFixture.destroy();
+    });
+
+    it('redraws particles statically after resize when reduced motion is preferred', fakeAsync(() => {
+      (win.matchMedia as jasmine.Spy).and.returnValue({ matches: false } as MediaQueryList);
+
+      const reducedFixture = TestBed.createComponent(ParticleBackgroundComponent);
+      reducedFixture.detectChanges();
+
+      mockCtx.clearRect.calls.reset();
+      mockCtx.arc.calls.reset();
+
+      resizeCallback([{ contentRect: { width: 1024, height: 768 } } as unknown as ResizeObserverEntry]);
+      tick(100);
+
+      expect(mockCtx.clearRect).toHaveBeenCalled();
+      expect(mockCtx.arc).toHaveBeenCalled();
+      reducedFixture.destroy();
+    }));
   });
 });
