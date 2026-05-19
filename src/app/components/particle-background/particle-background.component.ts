@@ -1,5 +1,6 @@
 import { DOCUMENT } from '@angular/common';
 import { Component, ElementRef, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AnimationLoopService } from '../../shared/animation-loop/animation-loop.service';
 
 interface Dot {
   positionX: number;
@@ -11,42 +12,50 @@ interface Dot {
 const DOT_COUNT = 60;
 const DOT_RADIUS = 1.5;
 const DOT_SPEED = 0.3;
+const RESIZE_DEBOUNCE_MS = 100;
 
 @Component({
   selector: 'app-particle-background',
   standalone: true,
   templateUrl: './particle-background.component.html',
   styleUrl: './particle-background.component.css',
+  providers: [AnimationLoopService],
 })
 export class ParticleBackgroundComponent implements OnInit, OnDestroy {
   @ViewChild('canvas', { static: true }) private canvasRef!: ElementRef<HTMLCanvasElement>;
 
   private readonly doc = inject(DOCUMENT);
   private readonly win = this.doc.defaultView!;
-  private animationId = 0;
+  private readonly animationLoop = inject(AnimationLoopService);
   private dots: Dot[] = [];
   private pixelScale = 1;
   private logicalWidth = 0;
   private logicalHeight = 0;
   private resizeObserver!: ResizeObserver;
+  private resizeDebounceTimer: ReturnType<typeof setTimeout> | null = null;
 
   ngOnInit(): void {
     this.resizeCanvas(this.win.innerWidth, this.win.innerHeight);
 
     this.resizeObserver = new ResizeObserver((entries) => {
       const entry = entries[0];
-      if (entry) this.resizeCanvas(entry.contentRect.width, entry.contentRect.height);
+      if (!entry) return;
+
+      if (this.resizeDebounceTimer !== null) clearTimeout(this.resizeDebounceTimer);
+      this.resizeDebounceTimer = setTimeout(() => {
+        this.resizeCanvas(entry.contentRect.width, entry.contentRect.height);
+        this.resizeDebounceTimer = null;
+      }, RESIZE_DEBOUNCE_MS);
     });
     this.resizeObserver.observe(this.canvasRef.nativeElement);
 
-    if (this.win.matchMedia('(prefers-reduced-motion: no-preference)').matches) {
-      this.scheduleFrame();
-    }
+    this.animationLoop.start(() => this.draw());
   }
 
   ngOnDestroy(): void {
     this.resizeObserver?.disconnect();
-    this.win.cancelAnimationFrame(this.animationId);
+    if (this.resizeDebounceTimer !== null) clearTimeout(this.resizeDebounceTimer);
+    this.animationLoop.stop();
   }
 
   private resizeCanvas(width: number, height: number): void {
@@ -74,10 +83,6 @@ export class ParticleBackgroundComponent implements OnInit, OnDestroy {
     }));
   }
 
-  private scheduleFrame(): void {
-    this.animationId = this.win.requestAnimationFrame(() => this.draw());
-  }
-
   private draw(): void {
     const canvas = this.canvasRef.nativeElement;
     const ctx = canvas.getContext('2d');
@@ -103,7 +108,5 @@ export class ParticleBackgroundComponent implements OnInit, OnDestroy {
       ctx.arc(dot.positionX * pixelScale, dot.positionY * pixelScale, DOT_RADIUS * pixelScale, 0, Math.PI * 2);
       ctx.fill();
     }
-
-    this.scheduleFrame();
   }
 }
