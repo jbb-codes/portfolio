@@ -124,7 +124,8 @@
   }
 }
 
-.bucket-list__item:hover {
+.bucket-list__item:hover,
+.bucket-list__item.cursor-ring-active {
   border-color: var(--accent);
 }
 

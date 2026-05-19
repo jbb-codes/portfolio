@@ -137,3 +137,147 @@ describe('CustomCursorComponent', () => {
     });
   });
 });
+
+describe('CustomCursorComponent – ring proximity', () => {
+  let fixture: ComponentFixture<CustomCursorComponent>;
+  let doc: Document;
+  let rafCallbacks: FrameRequestCallback[];
+
+  beforeEach(async () => {
+    rafCallbacks = [];
+    spyOn(window, 'requestAnimationFrame').and.callFake((cb: FrameRequestCallback) => {
+      rafCallbacks.push(cb);
+      return rafCallbacks.length;
+    });
+
+    TestBed.resetTestingModule();
+    await TestBed.configureTestingModule({
+      imports: [CustomCursorComponent],
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(CustomCursorComponent);
+    doc = TestBed.inject(DOCUMENT);
+    fixture.detectChanges();
+  });
+
+  afterEach(() => fixture.destroy());
+
+  function tickRaf(): void {
+    const cbs = [...rafCallbacks];
+    rafCallbacks.length = 0;
+    cbs.forEach(cb => cb(performance.now()));
+  }
+
+  describe('interactive ring detection', () => {
+    it('applies --on-interactive state when ring edge is over an interactive element', () => {
+      const button = doc.createElement('button');
+      doc.body.appendChild(button);
+      spyOn(doc, 'elementFromPoint').and.returnValue(button);
+
+      doc.dispatchEvent(new MouseEvent('mousemove', { clientX: 100, clientY: 100 }));
+      tickRaf();
+
+      const dot: HTMLElement = fixture.nativeElement.querySelector('[data-testid="cursor-dot"]');
+      const ring: HTMLElement = fixture.nativeElement.querySelector('[data-testid="cursor-ring"]');
+      expect(dot.classList).toContain('custom-cursor__dot--on-interactive');
+      expect(ring.classList).toContain('custom-cursor__ring--on-interactive');
+
+      doc.body.removeChild(button);
+    });
+
+    it('clears --on-interactive when ring moves away and dot is not over interactive element', () => {
+      const button = doc.createElement('button');
+      const div = doc.createElement('div');
+      doc.body.appendChild(button);
+      doc.body.appendChild(div);
+
+      const fromPointSpy = spyOn(doc, 'elementFromPoint').and.returnValue(button);
+      doc.dispatchEvent(new MouseEvent('mousemove', { clientX: 100, clientY: 100 }));
+      tickRaf();
+
+      fromPointSpy.and.returnValue(div);
+      div.dispatchEvent(new MouseEvent('mouseover', { bubbles: true }));
+      doc.dispatchEvent(new MouseEvent('mousemove', { clientX: 500, clientY: 500 }));
+      tickRaf();
+
+      const dot: HTMLElement = fixture.nativeElement.querySelector('[data-testid="cursor-dot"]');
+      const ring: HTMLElement = fixture.nativeElement.querySelector('[data-testid="cursor-ring"]');
+      expect(dot.classList).not.toContain('custom-cursor__dot--on-interactive');
+      expect(ring.classList).not.toContain('custom-cursor__ring--on-interactive');
+
+      doc.body.removeChild(button);
+      doc.body.removeChild(div);
+    });
+  });
+
+  describe('hoverable element detection', () => {
+    it('adds cursor-ring-active to a [data-cursor-hover] element when ring edge touches it', () => {
+      const card = doc.createElement('div');
+      card.setAttribute('data-cursor-hover', '');
+      doc.body.appendChild(card);
+      spyOn(doc, 'elementFromPoint').and.returnValue(card);
+
+      doc.dispatchEvent(new MouseEvent('mousemove', { clientX: 100, clientY: 100 }));
+      tickRaf();
+
+      expect(card.classList).toContain('cursor-ring-active');
+
+      doc.body.removeChild(card);
+    });
+
+    it('adds cursor-ring-active to a [data-cursor-hover] ancestor when a child is at the ring edge', () => {
+      const card = doc.createElement('div');
+      card.setAttribute('data-cursor-hover', '');
+      const inner = doc.createElement('p');
+      card.appendChild(inner);
+      doc.body.appendChild(card);
+      spyOn(doc, 'elementFromPoint').and.returnValue(inner);
+
+      doc.dispatchEvent(new MouseEvent('mousemove', { clientX: 100, clientY: 100 }));
+      tickRaf();
+
+      expect(card.classList).toContain('cursor-ring-active');
+
+      doc.body.removeChild(card);
+    });
+
+    it('removes cursor-ring-active when ring moves away from the hoverable element', () => {
+      const card = doc.createElement('div');
+      card.setAttribute('data-cursor-hover', '');
+      const elsewhere = doc.createElement('div');
+      doc.body.appendChild(card);
+      doc.body.appendChild(elsewhere);
+
+      const fromPointSpy = spyOn(doc, 'elementFromPoint').and.returnValue(card);
+      doc.dispatchEvent(new MouseEvent('mousemove', { clientX: 100, clientY: 100 }));
+      tickRaf();
+
+      fromPointSpy.and.returnValue(elsewhere);
+      doc.dispatchEvent(new MouseEvent('mousemove', { clientX: 500, clientY: 500 }));
+      tickRaf();
+
+      expect(card.classList).not.toContain('cursor-ring-active');
+
+      doc.body.removeChild(card);
+      doc.body.removeChild(elsewhere);
+    });
+  });
+
+  describe('cleanup on destroy', () => {
+    it('removes cursor-ring-active from all active elements when component is destroyed', () => {
+      const card = doc.createElement('div');
+      card.setAttribute('data-cursor-hover', '');
+      doc.body.appendChild(card);
+      spyOn(doc, 'elementFromPoint').and.returnValue(card);
+
+      doc.dispatchEvent(new MouseEvent('mousemove', { clientX: 100, clientY: 100 }));
+      tickRaf();
+      expect(card.classList).toContain('cursor-ring-active');
+
+      fixture.destroy();
+      expect(card.classList).not.toContain('cursor-ring-active');
+
+      doc.body.removeChild(card);
+    });
+  });
+});
