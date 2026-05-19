@@ -165,7 +165,7 @@ describe('OrbBackgroundComponent', () => {
 
   describe('without reduced motion', () => {
     it('renders exactly two orb elements', () => {
-      spyOn(window, 'matchMedia').and.returnValue({ matches: false } as MediaQueryList);
+      spyOn(window, 'matchMedia').and.returnValue({ matches: true } as MediaQueryList);
       const fixture = TestBed.createComponent(OrbBackgroundComponent);
       fixture.detectChanges();
       const orbs = fixture.nativeElement.querySelectorAll('[data-testid="orb"]');
@@ -174,7 +174,7 @@ describe('OrbBackgroundComponent', () => {
     });
 
     it('starts a requestAnimationFrame loop', () => {
-      spyOn(window, 'matchMedia').and.returnValue({ matches: false } as MediaQueryList);
+      spyOn(window, 'matchMedia').and.returnValue({ matches: true } as MediaQueryList);
       const rafSpy = spyOn(window, 'requestAnimationFrame').and.returnValue(1);
       const fixture = TestBed.createComponent(OrbBackgroundComponent);
       fixture.detectChanges();
@@ -183,7 +183,7 @@ describe('OrbBackgroundComponent', () => {
     });
 
     it('cancels the animation frame on destroy', () => {
-      spyOn(window, 'matchMedia').and.returnValue({ matches: false } as MediaQueryList);
+      spyOn(window, 'matchMedia').and.returnValue({ matches: true } as MediaQueryList);
       spyOn(window, 'requestAnimationFrame').and.returnValue(42);
       const cancelSpy = spyOn(window, 'cancelAnimationFrame');
       const fixture = TestBed.createComponent(OrbBackgroundComponent);
@@ -195,7 +195,7 @@ describe('OrbBackgroundComponent', () => {
 
   describe('with reduced motion', () => {
     it('renders exactly two orb elements', () => {
-      spyOn(window, 'matchMedia').and.returnValue({ matches: true } as MediaQueryList);
+      spyOn(window, 'matchMedia').and.returnValue({ matches: false } as MediaQueryList);
       const fixture = TestBed.createComponent(OrbBackgroundComponent);
       fixture.detectChanges();
       const orbs = fixture.nativeElement.querySelectorAll('[data-testid="orb"]');
@@ -204,7 +204,7 @@ describe('OrbBackgroundComponent', () => {
     });
 
     it('does not start a requestAnimationFrame loop', () => {
-      spyOn(window, 'matchMedia').and.returnValue({ matches: true } as MediaQueryList);
+      spyOn(window, 'matchMedia').and.returnValue({ matches: false } as MediaQueryList);
       const rafSpy = spyOn(window, 'requestAnimationFrame');
       const fixture = TestBed.createComponent(OrbBackgroundComponent);
       fixture.detectChanges();

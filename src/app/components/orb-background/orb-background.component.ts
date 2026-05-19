@@ -1,10 +1,5 @@
-import {
-  Component,
-  ElementRef,
-  NgZone,
-  OnDestroy,
-  OnInit,
-} from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
+import { AnimationLoopService } from '../../shared/animation-loop/animation-loop.service';
 
 export const ORB_RANGE_MIN = -10;
 export const ORB_RANGE_MAX = 70;
@@ -104,34 +99,18 @@ export function resolveOrbCollisions(
   standalone: true,
   templateUrl: './orb-background.component.html',
   styleUrl: './orb-background.component.css',
+  providers: [AnimationLoopService],
 })
 export class OrbBackgroundComponent implements OnInit, OnDestroy {
   private orb1State: OrbState = makeOrbState(15, 15);
   private orb2State: OrbState = makeOrbState(65, 55);
-  private rafId: number | null = null;
 
   constructor(
     private readonly el: ElementRef,
-    private readonly zone: NgZone,
+    private readonly animationLoop: AnimationLoopService,
   ) {}
 
   ngOnInit(): void {
-    const reducedMotion = window.matchMedia(
-      '(prefers-reduced-motion: reduce)',
-    ).matches;
-    if (reducedMotion) return;
-
-    this.zone.runOutsideAngular(() => this.startAnimation());
-  }
-
-  ngOnDestroy(): void {
-    if (this.rafId !== null) {
-      cancelAnimationFrame(this.rafId);
-      this.rafId = null;
-    }
-  }
-
-  private startAnimation(): void {
     const orb1El = this.el.nativeElement.querySelector(
       '.orb-background__orb--1',
     ) as HTMLElement;
@@ -148,11 +127,11 @@ export class OrbBackgroundComponent implements OnInit, OnDestroy {
 
     let lastTime: number | null = null;
 
-    const loop = (timestamp: number) => {
-      const deltaMs =
-        lastTime === null ? FRAME_BASELINE_MS : timestamp - lastTime;
-      lastTime = timestamp;
+    this.animationLoop.start(() => {
+      const now = performance.now();
       // Clamp to 3× baseline so a suspended tab doesn't cause a huge position jump.
+      const deltaMs = lastTime === null ? FRAME_BASELINE_MS : now - lastTime;
+      lastTime = now;
       const deltaScale =
         Math.min(deltaMs, FRAME_BASELINE_MS * 3) / FRAME_BASELINE_MS;
 
@@ -164,16 +143,16 @@ export class OrbBackgroundComponent implements OnInit, OnDestroy {
       [this.orb1State, this.orb2State] = resolveOrbCollisions(
         this.orb1State,
         this.orb2State,
-        window.innerWidth,
-        window.innerHeight,
+        vw,
+        vh,
       );
 
       setTransform(orb1El, this.orb1State.left, this.orb1State.top);
       setTransform(orb2El, this.orb2State.left, this.orb2State.top);
+    });
+  }
 
-      this.rafId = requestAnimationFrame(loop);
-    };
-
-    this.rafId = requestAnimationFrame(loop);
+  ngOnDestroy(): void {
+    this.animationLoop.stop();
   }
 }
