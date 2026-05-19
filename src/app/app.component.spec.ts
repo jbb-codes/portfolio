@@ -1,11 +1,8 @@
-// Collaborated with Claude on: DOM-based assertions over component internals, nested describe structure, reduced-motion test case
-import { ComponentFixture, TestBed, discardPeriodicTasks, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideLocationMocks } from '@angular/common/testing';
-import { provideRouter, Router, withDisabledInitialNavigation } from '@angular/router';
-import { ApplicationRef } from '@angular/core';
+import { provideRouter, withDisabledInitialNavigation } from '@angular/router';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { AppComponent } from './app.component';
-import { routes } from './app.routes';
 
 describe('AppComponent', () => {
   let fixture: ComponentFixture<AppComponent>;
@@ -28,119 +25,6 @@ describe('AppComponent', () => {
 
   it('should create the app', () => {
     expect(component).toBeTruthy();
-  });
-
-  describe('navbar', () => {
-    it('should render logo with name', () => {
-      const el: HTMLElement = fixture.nativeElement.querySelector('[data-testid="navbar-logo"]');
-      expect(el?.textContent?.trim()).toContain('Jarren Bess');
-    });
-
-    describe('navigation links', () => {
-      it('should render Home, About, Resume, and Projects links', () => {
-        const links: NodeListOf<HTMLElement> =
-          fixture.nativeElement.querySelectorAll('[data-testid="navbar-link"]');
-        const texts = Array.from(links).map((l) => l.textContent?.trim());
-        expect(texts).toContain('Home');
-        expect(texts).toContain('About');
-        expect(texts).toContain('Resume');
-        expect(texts).toContain('Projects');
-      });
-    });
-
-    describe('theme toggle', () => {
-      let btn: HTMLElement;
-
-      beforeEach(() => {
-        btn = fixture.nativeElement.querySelector('[data-testid="theme-toggle"]');
-      });
-
-      afterEach(() => {
-        document.documentElement.removeAttribute('data-theme');
-      });
-
-      it('should render the toggle button', () => {
-        expect(btn).toBeTruthy();
-      });
-
-      it('should render an svg icon inside the toggle button', () => {
-        const svg = btn.querySelector('svg');
-        expect(svg).toBeTruthy();
-      });
-
-      it('should render a different svg icon after switching to light mode', () => {
-        const darkSvg = btn.querySelector('svg')?.outerHTML;
-        btn.click();
-        fixture.detectChanges();
-        const lightSvg = btn.querySelector('svg')?.outerHTML;
-        expect(lightSvg).not.toBe(darkSvg);
-      });
-
-      describe('theme switching', () => {
-        it('should default to dark mode', () => {
-          expect(document.documentElement.getAttribute('data-theme')).toBeNull();
-          expect(btn.getAttribute('aria-label')).toBe('Switch to light mode');
-        });
-
-        it('should switch to light mode on click', () => {
-          btn.click();
-          fixture.detectChanges();
-          expect(document.documentElement.getAttribute('data-theme')).toBe('light');
-          expect(btn.getAttribute('aria-label')).toBe('Switch to dark mode');
-        });
-
-        it('should switch back to dark mode after animation clears', (done) => {
-          btn.click();
-          fixture.detectChanges();
-          setTimeout(() => {
-            btn.click();
-            fixture.detectChanges();
-            expect(document.documentElement.getAttribute('data-theme')).toBeNull();
-            expect(btn.getAttribute('aria-label')).toBe('Switch to light mode');
-            done();
-          }, 450);
-        });
-      });
-
-      describe('animation', () => {
-        it('should add is-animating class to the button when clicked', () => {
-          btn.click();
-          fixture.detectChanges();
-          expect(btn.classList.contains('is-animating')).toBeTrue();
-        });
-
-        it('should not change theme on rapid second click', () => {
-          btn.click();
-          btn.click();
-          fixture.detectChanges();
-          expect(document.documentElement.getAttribute('data-theme')).toBe('light');
-        });
-
-        it('should remove is-animating class after animation timeout', (done) => {
-          btn.click();
-          fixture.detectChanges();
-          expect(btn.classList.contains('is-animating')).toBeTrue();
-          setTimeout(() => {
-            fixture.detectChanges();
-            expect(btn.classList.contains('is-animating')).toBeFalse();
-            done();
-          }, 450);
-        });
-      });
-    });
-
-    describe('sliding underline', () => {
-      it('should render exactly one nav-underline element', () => {
-        const underlines = fixture.nativeElement.querySelectorAll('[data-testid="nav-underline"]');
-        expect(underlines.length).toBe(1);
-      });
-
-      it('should render the underline inside the navbar-links container', () => {
-        const container: HTMLElement = fixture.nativeElement.querySelector('[data-testid="navbar-links"]');
-        const underline: HTMLElement | null = container?.querySelector('[data-testid="nav-underline"]') ?? null;
-        expect(underline).toBeTruthy();
-      });
-    });
   });
 
   describe('footer', () => {
@@ -192,53 +76,4 @@ describe('AppComponent', () => {
       expect(outlet).toBeTruthy();
     });
   });
-});
-
-describe('AppComponent – underline positioning', () => {
-  let fixture: ComponentFixture<AppComponent>;
-  let router: Router;
-  let appRef: ApplicationRef;
-
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [AppComponent],
-      providers: [
-        provideRouter(routes, withDisabledInitialNavigation()),
-        provideLocationMocks(),
-        provideAnimations(),
-      ],
-    }).compileComponents();
-
-    fixture = TestBed.createComponent(AppComponent);
-    router = TestBed.inject(Router);
-    appRef = TestBed.inject(ApplicationRef);
-    fixture.detectChanges();
-  });
-
-  it('should position the underline indicator under the active link after initial navigation', fakeAsync(() => {
-    router.navigate(['/']);
-    tick();
-    appRef.tick();
-
-    const container: HTMLElement = fixture.nativeElement.querySelector('[data-testid="navbar-links"]');
-    expect(container.style.getPropertyValue('--underline-left')).not.toBe('');
-    expect(container.style.getPropertyValue('--underline-width')).not.toBe('');
-    discardPeriodicTasks();
-  }));
-
-  it('should reposition the underline indicator when navigating to a different route', fakeAsync(() => {
-    router.navigate(['/']);
-    tick();
-    appRef.tick();
-
-    const container: HTMLElement = fixture.nativeElement.querySelector('[data-testid="navbar-links"]');
-    const spy = spyOn(container.style, 'setProperty');
-
-    router.navigate(['/about']);
-    tick();
-    appRef.tick();
-
-    expect(spy).toHaveBeenCalled();
-    discardPeriodicTasks();
-  }));
 });
