@@ -39,7 +39,12 @@
   font-size: 0.875rem;
   font-weight: 500;
   text-decoration: none;
-  transition: opacity 0.2s ease;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .resume__download-btn {
+    transition: opacity 0.2s ease;
+  }
 }
 
 .resume__download-btn:hover {
