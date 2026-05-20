@@ -7,6 +7,7 @@ import {
   LEARNING_NEXT,
   SKILLS,
   TIMELINE_ENTRIES,
+  PROJECTS,
 } from './portfolio-content';
 
 describe('portfolio-content', () => {
@@ -52,5 +53,18 @@ describe('portfolio-content', () => {
   it('BUCKET_LIST ids are unique', () => {
     const ids = BUCKET_LIST.map((item) => item.id);
     expect(new Set(ids).size).toBe(ids.length);
+  });
+
+  it('PROJECTS is non-empty', () => {
+    expect(PROJECTS.length).toBeGreaterThan(0);
+  });
+
+  it('each project has a non-empty technologies array', () => {
+    expect(PROJECTS.technologies.length).toBeGreaterThan(0);
+  });
+
+  it('PROJECTS numbers are unique', () => {
+    const numbers = PROJECTS.map((proj) => proj.number);
+    expect(new Set(numbers).size).toBe(numbers.length);
   });
 });

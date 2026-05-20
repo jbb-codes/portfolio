@@ -45,6 +45,18 @@ export interface BucketListItem {
   completed: boolean;
 }
 
+export interface Project {
+  number: number;
+  name: string;
+  githubUrl: string;
+  screenshotUrl: string;
+  description: string;
+  technologies: string[];
+  whatILearned: string;
+}
+
+
+
 export const EXPERIENCE: ExperienceCard[] = [
   {
     title: 'Frontend Developer',
@@ -199,5 +211,35 @@ export const BUCKET_LIST: BucketListItem[] = [
     title: 'Build a startup',
     description: 'Launch a product that solves a real problem',
     completed: false,
+  },
+];
+    
+export const PROJECTS: Project[] = [
+  {
+    number: 1,
+    name: 'Portfolio Website',
+    githubUrl: 'https://github.com/jbb-codes/portfolio',
+    screenshotUrl: 'assets/images/projects/portfolio.png',
+    description: 'A personal portfolio built with Angular and TypeScript, featuring animated backgrounds, a custom cursor, and a responsive layout.',
+    technologies: ['Angular', 'TypeScript', 'CSS'],
+    whatILearned: 'Deepened my understanding of Angular standalone components, CSS animations, and responsive design patterns.',
+  },
+  {
+    number: 2,
+    name: 'Weather Dashboard',
+    githubUrl: 'https://github.com/jbb-codes/weather-dashboard',
+    screenshotUrl: 'assets/images/projects/weather.png',
+    description: 'A weather app that fetches real-time data from an open weather API and displays forecasts with dynamic icons.',
+    technologies: ['JavaScript', 'HTML', 'CSS', 'REST API'],
+    whatILearned: 'Practiced working with third-party APIs, handling async data, and updating the DOM based on API responses.',
+  },
+  {
+    number: 3,
+    name: 'Task Manager',
+    githubUrl: 'https://github.com/jbb-codes/task-manager',
+    screenshotUrl: 'assets/images/projects/task-manager.png',
+    description: 'A drag-and-drop kanban board for managing tasks across To Do, In Progress, and Done columns.',
+    technologies: ['TypeScript', 'Angular', 'CSS'],
+    whatILearned: 'Learned how to implement drag-and-drop interactions and manage complex component state in Angular.',
   },
 ];
