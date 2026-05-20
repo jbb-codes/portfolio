@@ -11,6 +11,6 @@ import { TypingAnimationDirective } from '../../shared/typing-animation/typing-a
   styleUrl: './home.component.css',
 })
 export class HomeComponent {
-  readonly roleStrings = ['Modern Software Practices', 'Full Stack Developer'];
+  readonly roleStrings = ['Agentic', 'Modern Software', 'Full Stack'];
   readonly bucketList: BucketListItem[] = BUCKET_LIST;
 }

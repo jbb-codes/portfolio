@@ -174,25 +174,40 @@ describe('TypingAnimationDirective', () => {
     });
   });
 
-  describe('stops after last string', () => {
+  describe('after last string — cursor blinks forever', () => {
     // full sequence: type 'AB' + pause + delete 'AB' + type 'CD'
     const ALL_DONE_MS = DELETE_DONE_MS + TYPING_MS * 2;
 
-    it('should hide the cursor after the last string is fully typed', () => {
+    it('should keep cursor visible immediately after last string is typed', () => {
       jasmine.clock().tick(ALL_DONE_MS);
+      expect(cursorEl.hidden).toBeFalse();
+    });
+
+    it('should hide cursor after the 1st blink interval', () => {
+      jasmine.clock().tick(ALL_DONE_MS + BLINK_MS);
       expect(cursorEl.hidden).toBeTrue();
     });
 
-    it('should leave the last string displayed after stopping', () => {
-      jasmine.clock().tick(ALL_DONE_MS + TYPING_MS * 10);
+    it('should show cursor after the 2nd blink interval', () => {
+      jasmine.clock().tick(ALL_DONE_MS + BLINK_MS * 2);
+      expect(cursorEl.hidden).toBeFalse();
+    });
+
+    it('should continue blinking well past 3 cycles', () => {
+      jasmine.clock().tick(ALL_DONE_MS + BLINK_MS * 9);
+      expect(cursorEl.hidden).toBeTrue();
+    });
+
+    it('should leave the last string displayed', () => {
+      jasmine.clock().tick(ALL_DONE_MS + BLINK_MS * 20);
       expect(textEl.textContent).toBe('CD');
     });
 
-    it('should not change text content after stopping', () => {
+    it('should not change text content while blinking', () => {
       jasmine.clock().tick(ALL_DONE_MS);
-      const textAtStop = textEl.textContent;
-      jasmine.clock().tick(TYPING_MS * 10);
-      expect(textEl.textContent).toBe(textAtStop);
+      const textAtEnd = textEl.textContent;
+      jasmine.clock().tick(BLINK_MS * 10);
+      expect(textEl.textContent).toBe(textAtEnd);
     });
   });
 
@@ -209,12 +224,17 @@ describe('TypingAnimationDirective', () => {
       singleCursorEl = singleEl.querySelector('[data-testid="typing-cursor"]') as HTMLElement;
     });
 
-    it('should hide the cursor immediately after the only string is typed', () => {
+    it('should keep cursor visible immediately after the only string is typed', () => {
       jasmine.clock().tick(TYPING_MS * 2);
+      expect(singleCursorEl.hidden).toBeFalse();
+    });
+
+    it('should blink cursor after the 1st blink interval', () => {
+      jasmine.clock().tick(TYPING_MS * 2 + BLINK_MS);
       expect(singleCursorEl.hidden).toBeTrue();
     });
 
-    it('should not delete or retype after stopping', () => {
+    it('should keep text content unchanged while blinking', () => {
       jasmine.clock().tick(TYPING_MS * 2 + BLINK_MS * 10);
       expect(singleTextEl.textContent).toBe('AB');
     });

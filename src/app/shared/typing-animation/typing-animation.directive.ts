@@ -62,6 +62,12 @@ export class TypingAnimationDirective implements OnInit, OnDestroy {
     this.interval = setInterval(() => this.deleteNextChar(), TYPING_INTERVAL_MS);
   }
 
+  private startBlinkingForever(): void {
+    this.interval = setInterval(() => {
+      this.cursorEl.hidden = !this.cursorEl.hidden;
+    }, BLINK_INTERVAL_MS);
+  }
+
   private typeNextChar(): void {
     this.charIndex++;
     this.textEl.textContent = this.currentString.slice(0, this.charIndex);
@@ -69,7 +75,7 @@ export class TypingAnimationDirective implements OnInit, OnDestroy {
     if (this.charIndex >= this.currentString.length) {
       clearInterval(this.interval!);
       if (this.stringIndex === this.strings.length - 1) {
-        this.cursorEl.hidden = true;
+        this.startBlinkingForever();
       } else {
         this.startPausing();
       }
