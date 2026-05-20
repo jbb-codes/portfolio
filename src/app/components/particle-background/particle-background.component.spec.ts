@@ -19,8 +19,14 @@ describe('ParticleBackgroundComponent', () => {
     beginPath: jasmine.createSpy('beginPath'),
     arc: jasmine.createSpy('arc'),
     fill: jasmine.createSpy('fill'),
+    stroke: jasmine.createSpy('stroke'),
+    save: jasmine.createSpy('save'),
+    restore: jasmine.createSpy('restore'),
     scale: jasmine.createSpy('scale'),
     fillStyle: '',
+    strokeStyle: '',
+    lineWidth: 0,
+    globalAlpha: 1,
   };
 
   beforeEach(async () => {
@@ -279,5 +285,174 @@ describe('ParticleBackgroundComponent', () => {
       expect(mockCtx.arc.calls.allArgs()).toEqual(initialArcCalls);
       reducedFixture.destroy();
     }));
+  });
+
+  describe('pulse on background click', () => {
+    beforeEach(() => {
+      mockCtx.stroke.calls.reset();
+      mockCtx.save.calls.reset();
+      mockCtx.restore.calls.reset();
+    });
+
+    it('does not emit a pulse ring without a click', () => {
+      (component as any).draw();
+      (component as any).draw();
+
+      expect(mockCtx.stroke).not.toHaveBeenCalled();
+    });
+
+    it('creates a pulse only when the background is clicked', () => {
+      expect((component as any).pulses.length).toBe(0);
+
+      document.body.dispatchEvent(
+        new MouseEvent('click', { bubbles: true, cancelable: true, clientX: 200, clientY: 150 }),
+      );
+
+      expect((component as any).pulses.length).toBe(1);
+      expect((component as any).pulses[0].x).toBe(200);
+      expect((component as any).pulses[0].y).toBe(150);
+    });
+
+    it('does not create a pulse when clicking a button', () => {
+      const buttonEl = document.createElement('button');
+      document.body.appendChild(buttonEl);
+
+      buttonEl.dispatchEvent(
+        new MouseEvent('click', { bubbles: true, cancelable: true, clientX: 100, clientY: 100 }),
+      );
+
+      expect((component as any).pulses.length).toBe(0);
+      document.body.removeChild(buttonEl);
+    });
+
+    it('does not create a pulse when clicking a link', () => {
+      const linkEl = document.createElement('a');
+      document.body.appendChild(linkEl);
+
+      linkEl.dispatchEvent(
+        new MouseEvent('click', { bubbles: true, cancelable: true, clientX: 100, clientY: 100 }),
+      );
+
+      expect((component as any).pulses.length).toBe(0);
+      document.body.removeChild(linkEl);
+    });
+
+    it('draws the expanding pulse ring on the canvas after a click', () => {
+      (component as any).triggerPulse(200, 150);
+      mockCtx.stroke.calls.reset();
+
+      (component as any).updateAndDrawPulses(mockCtx, 1, 'white');
+
+      expect(mockCtx.stroke).toHaveBeenCalled();
+    });
+
+    it('removes the pulse after it has fully expanded', () => {
+      (component as any).pulses = [{ x: 100, y: 100, radius: 295, alpha: 0.02 }];
+
+      (component as any).updateAndDrawPulses(mockCtx, 1, 'white');
+
+      expect((component as any).pulses.length).toBe(0);
+    });
+
+    it('does not add a click listener when reduced motion is preferred', () => {
+      (win.matchMedia as jasmine.Spy).and.returnValue({ matches: false } as MediaQueryList);
+      const reducedFixture = TestBed.createComponent(ParticleBackgroundComponent);
+      reducedFixture.detectChanges();
+
+      document.body.dispatchEvent(
+        new MouseEvent('click', { bubbles: true, cancelable: true, clientX: 100, clientY: 100 }),
+      );
+
+      expect((reducedFixture.componentInstance as any).pulses.length).toBe(0);
+      reducedFixture.destroy();
+    });
+  });
+
+  describe('particle destruction', () => {
+    it('immediately destroys dots inside the cursor ring at click time', () => {
+      (component as any).dots = [
+        { positionX: 100, positionY: 100, velocityX: 0, velocityY: 0 },
+        { positionX: 500, positionY: 500, velocityX: 0, velocityY: 0 },
+      ];
+
+      (component as any).triggerPulse(100, 100);
+
+      expect((component as any).dots.length).toBe(1);
+      expect((component as any).shards.length).toBeGreaterThan(0);
+    });
+
+    it('destroys a dot when the expanding pulse ring sweeps through it', () => {
+      (component as any).dots = [{ positionX: 97, positionY: 0, velocityX: 0, velocityY: 0 }];
+      (component as any).pulses = [{ x: 0, y: 0, radius: 94, alpha: 0.8 }];
+
+      (component as any).updateAndDrawPulses(mockCtx, 1, 'white');
+
+      expect((component as any).dots.length).toBe(0);
+      expect((component as any).shards.length).toBeGreaterThan(0);
+    });
+
+    it('does not destroy a dot that the pulse has already passed', () => {
+      (component as any).dots = [{ positionX: 50, positionY: 0, velocityX: 0, velocityY: 0 }];
+      (component as any).pulses = [{ x: 0, y: 0, radius: 80, alpha: 0.7 }];
+
+      (component as any).updateAndDrawPulses(mockCtx, 1, 'white');
+
+      expect((component as any).dots.length).toBe(1);
+    });
+
+    it('respawns a destroyed dot after the delay', fakeAsync(() => {
+      (component as any).logicalWidth = 1000;
+      (component as any).logicalHeight = 800;
+      (component as any).dots = [{ positionX: 100, positionY: 100, velocityX: 0, velocityY: 0 }];
+
+      (component as any).triggerPulse(100, 100);
+      expect((component as any).dots.length).toBe(0);
+
+      tick(2500);
+
+      expect((component as any).dots.length).toBe(1);
+    }));
+
+    it('clears pending respawn timers on destroy', fakeAsync(() => {
+      (component as any).logicalWidth = 1000;
+      (component as any).logicalHeight = 800;
+      (component as any).dots = [{ positionX: 100, positionY: 100, velocityX: 0, velocityY: 0 }];
+      (component as any).triggerPulse(100, 100);
+
+      fixture.destroy();
+      tick(2500);
+    }));
+  });
+
+  describe('shard animation', () => {
+    it('spawns shards when a dot is destroyed', () => {
+      (component as any).dots = [{ positionX: 100, positionY: 100, velocityX: 0, velocityY: 0 }];
+
+      (component as any).triggerPulse(100, 100);
+
+      expect((component as any).shards.length).toBeGreaterThan(0);
+    });
+
+    it('moves and fades shards each frame', () => {
+      (component as any).shards = [
+        { x: 100, y: 100, velocityX: 1, velocityY: 0, alpha: 0.5, size: 1 },
+      ];
+
+      (component as any).updateAndDrawShards(mockCtx, 1, 'white');
+
+      const shard = (component as any).shards[0];
+      expect(shard.x).toBeGreaterThan(100);
+      expect(shard.alpha).toBeLessThan(0.5);
+    });
+
+    it('removes shards that have fully faded out', () => {
+      (component as any).shards = [
+        { x: 100, y: 100, velocityX: 1, velocityY: 0, alpha: 0.01, size: 1 },
+      ];
+
+      (component as any).updateAndDrawShards(mockCtx, 1, 'white');
+
+      expect((component as any).shards.length).toBe(0);
+    });
   });
 });
