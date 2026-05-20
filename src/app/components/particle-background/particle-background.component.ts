@@ -30,7 +30,7 @@ const DOT_RADIUS = 1.5;
 const DOT_SPEED = 0.3;
 const RESIZE_DEBOUNCE_MS = 100;
 const PULSE_SPEED = 6;
-const PULSE_MAX_RADIUS = 300;
+const PULSE_MAX_RADIUS = 48;
 const PULSE_LINE_WIDTH = 1.5;
 const CURSOR_RING_RADIUS = 16;
 const SHARD_COUNT = 5;
@@ -40,7 +40,9 @@ const SHARD_FADE_RATE = 0.022;
 const SHARD_SIZE_MIN = 0.8;
 const SHARD_SIZE_MAX = 2;
 const DOT_RESPAWN_DELAY_MS = 2500;
-const BACKGROUND_CLICK_SELECTOR = 'a, button, input, select, textarea, [role="button"]';
+const RING_SAMPLE_STEPS = 8;
+const INTERACTIVE_SELECTOR = 'a, button, input, select, textarea, [role="button"]';
+const CONTENT_SELECTOR = `${INTERACTIVE_SELECTOR}, [data-cursor-hover]`;
 
 @Component({
   selector: 'app-particle-background',
@@ -106,8 +108,22 @@ export class ParticleBackgroundComponent implements OnInit, OnDestroy {
   }
 
   private onBackgroundClick(event: MouseEvent): void {
-    if ((event.target as Element).closest(BACKGROUND_CLICK_SELECTOR)) return;
+    const target = event.target as Element;
+    if (target.closest(CONTENT_SELECTOR)) return;
+    if (this.isRingNearContent(event.clientX, event.clientY)) return;
     this.triggerPulse(event.clientX, event.clientY);
+  }
+
+  private isRingNearContent(x: number, y: number): boolean {
+    for (let i = 0; i < RING_SAMPLE_STEPS; i++) {
+      const angle = (i / RING_SAMPLE_STEPS) * Math.PI * 2;
+      const el = this.doc.elementFromPoint(
+        x + Math.cos(angle) * CURSOR_RING_RADIUS,
+        y + Math.sin(angle) * CURSOR_RING_RADIUS,
+      );
+      if (el?.closest(CONTENT_SELECTOR)) return true;
+    }
+    return false;
   }
 
   private triggerPulse(x: number, y: number): void {

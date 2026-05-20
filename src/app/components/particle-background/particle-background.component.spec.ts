@@ -354,6 +354,71 @@ describe('ParticleBackgroundComponent', () => {
       expect((component as any).pulses.length).toBe(0);
     });
 
+    it('does not draw a pulse ring when clicking a data-cursor-hover element', () => {
+      const doc = TestBed.inject(DOCUMENT);
+      const cardEl = doc.createElement('div');
+      cardEl.setAttribute('data-cursor-hover', '');
+      doc.body.appendChild(cardEl);
+
+      cardEl.dispatchEvent(
+        new MouseEvent('click', { bubbles: true, cancelable: true, clientX: 100, clientY: 100 }),
+      );
+
+      mockCtx.stroke.calls.reset();
+      (component as any).updateAndDrawPulses(mockCtx, 1, 'white');
+
+      expect(mockCtx.stroke).not.toHaveBeenCalled();
+      doc.body.removeChild(cardEl);
+    });
+
+    it('does not draw a pulse ring when the ring perimeter overlaps an interactive element', () => {
+      const doc = TestBed.inject(DOCUMENT);
+      const linkEl = doc.createElement('a');
+      doc.body.appendChild(linkEl);
+
+      spyOn(doc, 'elementFromPoint').and.returnValue(linkEl);
+
+      doc.body.dispatchEvent(
+        new MouseEvent('click', { bubbles: true, cancelable: true, clientX: 200, clientY: 200 }),
+      );
+
+      mockCtx.stroke.calls.reset();
+      (component as any).updateAndDrawPulses(mockCtx, 1, 'white');
+
+      expect(mockCtx.stroke).not.toHaveBeenCalled();
+      doc.body.removeChild(linkEl);
+    });
+
+    it('does not draw a pulse ring when the ring perimeter overlaps a data-cursor-hover element', () => {
+      const doc = TestBed.inject(DOCUMENT);
+      const cardEl = doc.createElement('div');
+      cardEl.setAttribute('data-cursor-hover', '');
+      doc.body.appendChild(cardEl);
+
+      spyOn(doc, 'elementFromPoint').and.returnValue(cardEl);
+
+      doc.body.dispatchEvent(
+        new MouseEvent('click', { bubbles: true, cancelable: true, clientX: 200, clientY: 200 }),
+      );
+
+      mockCtx.stroke.calls.reset();
+      (component as any).updateAndDrawPulses(mockCtx, 1, 'white');
+
+      expect(mockCtx.stroke).not.toHaveBeenCalled();
+      doc.body.removeChild(cardEl);
+    });
+
+    it('stops drawing the pulse ring once it expands past the maximum radius', () => {
+      (component as any).pulses = [{ x: 100, y: 100, radius: 44, alpha: 0.1 }];
+
+      (component as any).updateAndDrawPulses(mockCtx, 1, 'white');
+
+      mockCtx.stroke.calls.reset();
+      (component as any).updateAndDrawPulses(mockCtx, 1, 'white');
+
+      expect(mockCtx.stroke).not.toHaveBeenCalled();
+    });
+
     it('does not add a click listener when reduced motion is preferred', () => {
       (win.matchMedia as jasmine.Spy).and.returnValue({ matches: false } as MediaQueryList);
       const reducedFixture = TestBed.createComponent(ParticleBackgroundComponent);
