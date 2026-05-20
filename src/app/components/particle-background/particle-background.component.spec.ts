@@ -313,28 +313,28 @@ describe('ParticleBackgroundComponent', () => {
       expect((component as any).pulses[0].y).toBe(150);
     });
 
-    it('does not create a pulse when clicking inside main content', () => {
-      const mainEl = document.createElement('main');
-      document.body.appendChild(mainEl);
+    it('does not create a pulse when clicking a button', () => {
+      const buttonEl = document.createElement('button');
+      document.body.appendChild(buttonEl);
 
-      mainEl.dispatchEvent(
+      buttonEl.dispatchEvent(
         new MouseEvent('click', { bubbles: true, cancelable: true, clientX: 100, clientY: 100 }),
       );
 
       expect((component as any).pulses.length).toBe(0);
-      document.body.removeChild(mainEl);
+      document.body.removeChild(buttonEl);
     });
 
-    it('does not create a pulse when clicking inside footer', () => {
-      const footerEl = document.createElement('footer');
-      document.body.appendChild(footerEl);
+    it('does not create a pulse when clicking a link', () => {
+      const linkEl = document.createElement('a');
+      document.body.appendChild(linkEl);
 
-      footerEl.dispatchEvent(
+      linkEl.dispatchEvent(
         new MouseEvent('click', { bubbles: true, cancelable: true, clientX: 100, clientY: 100 }),
       );
 
       expect((component as any).pulses.length).toBe(0);
-      document.body.removeChild(footerEl);
+      document.body.removeChild(linkEl);
     });
 
     it('draws the expanding pulse ring on the canvas after a click', () => {

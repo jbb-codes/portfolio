@@ -40,7 +40,7 @@ const SHARD_FADE_RATE = 0.022;
 const SHARD_SIZE_MIN = 0.8;
 const SHARD_SIZE_MAX = 2;
 const DOT_RESPAWN_DELAY_MS = 2500;
-const BACKGROUND_CLICK_SELECTOR = 'main, footer, app-navbar';
+const BACKGROUND_CLICK_SELECTOR = 'a, button, input, select, textarea, [role="button"]';
 
 @Component({
   selector: 'app-particle-background',
