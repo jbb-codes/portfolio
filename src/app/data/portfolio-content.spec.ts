@@ -7,6 +7,7 @@ import {
   LEARNING_NEXT,
   SKILLS,
   TIMELINE_ENTRIES,
+  PROJECTS,
 } from './portfolio-content';
 
 describe('portfolio-content', () => {
@@ -53,4 +54,23 @@ describe('portfolio-content', () => {
     const ids = BUCKET_LIST.map((item) => item.id);
     expect(new Set(ids).size).toBe(ids.length);
   });
+
+  // === Begin: written with Claude guidance ===
+  // The PROJECTS import and the three tests below were written as part of a
+  // hands-on TDD learning exercise — I typed and applied each step as part of that process.
+  it('PROJECTS is non-empty', () => {
+    expect(PROJECTS.length).toBeGreaterThan(0);
+  });
+
+  it('each project has a non-empty technologies array', () => {
+    for (const project of PROJECTS) {
+      expect(project.technologies.length).toBeGreaterThan(0);
+    }
+  });
+
+  it('PROJECTS numbers are unique', () => {
+    const numbers = PROJECTS.map((proj) => proj.number);
+    expect(new Set(numbers).size).toBe(numbers.length);
+  });
+  // === End: written with Claude guidance ===
 });
