@@ -121,6 +121,7 @@ describe('ParticleBackgroundComponent', () => {
     it('sizes the canvas from window.innerWidth and window.innerHeight on init', () => {
       const originalInnerWidth = window.innerWidth;
       const originalInnerHeight = window.innerHeight;
+      Object.defineProperty(window, 'devicePixelRatio', { value: 1, configurable: true });
       Object.defineProperty(window, 'innerWidth', { value: 1200, configurable: true });
       Object.defineProperty(window, 'innerHeight', { value: 800, configurable: true });
 
