@@ -28,7 +28,16 @@
   letter-spacing: -0.02em;
 }
 
+.hero__role-group {
+  display: block;
+}
+
 .hero__role {
+  display: block;
+  color: var(--accent);
+}
+
+.hero__role-label {
   display: block;
   color: var(--accent);
 }
