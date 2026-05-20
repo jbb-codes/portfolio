@@ -11,8 +11,8 @@ const PAUSE_BLINK_COUNT = 3;
 export class TypingAnimationDirective implements OnInit, OnDestroy {
   @Input() strings: string[] = [];
 
-  private frames: string[] = [];
-  private frameIndex = 0;
+  private stringIndex = 0;
+  private charIndex = 0;
   private blinkCount = 0;
   private interval: ReturnType<typeof setInterval> | null = null;
   private textEl!: HTMLElement;
@@ -21,11 +21,7 @@ export class TypingAnimationDirective implements OnInit, OnDestroy {
   constructor(private readonly el: ElementRef<HTMLElement>) {}
 
   ngOnInit(): void {
-    this.frames = this.strings.flatMap(str =>
-      Array.from({ length: str.length }, (_, i) => str.slice(0, i + 1))
-    );
-
-    if (this.frames.length === 0) return;
+    if (this.strings.length === 0) return;
 
     if (!window.matchMedia('(prefers-reduced-motion: no-preference)').matches) {
       const textEl = document.createElement('span');
@@ -49,6 +45,10 @@ export class TypingAnimationDirective implements OnInit, OnDestroy {
     this.startTyping();
   }
 
+  private get currentString(): string {
+    return this.strings[this.stringIndex] ?? '';
+  }
+
   private startTyping(): void {
     this.interval = setInterval(() => this.typeNextChar(), TYPING_INTERVAL_MS);
   }
@@ -63,10 +63,16 @@ export class TypingAnimationDirective implements OnInit, OnDestroy {
   }
 
   private typeNextChar(): void {
-    this.textEl.textContent = this.frames[this.frameIndex++];
-    if (this.frameIndex >= this.frames.length) {
+    this.charIndex++;
+    this.textEl.textContent = this.currentString.slice(0, this.charIndex);
+
+    if (this.charIndex >= this.currentString.length) {
       clearInterval(this.interval!);
-      this.startPausing();
+      if (this.stringIndex === this.strings.length - 1) {
+        this.cursorEl.hidden = true;
+      } else {
+        this.startPausing();
+      }
     }
   }
 
@@ -80,10 +86,14 @@ export class TypingAnimationDirective implements OnInit, OnDestroy {
   }
 
   private deleteNextChar(): void {
-    this.frameIndex--;
-    this.textEl.textContent = this.frameIndex > 0 ? this.frames[this.frameIndex - 1] : '';
-    if (this.frameIndex === 0) {
+    this.charIndex--;
+    this.textEl.textContent = this.charIndex > 0
+      ? this.currentString.slice(0, this.charIndex)
+      : '';
+
+    if (this.charIndex === 0) {
       clearInterval(this.interval!);
+      this.stringIndex++;
       this.startTyping();
     }
   }

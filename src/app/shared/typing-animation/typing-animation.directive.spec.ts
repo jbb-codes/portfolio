@@ -58,11 +58,11 @@ describe('TypingAnimationDirective', () => {
   });
 
   describe('DOM structure', () => {
-    it('should render a .typing-animation__text child element', () => {
+    it('should render a typing-text child element', () => {
       expect(textEl).toBeTruthy();
     });
 
-    it('should render a .typing-animation__cursor child element containing |', () => {
+    it('should render a typing-cursor child element containing |', () => {
       expect(cursorEl).toBeTruthy();
       expect(cursorEl.textContent).toBe('|');
     });
@@ -99,77 +99,107 @@ describe('TypingAnimationDirective', () => {
     });
   });
 
-  describe('string cycling', () => {
-    it('should advance to the next string after completing the first', () => {
-      jasmine.clock().tick(TYPING_MS * 3); // complete 'AB' then first char of 'CD'
-      expect(textEl.textContent).toBe('C');
-    });
-
-    it('should display the full second string after completing it', () => {
-      jasmine.clock().tick(TYPING_MS * 4); // complete 'AB' then 'CD'
-      expect(textEl.textContent).toBe('CD');
-    });
-  });
+  // 'AB' types in 2 ticks
+  const TYPING_DONE_MS = TYPING_MS * 2;
 
   describe('pausing phase', () => {
-    let singleFixture: ComponentFixture<SingleStringHostComponent>;
-    let singleTextEl: HTMLElement;
-    let singleCursorEl: HTMLElement;
-
-    // 'AB' types in 2 ticks
-    const TYPING_DONE_MS = TYPING_MS * 2;
-
-    beforeEach(() => {
-      singleFixture = TestBed.createComponent(SingleStringHostComponent);
-      singleFixture.detectChanges();
-      const singleEl = singleFixture.debugElement.query(By.css('[data-testid="typing-span"]')).nativeElement as HTMLElement;
-      singleTextEl = singleEl.querySelector('[data-testid="typing-text"]') as HTMLElement;
-      singleCursorEl = singleEl.querySelector('[data-testid="typing-cursor"]') as HTMLElement;
-    });
-
-    it('should keep cursor visible immediately after typing completes', () => {
+    it('should keep cursor visible immediately after first string completes', () => {
       jasmine.clock().tick(TYPING_DONE_MS);
-      expect(singleCursorEl.hidden).toBeFalse();
+      expect(cursorEl.hidden).toBeFalse();
     });
 
     it('should hide cursor after the 1st blink interval', () => {
       jasmine.clock().tick(TYPING_DONE_MS + BLINK_MS);
-      expect(singleCursorEl.hidden).toBeTrue();
+      expect(cursorEl.hidden).toBeTrue();
     });
 
     it('should show cursor after the 2nd blink interval', () => {
       jasmine.clock().tick(TYPING_DONE_MS + BLINK_MS * 2);
-      expect(singleCursorEl.hidden).toBeFalse();
+      expect(cursorEl.hidden).toBeFalse();
     });
 
     it('should hide cursor after the 3rd blink interval', () => {
       jasmine.clock().tick(TYPING_DONE_MS + BLINK_MS * 3);
-      expect(singleCursorEl.hidden).toBeTrue();
+      expect(cursorEl.hidden).toBeTrue();
     });
 
     it('should show cursor after the 4th blink interval', () => {
       jasmine.clock().tick(TYPING_DONE_MS + BLINK_MS * 4);
-      expect(singleCursorEl.hidden).toBeFalse();
+      expect(cursorEl.hidden).toBeFalse();
     });
 
     it('should hide cursor after the 5th blink interval', () => {
       jasmine.clock().tick(TYPING_DONE_MS + BLINK_MS * 5);
-      expect(singleCursorEl.hidden).toBeTrue();
+      expect(cursorEl.hidden).toBeTrue();
     });
 
     it('should show cursor after the 6th blink interval (3 complete blinks done)', () => {
       jasmine.clock().tick(TYPING_DONE_MS + BLINK_MS * 6);
-      expect(singleCursorEl.hidden).toBeFalse();
+      expect(cursorEl.hidden).toBeFalse();
     });
   });
 
+  // pause completes after 6 blink toggles
+  const PAUSE_DONE_MS = TYPING_DONE_MS + BLINK_MS * 6;
+
   describe('deleting phase', () => {
+    it('should remove the last character after the first delete tick', () => {
+      jasmine.clock().tick(PAUSE_DONE_MS + TYPING_MS);
+      expect(textEl.textContent).toBe('A');
+    });
+
+    it('should keep cursor visible during deletion', () => {
+      jasmine.clock().tick(PAUSE_DONE_MS + TYPING_MS);
+      expect(cursorEl.hidden).toBeFalse();
+    });
+
+    it('should result in empty text after all characters are deleted', () => {
+      jasmine.clock().tick(PAUSE_DONE_MS + TYPING_MS * 2);
+      expect(textEl.textContent).toBe('');
+    });
+  });
+
+  // 'AB' deletes in 2 ticks after pause
+  const DELETE_DONE_MS = PAUSE_DONE_MS + TYPING_MS * 2;
+
+  describe('string cycling', () => {
+    it('should advance to the next string after deleting the first', () => {
+      jasmine.clock().tick(DELETE_DONE_MS + TYPING_MS);
+      expect(textEl.textContent).toBe('C');
+    });
+
+    it('should display the full second string after completing it', () => {
+      jasmine.clock().tick(DELETE_DONE_MS + TYPING_MS * 2);
+      expect(textEl.textContent).toBe('CD');
+    });
+  });
+
+  describe('stops after last string', () => {
+    // full sequence: type 'AB' + pause + delete 'AB' + type 'CD'
+    const ALL_DONE_MS = DELETE_DONE_MS + TYPING_MS * 2;
+
+    it('should hide the cursor after the last string is fully typed', () => {
+      jasmine.clock().tick(ALL_DONE_MS);
+      expect(cursorEl.hidden).toBeTrue();
+    });
+
+    it('should leave the last string displayed after stopping', () => {
+      jasmine.clock().tick(ALL_DONE_MS + TYPING_MS * 10);
+      expect(textEl.textContent).toBe('CD');
+    });
+
+    it('should not change text content after stopping', () => {
+      jasmine.clock().tick(ALL_DONE_MS);
+      const textAtStop = textEl.textContent;
+      jasmine.clock().tick(TYPING_MS * 10);
+      expect(textEl.textContent).toBe(textAtStop);
+    });
+  });
+
+  describe('single string', () => {
     let singleFixture: ComponentFixture<SingleStringHostComponent>;
     let singleTextEl: HTMLElement;
     let singleCursorEl: HTMLElement;
-
-    // 'AB' types in 2 ticks, then 6 blink toggles at BLINK_MS each
-    const PAUSE_DONE_MS = TYPING_MS * 2 + BLINK_MS * 6;
 
     beforeEach(() => {
       singleFixture = TestBed.createComponent(SingleStringHostComponent);
@@ -179,43 +209,13 @@ describe('TypingAnimationDirective', () => {
       singleCursorEl = singleEl.querySelector('[data-testid="typing-cursor"]') as HTMLElement;
     });
 
-    it('should remove the last character after the first delete tick', () => {
-      jasmine.clock().tick(PAUSE_DONE_MS + TYPING_MS);
-      expect(singleTextEl.textContent).toBe('A');
+    it('should hide the cursor immediately after the only string is typed', () => {
+      jasmine.clock().tick(TYPING_MS * 2);
+      expect(singleCursorEl.hidden).toBeTrue();
     });
 
-    it('should keep cursor visible during deletion', () => {
-      jasmine.clock().tick(PAUSE_DONE_MS + TYPING_MS);
-      expect(singleCursorEl.hidden).toBeFalse();
-    });
-
-    it('should result in empty text after all characters are deleted', () => {
-      jasmine.clock().tick(PAUSE_DONE_MS + TYPING_MS * 2);
-      expect(singleTextEl.textContent).toBe('');
-    });
-  });
-
-  describe('loop', () => {
-    let singleFixture: ComponentFixture<SingleStringHostComponent>;
-    let singleTextEl: HTMLElement;
-
-    // type 2 chars → pause 6 blinks → delete 2 chars → retype
-    const DELETE_DONE_MS = TYPING_MS * 2 + BLINK_MS * 6 + TYPING_MS * 2;
-
-    beforeEach(() => {
-      singleFixture = TestBed.createComponent(SingleStringHostComponent);
-      singleFixture.detectChanges();
-      const singleEl = singleFixture.debugElement.query(By.css('[data-testid="typing-span"]')).nativeElement as HTMLElement;
-      singleTextEl = singleEl.querySelector('[data-testid="typing-text"]') as HTMLElement;
-    });
-
-    it('should retype the first character after deletion completes', () => {
-      jasmine.clock().tick(DELETE_DONE_MS + TYPING_MS);
-      expect(singleTextEl.textContent).toBe('A');
-    });
-
-    it('should retype the full string on the second loop', () => {
-      jasmine.clock().tick(DELETE_DONE_MS + TYPING_MS * 2);
+    it('should not delete or retype after stopping', () => {
+      jasmine.clock().tick(TYPING_MS * 2 + BLINK_MS * 10);
       expect(singleTextEl.textContent).toBe('AB');
     });
   });
