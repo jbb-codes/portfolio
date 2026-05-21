@@ -22,13 +22,13 @@ describe('ThemeService', () => {
   describe('isDarkMode$', () => {
     it('should default to true (dark mode)', () => {
       let isDark!: boolean;
-      service.isDarkMode$.subscribe(isDarkMode => (isDark = isDarkMode));
+      service.isDarkMode$.subscribe((isDarkMode) => (isDark = isDarkMode));
       expect(isDark).toBeTrue();
     });
 
     it('should emit false after first toggle', fakeAsync(() => {
       const emissions: boolean[] = [];
-      service.isDarkMode$.subscribe(isDarkMode => emissions.push(isDarkMode));
+      service.isDarkMode$.subscribe((isDarkMode) => emissions.push(isDarkMode));
       service.toggle();
       tick(400);
       expect(emissions).toEqual([true, false]);
@@ -36,7 +36,7 @@ describe('ThemeService', () => {
 
     it('should emit true again after a second toggle once animation clears', fakeAsync(() => {
       const emissions: boolean[] = [];
-      service.isDarkMode$.subscribe(isDarkMode => emissions.push(isDarkMode));
+      service.isDarkMode$.subscribe((isDarkMode) => emissions.push(isDarkMode));
       service.toggle();
       tick(400);
       service.toggle();
@@ -48,7 +48,7 @@ describe('ThemeService', () => {
   describe('clearAnimation()', () => {
     it('should set isAnimating to false', fakeAsync(() => {
       let isAnimating!: boolean;
-      service.isAnimating$.subscribe(animating => (isAnimating = animating));
+      service.isAnimating$.subscribe((animating) => (isAnimating = animating));
       service.toggle();
       service.clearAnimation();
       expect(isAnimating).toBeFalse();
@@ -57,7 +57,7 @@ describe('ThemeService', () => {
 
     it('should cancel the pending timeout so a subsequent toggle is not prematurely cleared', fakeAsync(() => {
       let isAnimating!: boolean;
-      service.isAnimating$.subscribe(animating => (isAnimating = animating));
+      service.isAnimating$.subscribe((animating) => (isAnimating = animating));
       service.toggle();
       tick(350); // simulate animationend at 350ms
       service.clearAnimation(); // cancels the original 400ms timeout
@@ -93,7 +93,7 @@ describe('ThemeService', () => {
 
     it('should not emit an extra isDarkMode value on a debounced rapid call', fakeAsync(() => {
       const emissions: boolean[] = [];
-      service.isDarkMode$.subscribe(isDarkMode => emissions.push(isDarkMode));
+      service.isDarkMode$.subscribe((isDarkMode) => emissions.push(isDarkMode));
       service.toggle();
       service.toggle(); // ignored
       tick(400);
@@ -104,7 +104,7 @@ describe('ThemeService', () => {
   describe('localStorage persistence', () => {
     it('should default to dark mode when no localStorage entry exists', () => {
       let isDark!: boolean;
-      service.isDarkMode$.subscribe(v => (isDark = v));
+      service.isDarkMode$.subscribe((v) => (isDark = v));
       expect(isDark).toBeTrue();
     });
 
@@ -115,7 +115,7 @@ describe('ThemeService', () => {
       const freshService = TestBed.inject(ThemeService);
 
       let isDark!: boolean;
-      freshService.isDarkMode$.subscribe(v => (isDark = v));
+      freshService.isDarkMode$.subscribe((v) => (isDark = v));
       expect(isDark).toBeFalse();
       expect(document.documentElement.getAttribute('data-theme')).toBe('light');
     });

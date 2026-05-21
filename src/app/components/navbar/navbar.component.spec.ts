@@ -1,6 +1,16 @@
-import { ComponentFixture, TestBed, discardPeriodicTasks, fakeAsync, tick } from '@angular/core/testing';
+import {
+  ComponentFixture,
+  TestBed,
+  discardPeriodicTasks,
+  fakeAsync,
+  tick,
+} from '@angular/core/testing';
 import { provideLocationMocks } from '@angular/common/testing';
-import { provideRouter, Router, withDisabledInitialNavigation } from '@angular/router';
+import {
+  provideRouter,
+  Router,
+  withDisabledInitialNavigation,
+} from '@angular/router';
 import { ApplicationRef } from '@angular/core';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { NavbarComponent } from './navbar.component';
@@ -25,7 +35,9 @@ describe('NavbarComponent', () => {
 
   describe('logo', () => {
     it('should display the site name', () => {
-      const el: HTMLElement = fixture.nativeElement.querySelector('[data-testid="navbar-logo"]');
+      const el: HTMLElement = fixture.nativeElement.querySelector(
+        '[data-testid="navbar-logo"]',
+      );
       expect(el?.textContent?.trim()).toContain('Jarren Bess');
     });
   });
@@ -75,7 +87,9 @@ describe('NavbarComponent', () => {
       it('should switch to light mode on click', () => {
         btn.click();
         fixture.detectChanges();
-        expect(document.documentElement.getAttribute('data-theme')).toBe('light');
+        expect(document.documentElement.getAttribute('data-theme')).toBe(
+          'light',
+        );
         expect(btn.getAttribute('aria-label')).toBe('Switch to dark mode');
       });
 
@@ -85,7 +99,9 @@ describe('NavbarComponent', () => {
         setTimeout(() => {
           btn.click();
           fixture.detectChanges();
-          expect(document.documentElement.getAttribute('data-theme')).toBeNull();
+          expect(
+            document.documentElement.getAttribute('data-theme'),
+          ).toBeNull();
           expect(btn.getAttribute('aria-label')).toBe('Switch to light mode');
           done();
         }, 450);
@@ -103,7 +119,9 @@ describe('NavbarComponent', () => {
         btn.click();
         btn.click();
         fixture.detectChanges();
-        expect(document.documentElement.getAttribute('data-theme')).toBe('light');
+        expect(document.documentElement.getAttribute('data-theme')).toBe(
+          'light',
+        );
       });
 
       it('should clear the animating state after the animation completes', (done) => {
@@ -121,8 +139,11 @@ describe('NavbarComponent', () => {
 
   describe('sliding underline', () => {
     it('should scope the underline indicator inside the nav links so it positions relative to them', () => {
-      const container: HTMLElement = fixture.nativeElement.querySelector('[data-testid="navbar-links"]');
-      const underline: HTMLElement | null = container?.querySelector('[data-testid="nav-underline"]') ?? null;
+      const container: HTMLElement = fixture.nativeElement.querySelector(
+        '[data-testid="navbar-links"]',
+      );
+      const underline: HTMLElement | null =
+        container?.querySelector('[data-testid="nav-underline"]') ?? null;
       expect(underline).toBeTruthy();
     });
   });
@@ -154,7 +175,9 @@ describe('NavbarComponent – underline positioning', () => {
     tick();
     appRef.tick();
 
-    const container: HTMLElement = fixture.nativeElement.querySelector('[data-testid="navbar-links"]');
+    const container: HTMLElement = fixture.nativeElement.querySelector(
+      '[data-testid="navbar-links"]',
+    );
     expect(container.style.getPropertyValue('--underline-left')).not.toBe('');
     expect(container.style.getPropertyValue('--underline-width')).not.toBe('');
     discardPeriodicTasks();
@@ -165,7 +188,9 @@ describe('NavbarComponent – underline positioning', () => {
     tick();
     appRef.tick();
 
-    const container: HTMLElement = fixture.nativeElement.querySelector('[data-testid="navbar-links"]');
+    const container: HTMLElement = fixture.nativeElement.querySelector(
+      '[data-testid="navbar-links"]',
+    );
     const spy = spyOn(container.style, 'setProperty');
 
     router.navigate(['/about']);

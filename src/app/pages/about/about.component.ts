@@ -25,9 +25,9 @@ import {
 export class AboutComponent {
   readonly iconMap: Record<string, LucideIcon> = {
     'code-xml': LucideCodeXml,
-    'palette': LucidePalette,
-    'network': LucideNetwork,
-    'bot': LucideBot,
+    palette: LucidePalette,
+    network: LucideNetwork,
+    bot: LucideBot,
   };
 
   readonly interests: InterestCard[] = INTERESTS;

@@ -6,7 +6,9 @@ const LIGHT_VALUE = 'light';
 
 @Injectable({ providedIn: 'root' })
 export class ThemeService {
-  private readonly isDarkModeSubject = new BehaviorSubject<boolean>(this.loadIsDark());
+  private readonly isDarkModeSubject = new BehaviorSubject<boolean>(
+    this.loadIsDark(),
+  );
   private readonly isAnimatingSubject = new BehaviorSubject<boolean>(false);
   private animationTimeout: ReturnType<typeof setTimeout> | null = null;
 

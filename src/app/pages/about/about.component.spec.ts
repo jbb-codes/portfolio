@@ -32,17 +32,21 @@ describe('AboutComponent', () => {
     });
 
     it('should render an email social link', () => {
-      const link: HTMLAnchorElement = fixture.nativeElement.querySelector('a[href^="mailto:"]');
+      const link: HTMLAnchorElement =
+        fixture.nativeElement.querySelector('a[href^="mailto:"]');
       expect(link).toBeTruthy();
     });
 
     it('should render a LinkedIn social link', () => {
-      const link: HTMLAnchorElement = fixture.nativeElement.querySelector('a[href*="linkedin"]');
+      const link: HTMLAnchorElement = fixture.nativeElement.querySelector(
+        'a[href*="linkedin"]',
+      );
       expect(link).toBeTruthy();
     });
 
     it('should render a GitHub social link', () => {
-      const link: HTMLAnchorElement = fixture.nativeElement.querySelector('a[href*="github"]');
+      const link: HTMLAnchorElement =
+        fixture.nativeElement.querySelector('a[href*="github"]');
       expect(link).toBeTruthy();
     });
   });
@@ -54,13 +58,16 @@ describe('AboutComponent', () => {
     });
 
     it('should render exactly four interest cards', () => {
-      const cards = fixture.nativeElement.querySelectorAll('.about__interest-card');
+      const cards = fixture.nativeElement.querySelectorAll(
+        '.about__interest-card',
+      );
       expect(cards.length).toBe(4);
     });
 
     it('should render an svg icon in each interest card', () => {
-      const cards: NodeListOf<HTMLElement> = fixture.nativeElement.querySelectorAll('.about__interest-card');
-      cards.forEach(card => expect(card.querySelector('svg')).toBeTruthy());
+      const cards: NodeListOf<HTMLElement> =
+        fixture.nativeElement.querySelectorAll('.about__interest-card');
+      cards.forEach((card) => expect(card.querySelector('svg')).toBeTruthy());
     });
   });
 });

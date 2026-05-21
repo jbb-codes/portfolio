@@ -15,15 +15,17 @@ npm install
 ```
 
 <!-- AUTO-GENERATED: scripts -->
+
 ## Available Commands
 
-| Command | Description |
-|---------|-------------|
-| `npm start` | Start development server at `http://localhost:4200` with hot reload |
-| `npm run build` | Production build — output goes to `dist/` |
-| `npm run watch` | Development build in watch mode |
-| `npm test` | Run unit tests via Karma/Jasmine |
-| `ng generate component <name>` | Scaffold a new component |
+| Command                        | Description                                                         |
+| ------------------------------ | ------------------------------------------------------------------- |
+| `npm start`                    | Start development server at `http://localhost:4200` with hot reload |
+| `npm run build`                | Production build — output goes to `dist/`                           |
+| `npm run watch`                | Development build in watch mode                                     |
+| `npm test`                     | Run unit tests via Karma/Jasmine                                    |
+| `ng generate component <name>` | Scaffold a new component                                            |
+
 <!-- END AUTO-GENERATED: scripts -->
 
 ## Project Structure

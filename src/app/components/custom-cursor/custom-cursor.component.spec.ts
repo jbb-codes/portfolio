@@ -28,12 +28,16 @@ describe('CustomCursorComponent', () => {
 
   describe('cursor dot element', () => {
     it('should render a cursor dot in the DOM', () => {
-      const dot = fixture.nativeElement.querySelector('[data-testid="cursor-dot"]');
+      const dot = fixture.nativeElement.querySelector(
+        '[data-testid="cursor-dot"]',
+      );
       expect(dot).toBeTruthy();
     });
 
     it('should mark the cursor dot as aria-hidden', () => {
-      const dot = fixture.nativeElement.querySelector('[data-testid="cursor-dot"]');
+      const dot = fixture.nativeElement.querySelector(
+        '[data-testid="cursor-dot"]',
+      );
       expect(dot.getAttribute('aria-hidden')).toBe('true');
     });
 
@@ -44,17 +48,27 @@ describe('CustomCursorComponent', () => {
 
   describe('mouse tracking', () => {
     it('should set transform on the cursor dot after mousemove', () => {
-      doc.dispatchEvent(new MouseEvent('mousemove', { clientX: 150, clientY: 300 }));
+      doc.dispatchEvent(
+        new MouseEvent('mousemove', { clientX: 150, clientY: 300 }),
+      );
 
-      const dot: HTMLElement = fixture.nativeElement.querySelector('[data-testid="cursor-dot"]');
+      const dot: HTMLElement = fixture.nativeElement.querySelector(
+        '[data-testid="cursor-dot"]',
+      );
       expect(dot.style.transform).toBe('translate(146px, 296px)');
     });
 
     it('should update transform on each successive mousemove', () => {
-      doc.dispatchEvent(new MouseEvent('mousemove', { clientX: 10, clientY: 20 }));
-      doc.dispatchEvent(new MouseEvent('mousemove', { clientX: 50, clientY: 80 }));
+      doc.dispatchEvent(
+        new MouseEvent('mousemove', { clientX: 10, clientY: 20 }),
+      );
+      doc.dispatchEvent(
+        new MouseEvent('mousemove', { clientX: 50, clientY: 80 }),
+      );
 
-      const dot: HTMLElement = fixture.nativeElement.querySelector('[data-testid="cursor-dot"]');
+      const dot: HTMLElement = fixture.nativeElement.querySelector(
+        '[data-testid="cursor-dot"]',
+      );
       expect(dot.style.transform).toBe('translate(46px, 76px)');
     });
   });
@@ -65,7 +79,9 @@ describe('CustomCursorComponent', () => {
       doc.body.appendChild(button);
       const proximityClickSpy = spyOn(button, 'click');
 
-      button.dispatchEvent(new MouseEvent('click', { bubbles: true, clientX: 100, clientY: 100 }));
+      button.dispatchEvent(
+        new MouseEvent('click', { bubbles: true, clientX: 100, clientY: 100 }),
+      );
 
       expect(proximityClickSpy).not.toHaveBeenCalled();
       doc.body.removeChild(button);
@@ -116,7 +132,9 @@ describe('CustomCursorComponent', () => {
       doc.body.appendChild(button);
       const proximityClickSpy = spyOn(button, 'click');
 
-      span.dispatchEvent(new MouseEvent('click', { bubbles: true, clientX: 50, clientY: 50 }));
+      span.dispatchEvent(
+        new MouseEvent('click', { bubbles: true, clientX: 50, clientY: 50 }),
+      );
 
       expect(proximityClickSpy).not.toHaveBeenCalled();
       doc.body.removeChild(button);
@@ -133,7 +151,9 @@ describe('CustomCursorComponent', () => {
     it('should remove the click listener from the document on destroy', () => {
       const spy = spyOn(doc, 'removeEventListener').and.callThrough();
       fixture.destroy();
-      expect(spy).toHaveBeenCalledWith('click', jasmine.any(Function), { capture: true });
+      expect(spy).toHaveBeenCalledWith('click', jasmine.any(Function), {
+        capture: true,
+      });
     });
   });
 });
@@ -145,10 +165,12 @@ describe('CustomCursorComponent – ring proximity', () => {
 
   beforeEach(async () => {
     rafCallbacks = [];
-    spyOn(window, 'requestAnimationFrame').and.callFake((cb: FrameRequestCallback) => {
-      rafCallbacks.push(cb);
-      return rafCallbacks.length;
-    });
+    spyOn(window, 'requestAnimationFrame').and.callFake(
+      (cb: FrameRequestCallback) => {
+        rafCallbacks.push(cb);
+        return rafCallbacks.length;
+      },
+    );
 
     TestBed.resetTestingModule();
     await TestBed.configureTestingModule({
@@ -165,7 +187,7 @@ describe('CustomCursorComponent – ring proximity', () => {
   function tickRaf(): void {
     const cbs = [...rafCallbacks];
     rafCallbacks.length = 0;
-    cbs.forEach(cb => cb(performance.now()));
+    cbs.forEach((cb) => cb(performance.now()));
   }
 
   describe('interactive ring detection', () => {
@@ -174,11 +196,17 @@ describe('CustomCursorComponent – ring proximity', () => {
       doc.body.appendChild(button);
       spyOn(doc, 'elementFromPoint').and.returnValue(button);
 
-      doc.dispatchEvent(new MouseEvent('mousemove', { clientX: 100, clientY: 100 }));
+      doc.dispatchEvent(
+        new MouseEvent('mousemove', { clientX: 100, clientY: 100 }),
+      );
       tickRaf();
 
-      const dot: HTMLElement = fixture.nativeElement.querySelector('[data-testid="cursor-dot"]');
-      const ring: HTMLElement = fixture.nativeElement.querySelector('[data-testid="cursor-ring"]');
+      const dot: HTMLElement = fixture.nativeElement.querySelector(
+        '[data-testid="cursor-dot"]',
+      );
+      const ring: HTMLElement = fixture.nativeElement.querySelector(
+        '[data-testid="cursor-ring"]',
+      );
       expect(dot.classList).toContain('custom-cursor__dot--on-interactive');
       expect(ring.classList).toContain('custom-cursor__ring--on-interactive');
 
@@ -191,19 +219,31 @@ describe('CustomCursorComponent – ring proximity', () => {
       doc.body.appendChild(button);
       doc.body.appendChild(div);
 
-      const fromPointSpy = spyOn(doc, 'elementFromPoint').and.returnValue(button);
-      doc.dispatchEvent(new MouseEvent('mousemove', { clientX: 100, clientY: 100 }));
+      const fromPointSpy = spyOn(doc, 'elementFromPoint').and.returnValue(
+        button,
+      );
+      doc.dispatchEvent(
+        new MouseEvent('mousemove', { clientX: 100, clientY: 100 }),
+      );
       tickRaf();
 
       fromPointSpy.and.returnValue(div);
       div.dispatchEvent(new MouseEvent('mouseover', { bubbles: true }));
-      doc.dispatchEvent(new MouseEvent('mousemove', { clientX: 500, clientY: 500 }));
+      doc.dispatchEvent(
+        new MouseEvent('mousemove', { clientX: 500, clientY: 500 }),
+      );
       tickRaf();
 
-      const dot: HTMLElement = fixture.nativeElement.querySelector('[data-testid="cursor-dot"]');
-      const ring: HTMLElement = fixture.nativeElement.querySelector('[data-testid="cursor-ring"]');
+      const dot: HTMLElement = fixture.nativeElement.querySelector(
+        '[data-testid="cursor-dot"]',
+      );
+      const ring: HTMLElement = fixture.nativeElement.querySelector(
+        '[data-testid="cursor-ring"]',
+      );
       expect(dot.classList).not.toContain('custom-cursor__dot--on-interactive');
-      expect(ring.classList).not.toContain('custom-cursor__ring--on-interactive');
+      expect(ring.classList).not.toContain(
+        'custom-cursor__ring--on-interactive',
+      );
 
       doc.body.removeChild(button);
       doc.body.removeChild(div);
@@ -217,7 +257,9 @@ describe('CustomCursorComponent – ring proximity', () => {
       doc.body.appendChild(card);
       spyOn(doc, 'elementFromPoint').and.returnValue(card);
 
-      doc.dispatchEvent(new MouseEvent('mousemove', { clientX: 100, clientY: 100 }));
+      doc.dispatchEvent(
+        new MouseEvent('mousemove', { clientX: 100, clientY: 100 }),
+      );
       tickRaf();
 
       expect(card.classList).toContain('cursor-ring-active');
@@ -233,7 +275,9 @@ describe('CustomCursorComponent – ring proximity', () => {
       doc.body.appendChild(card);
       spyOn(doc, 'elementFromPoint').and.returnValue(inner);
 
-      doc.dispatchEvent(new MouseEvent('mousemove', { clientX: 100, clientY: 100 }));
+      doc.dispatchEvent(
+        new MouseEvent('mousemove', { clientX: 100, clientY: 100 }),
+      );
       tickRaf();
 
       expect(card.classList).toContain('cursor-ring-active');
@@ -249,11 +293,15 @@ describe('CustomCursorComponent – ring proximity', () => {
       doc.body.appendChild(elsewhere);
 
       const fromPointSpy = spyOn(doc, 'elementFromPoint').and.returnValue(card);
-      doc.dispatchEvent(new MouseEvent('mousemove', { clientX: 100, clientY: 100 }));
+      doc.dispatchEvent(
+        new MouseEvent('mousemove', { clientX: 100, clientY: 100 }),
+      );
       tickRaf();
 
       fromPointSpy.and.returnValue(elsewhere);
-      doc.dispatchEvent(new MouseEvent('mousemove', { clientX: 500, clientY: 500 }));
+      doc.dispatchEvent(
+        new MouseEvent('mousemove', { clientX: 500, clientY: 500 }),
+      );
       tickRaf();
 
       expect(card.classList).not.toContain('cursor-ring-active');
@@ -270,7 +318,9 @@ describe('CustomCursorComponent – ring proximity', () => {
       doc.body.appendChild(card);
       spyOn(doc, 'elementFromPoint').and.returnValue(card);
 
-      doc.dispatchEvent(new MouseEvent('mousemove', { clientX: 100, clientY: 100 }));
+      doc.dispatchEvent(
+        new MouseEvent('mousemove', { clientX: 100, clientY: 100 }),
+      );
       tickRaf();
       expect(card.classList).toContain('cursor-ring-active');
 

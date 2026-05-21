@@ -21,17 +21,21 @@ describe('AnimationLoopService', () => {
     scheduledFrames = new Map();
     matchMediaResult = { matches: true };
 
-    spyOn(window, 'requestAnimationFrame').and.callFake((cb: FrameRequestCallback) => {
-      const id = ++nextRafId;
-      scheduledFrames.set(id, cb);
-      return id;
-    });
+    spyOn(window, 'requestAnimationFrame').and.callFake(
+      (cb: FrameRequestCallback) => {
+        const id = ++nextRafId;
+        scheduledFrames.set(id, cb);
+        return id;
+      },
+    );
 
     spyOn(window, 'cancelAnimationFrame').and.callFake((id: number) => {
       scheduledFrames.delete(id);
     });
 
-    spyOn(window, 'matchMedia').and.callFake(() => matchMediaResult as MediaQueryList);
+    spyOn(window, 'matchMedia').and.callFake(
+      () => matchMediaResult as MediaQueryList,
+    );
 
     TestBed.configureTestingModule({ providers: [AnimationLoopService] });
     service = TestBed.inject(AnimationLoopService);

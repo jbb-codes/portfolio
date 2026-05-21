@@ -80,7 +80,6 @@ body {
     color 0.3s ease;
 }
 
-
 .glass {
   background: var(--glass-bg);
   backdrop-filter: var(--glass-blur);

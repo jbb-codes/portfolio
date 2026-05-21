@@ -7,7 +7,9 @@ export class AnimationLoopService implements OnDestroy {
   constructor(private readonly zone: NgZone) {}
 
   start(draw: () => void): void {
-    const prefersMotion = window.matchMedia('(prefers-reduced-motion: no-preference)').matches;
+    const prefersMotion = window.matchMedia(
+      '(prefers-reduced-motion: no-preference)',
+    ).matches;
     if (!prefersMotion) return;
 
     this.zone.runOutsideAngular(() => {

@@ -2,14 +2,17 @@
   <header class="resume__header">
     <div class="resume__header-center">
       <h1>Resume</h1>
-      <p class="resume__header-subtitle">Education · Experience · Skills · Certifications</p>
+      <p class="resume__header-subtitle">
+        Education · Experience · Skills · Certifications
+      </p>
     </div>
     <a
       class="resume__download-btn"
       href="/docs/resume.pdf"
       download
       data-testid="download-link"
-    >&#8595; Download PDF</a>
+      >&#8595; Download PDF</a
+    >
   </header>
 
   <div class="resume__grid">
@@ -20,7 +23,9 @@
           <div class="resume__card" data-testid="experience-entry">
             <div class="resume__card-header">
               <span class="resume__card-title">{{ exp.title }}</span>
-              <span class="resume__card-dates">{{ exp.startDate }} – {{ exp.endDate }}</span>
+              <span class="resume__card-dates"
+                >{{ exp.startDate }} – {{ exp.endDate }}</span
+              >
             </div>
             <span class="resume__card-subtitle">{{ exp.company }}</span>
             <p class="resume__card-details">{{ exp.details }}</p>
@@ -64,7 +69,10 @@
           <div class="resume__skill" data-testid="skill-entry">
             <span class="resume__skill-label">{{ skill.name }}</span>
             <div class="resume__skill-bar">
-              <div class="resume__skill-fill" [style.width.%]="skill.level"></div>
+              <div
+                class="resume__skill-fill"
+                [style.width.%]="skill.level"
+              ></div>
             </div>
           </div>
         }
@@ -72,10 +80,14 @@
 
       <div class="resume__section glass" data-cursor-hover>
         <h2 class="resume__section-heading">What I'm Learning Next</h2>
-        <p class="resume__section-subtitle"><em>Technologies &amp; concepts currently being explored</em></p>
+        <p class="resume__section-subtitle">
+          <em>Technologies &amp; concepts currently being explored</em>
+        </p>
         <ul class="resume__learning-list">
           @for (item of learningNext; track item) {
-            <li class="resume__learning-item" data-testid="learning-entry">{{ item }}</li>
+            <li class="resume__learning-item" data-testid="learning-entry">
+              {{ item }}
+            </li>
           }
         </ul>
       </div>

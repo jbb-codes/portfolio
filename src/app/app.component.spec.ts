@@ -29,28 +29,38 @@ describe('AppComponent', () => {
 
   describe('footer', () => {
     it('should render 4 footer nav links', () => {
-      const links = fixture.nativeElement.querySelectorAll('[data-testid="footer-nav-link"]');
+      const links = fixture.nativeElement.querySelectorAll(
+        '[data-testid="footer-nav-link"]',
+      );
       expect(links.length).toBe(4);
     });
 
     it('should render copyright with year', () => {
-      const el: HTMLElement = fixture.nativeElement.querySelector('[data-testid="footer-copyright"]');
+      const el: HTMLElement = fixture.nativeElement.querySelector(
+        '[data-testid="footer-copyright"]',
+      );
       expect(el?.textContent).toContain('2026');
     });
 
     describe('social links', () => {
       it('should render GitHub link', () => {
-        const el = fixture.nativeElement.querySelector('[data-testid="footer-github"]');
+        const el = fixture.nativeElement.querySelector(
+          '[data-testid="footer-github"]',
+        );
         expect(el).toBeTruthy();
       });
 
       it('should render LinkedIn link', () => {
-        const el = fixture.nativeElement.querySelector('[data-testid="footer-linkedin"]');
+        const el = fixture.nativeElement.querySelector(
+          '[data-testid="footer-linkedin"]',
+        );
         expect(el).toBeTruthy();
       });
 
       it('should render Email link', () => {
-        const el = fixture.nativeElement.querySelector('[data-testid="footer-email"]');
+        const el = fixture.nativeElement.querySelector(
+          '[data-testid="footer-email"]',
+        );
         expect(el).toBeTruthy();
       });
     });
@@ -58,14 +68,18 @@ describe('AppComponent', () => {
 
   describe('particle background', () => {
     it('should render app-particle-background', () => {
-      const el = fixture.nativeElement.querySelector('[data-testid="particle-background"]');
+      const el = fixture.nativeElement.querySelector(
+        '[data-testid="particle-background"]',
+      );
       expect(el).toBeTruthy();
     });
   });
 
   describe('route animation', () => {
     it('should have a route-animation-wrapper element in the main content area', () => {
-      const wrapper: HTMLElement = fixture.nativeElement.querySelector('[data-testid="route-animation-wrapper"]');
+      const wrapper: HTMLElement = fixture.nativeElement.querySelector(
+        '[data-testid="route-animation-wrapper"]',
+      );
       expect(wrapper).toBeTruthy();
     });
 

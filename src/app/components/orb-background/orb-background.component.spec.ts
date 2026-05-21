@@ -15,7 +15,12 @@ describe('resolveOrbCollisions', () => {
   it('returns unchanged states when orbs are far apart', () => {
     const orb1: OrbState = { left: 10, top: 50, driftX: 0.1, driftY: 0 };
     const orb2: OrbState = { left: 90, top: 50, driftX: -0.1, driftY: 0 };
-    const [next1, next2] = resolveOrbCollisions(orb1, orb2, VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
+    const [next1, next2] = resolveOrbCollisions(
+      orb1,
+      orb2,
+      VIEWPORT_WIDTH,
+      VIEWPORT_HEIGHT,
+    );
     expect(next1).toEqual(orb1);
     expect(next2).toEqual(orb2);
   });
@@ -24,7 +29,12 @@ describe('resolveOrbCollisions', () => {
     // Centers at x=400 and x=600 → distance=200 < 400 (diameter)
     const orb1: OrbState = { left: 40, top: 50, driftX: 0.1, driftY: 0.05 };
     const orb2: OrbState = { left: 60, top: 50, driftX: -0.1, driftY: -0.05 };
-    const [next1, next2] = resolveOrbCollisions(orb1, orb2, VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
+    const [next1, next2] = resolveOrbCollisions(
+      orb1,
+      orb2,
+      VIEWPORT_WIDTH,
+      VIEWPORT_HEIGHT,
+    );
     expect(next1.driftX).toBe(-orb1.driftX);
     expect(next1.driftY).toBe(-orb1.driftY);
     expect(next2.driftX).toBe(-orb2.driftX);
@@ -35,7 +45,12 @@ describe('resolveOrbCollisions', () => {
     // Centers at x=300 and x=700 → distance=400 === diameter, no bounce
     const orb1: OrbState = { left: 30, top: 50, driftX: 0.1, driftY: 0 };
     const orb2: OrbState = { left: 70, top: 50, driftX: -0.1, driftY: 0 };
-    const [next1, next2] = resolveOrbCollisions(orb1, orb2, VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
+    const [next1, next2] = resolveOrbCollisions(
+      orb1,
+      orb2,
+      VIEWPORT_WIDTH,
+      VIEWPORT_HEIGHT,
+    );
     expect(next1.driftX).toBe(orb1.driftX);
     expect(next2.driftX).toBe(orb2.driftX);
   });
@@ -44,7 +59,12 @@ describe('resolveOrbCollisions', () => {
     // Centers at x=301 and x=699 → distance=398 < 400 (diameter), should bounce
     const orb1: OrbState = { left: 30.1, top: 50, driftX: 0.1, driftY: 0 };
     const orb2: OrbState = { left: 69.9, top: 50, driftX: -0.1, driftY: 0 };
-    const [next1, next2] = resolveOrbCollisions(orb1, orb2, VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
+    const [next1, next2] = resolveOrbCollisions(
+      orb1,
+      orb2,
+      VIEWPORT_WIDTH,
+      VIEWPORT_HEIGHT,
+    );
     expect(next1.driftX).toBe(-orb1.driftX);
     expect(next2.driftX).toBe(-orb2.driftX);
   });
@@ -53,7 +73,12 @@ describe('resolveOrbCollisions', () => {
     // Centers at x=400 and x=600 → within collision range, but drifting away from each other
     const orb1: OrbState = { left: 40, top: 50, driftX: -0.1, driftY: 0 };
     const orb2: OrbState = { left: 60, top: 50, driftX: 0.1, driftY: 0 };
-    const [next1, next2] = resolveOrbCollisions(orb1, orb2, VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
+    const [next1, next2] = resolveOrbCollisions(
+      orb1,
+      orb2,
+      VIEWPORT_WIDTH,
+      VIEWPORT_HEIGHT,
+    );
     expect(next1.driftX).toBe(orb1.driftX);
     expect(next2.driftX).toBe(orb2.driftX);
   });
@@ -94,28 +119,28 @@ describe('stepOrb', () => {
     const orb: OrbState = { left: -19.6, top: 30, driftX: -0.5, driftY: 0 };
     const next = stepOrb(orb, 1, VW, VH);
     expect(next.driftX).toBeGreaterThan(0);
-    expect(next.left).toBeCloseTo(-ORB_RADIUS_PX / VW * 100);
+    expect(next.left).toBeCloseTo((-ORB_RADIUS_PX / VW) * 100);
   });
 
   it('bounces off the right wall and clamps position', () => {
     const orb: OrbState = { left: 79.6, top: 30, driftX: 0.5, driftY: 0 };
     const next = stepOrb(orb, 1, VW, VH);
     expect(next.driftX).toBeLessThan(0);
-    expect(next.left).toBeCloseTo((VW - ORB_RADIUS_PX) / VW * 100);
+    expect(next.left).toBeCloseTo(((VW - ORB_RADIUS_PX) / VW) * 100);
   });
 
   it('bounces off the top wall and clamps position', () => {
     const orb: OrbState = { left: 30, top: -19.6, driftX: 0, driftY: -0.5 };
     const next = stepOrb(orb, 1, VW, VH);
     expect(next.driftY).toBeGreaterThan(0);
-    expect(next.top).toBeCloseTo(-ORB_RADIUS_PX / VH * 100);
+    expect(next.top).toBeCloseTo((-ORB_RADIUS_PX / VH) * 100);
   });
 
   it('bounces off the bottom wall and clamps position', () => {
     const orb: OrbState = { left: 30, top: 79.6, driftX: 0, driftY: 0.5 };
     const next = stepOrb(orb, 1, VW, VH);
     expect(next.driftY).toBeLessThan(0);
-    expect(next.top).toBeCloseTo((VH - ORB_RADIUS_PX) / VH * 100);
+    expect(next.top).toBeCloseTo(((VH - ORB_RADIUS_PX) / VH) * 100);
   });
 
   it('preserves drift when not hitting a wall', () => {
@@ -145,7 +170,7 @@ describe('stepOrb', () => {
     const orb: OrbState = { left: 89.6, top: 30, driftX: 0.5, driftY: 0 };
     const next = stepOrb(orb, 1, 2000, 1000);
     expect(next.driftX).toBeLessThan(0);
-    expect(next.left).toBeCloseTo((2000 - ORB_RADIUS_PX) / 2000 * 100);
+    expect(next.left).toBeCloseTo(((2000 - ORB_RADIUS_PX) / 2000) * 100);
   });
 
   it('does not bounce before the viewport-aware right bound', () => {
@@ -165,16 +190,22 @@ describe('OrbBackgroundComponent', () => {
 
   describe('without reduced motion', () => {
     it('renders exactly two orb elements', () => {
-      spyOn(window, 'matchMedia').and.returnValue({ matches: true } as MediaQueryList);
+      spyOn(window, 'matchMedia').and.returnValue({
+        matches: true,
+      } as MediaQueryList);
       const fixture = TestBed.createComponent(OrbBackgroundComponent);
       fixture.detectChanges();
-      const orbs = fixture.nativeElement.querySelectorAll('[data-testid="orb"]');
+      const orbs = fixture.nativeElement.querySelectorAll(
+        '[data-testid="orb"]',
+      );
       expect(orbs.length).toBe(2);
       fixture.destroy();
     });
 
     it('starts a requestAnimationFrame loop', () => {
-      spyOn(window, 'matchMedia').and.returnValue({ matches: true } as MediaQueryList);
+      spyOn(window, 'matchMedia').and.returnValue({
+        matches: true,
+      } as MediaQueryList);
       const rafSpy = spyOn(window, 'requestAnimationFrame').and.returnValue(1);
       const fixture = TestBed.createComponent(OrbBackgroundComponent);
       fixture.detectChanges();
@@ -183,7 +214,9 @@ describe('OrbBackgroundComponent', () => {
     });
 
     it('cancels the animation frame on destroy', () => {
-      spyOn(window, 'matchMedia').and.returnValue({ matches: true } as MediaQueryList);
+      spyOn(window, 'matchMedia').and.returnValue({
+        matches: true,
+      } as MediaQueryList);
       spyOn(window, 'requestAnimationFrame').and.returnValue(42);
       const cancelSpy = spyOn(window, 'cancelAnimationFrame');
       const fixture = TestBed.createComponent(OrbBackgroundComponent);
@@ -195,16 +228,22 @@ describe('OrbBackgroundComponent', () => {
 
   describe('with reduced motion', () => {
     it('renders exactly two orb elements', () => {
-      spyOn(window, 'matchMedia').and.returnValue({ matches: false } as MediaQueryList);
+      spyOn(window, 'matchMedia').and.returnValue({
+        matches: false,
+      } as MediaQueryList);
       const fixture = TestBed.createComponent(OrbBackgroundComponent);
       fixture.detectChanges();
-      const orbs = fixture.nativeElement.querySelectorAll('[data-testid="orb"]');
+      const orbs = fixture.nativeElement.querySelectorAll(
+        '[data-testid="orb"]',
+      );
       expect(orbs.length).toBe(2);
       fixture.destroy();
     });
 
     it('does not start a requestAnimationFrame loop', () => {
-      spyOn(window, 'matchMedia').and.returnValue({ matches: false } as MediaQueryList);
+      spyOn(window, 'matchMedia').and.returnValue({
+        matches: false,
+      } as MediaQueryList);
       const rafSpy = spyOn(window, 'requestAnimationFrame');
       const fixture = TestBed.createComponent(OrbBackgroundComponent);
       fixture.detectChanges();

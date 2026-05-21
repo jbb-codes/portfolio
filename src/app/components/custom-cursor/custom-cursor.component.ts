@@ -1,4 +1,4 @@
-import { DOCUMENT } from "@angular/common";
+import { DOCUMENT } from '@angular/common';
 import {
   AfterViewInit,
   Component,
@@ -8,26 +8,27 @@ import {
   OnDestroy,
   OnInit,
   ViewChild,
-} from "@angular/core";
+} from '@angular/core';
 
 const DOT_SIZE = 8;
 const RING_SIZE = 32;
 const RING_LERP = 0.35;
 const RING_ANGLE_STEPS = 12;
 const RING_ACTIVE_CLASS = 'cursor-ring-active';
-const INTERACTIVE_SELECTOR = 'a, button, input, select, textarea, [role="button"], [tabindex]:not([tabindex="-1"])';
+const INTERACTIVE_SELECTOR =
+  'a, button, input, select, textarea, [role="button"], [tabindex]:not([tabindex="-1"])';
 
 @Component({
-  selector: "app-custom-cursor",
+  selector: 'app-custom-cursor',
   standalone: true,
-  templateUrl: "./custom-cursor.component.html",
-  styleUrl: "./custom-cursor.component.css",
+  templateUrl: './custom-cursor.component.html',
+  styleUrl: './custom-cursor.component.css',
 })
 export class CustomCursorComponent implements OnInit, AfterViewInit, OnDestroy {
-  @ViewChild("cursorDot")
+  @ViewChild('cursorDot')
   private readonly cursorDot!: ElementRef<HTMLElement>;
 
-  @ViewChild("cursorRing")
+  @ViewChild('cursorRing')
   private readonly cursorRing!: ElementRef<HTMLElement>;
 
   private readonly doc = inject(DOCUMENT);
@@ -51,9 +52,13 @@ export class CustomCursorComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit(): void {
     this.zone.runOutsideAngular(() => {
-      this.doc.addEventListener("mousemove", this.mouseMoveHandler, { passive: true });
-      this.doc.addEventListener("click", this.clickHandler, { capture: true });
-      this.doc.addEventListener("mouseover", this.mouseOverHandler, { passive: true });
+      this.doc.addEventListener('mousemove', this.mouseMoveHandler, {
+        passive: true,
+      });
+      this.doc.addEventListener('click', this.clickHandler, { capture: true });
+      this.doc.addEventListener('mouseover', this.mouseOverHandler, {
+        passive: true,
+      });
     });
   }
 
@@ -62,22 +67,30 @@ export class CustomCursorComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.doc.removeEventListener("mousemove", this.mouseMoveHandler);
-    this.doc.removeEventListener("click", this.clickHandler, { capture: true });
-    this.doc.removeEventListener("mouseover", this.mouseOverHandler);
+    this.doc.removeEventListener('mousemove', this.mouseMoveHandler);
+    this.doc.removeEventListener('click', this.clickHandler, { capture: true });
+    this.doc.removeEventListener('mouseover', this.mouseOverHandler);
     cancelAnimationFrame(this.rafId);
     this.clearRingActiveElements();
   }
 
   private onMouseOver(event: MouseEvent): void {
-    this.dotOnInteractive = !!(event.target as Element).closest(INTERACTIVE_SELECTOR);
+    this.dotOnInteractive = !!(event.target as Element).closest(
+      INTERACTIVE_SELECTOR,
+    );
     this.updateCursorInteractiveState();
   }
 
   private updateCursorInteractiveState(): void {
     const isInteractive = this.dotOnInteractive || this.ringNearInteractive;
-    this.cursorDot?.nativeElement.classList.toggle("custom-cursor__dot--on-interactive", isInteractive);
-    this.cursorRing?.nativeElement.classList.toggle("custom-cursor__ring--on-interactive", isInteractive);
+    this.cursorDot?.nativeElement.classList.toggle(
+      'custom-cursor__dot--on-interactive',
+      isInteractive,
+    );
+    this.cursorRing?.nativeElement.classList.toggle(
+      'custom-cursor__ring--on-interactive',
+      isInteractive,
+    );
   }
 
   private onProximityClick(event: MouseEvent): void {
@@ -144,25 +157,29 @@ export class CustomCursorComponent implements OnInit, AfterViewInit, OnDestroy {
       );
     }).filter((el): el is Element => el !== null);
 
-    this.ringNearInteractive = perimeter.some(el => !!el.closest(INTERACTIVE_SELECTOR));
+    this.ringNearInteractive = perimeter.some(
+      (el) => !!el.closest(INTERACTIVE_SELECTOR),
+    );
 
     const nextActive = new Set(
       perimeter
-        .map(el => el.closest('[data-cursor-hover]'))
+        .map((el) => el.closest('[data-cursor-hover]'))
         .filter((el): el is Element => el !== null),
     );
 
-    this.ringActiveElements.forEach(el => {
+    this.ringActiveElements.forEach((el) => {
       if (!nextActive.has(el)) el.classList.remove(RING_ACTIVE_CLASS);
     });
-    nextActive.forEach(el => el.classList.add(RING_ACTIVE_CLASS));
+    nextActive.forEach((el) => el.classList.add(RING_ACTIVE_CLASS));
 
     this.ringActiveElements = nextActive;
     this.updateCursorInteractiveState();
   }
 
   private clearRingActiveElements(): void {
-    this.ringActiveElements.forEach(el => el.classList.remove(RING_ACTIVE_CLASS));
+    this.ringActiveElements.forEach((el) =>
+      el.classList.remove(RING_ACTIVE_CLASS),
+    );
     this.ringActiveElements = new Set();
   }
 }

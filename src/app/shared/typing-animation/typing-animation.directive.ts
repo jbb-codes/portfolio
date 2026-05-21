@@ -59,7 +59,10 @@ export class TypingAnimationDirective implements OnInit, OnDestroy {
   }
 
   private startDeleting(): void {
-    this.interval = setInterval(() => this.deleteNextChar(), TYPING_INTERVAL_MS);
+    this.interval = setInterval(
+      () => this.deleteNextChar(),
+      TYPING_INTERVAL_MS,
+    );
   }
 
   private startBlinkingForever(): void {
@@ -93,9 +96,8 @@ export class TypingAnimationDirective implements OnInit, OnDestroy {
 
   private deleteNextChar(): void {
     this.charIndex--;
-    this.textEl.textContent = this.charIndex > 0
-      ? this.currentString.slice(0, this.charIndex)
-      : '';
+    this.textEl.textContent =
+      this.charIndex > 0 ? this.currentString.slice(0, this.charIndex) : '';
 
     if (this.charIndex === 0) {
       clearInterval(this.interval!);

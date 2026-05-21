@@ -1,5 +1,12 @@
 import { DOCUMENT } from '@angular/common';
-import { Component, ElementRef, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  inject,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { AnimationLoopService } from '../../shared/animation-loop/animation-loop.service';
 
 interface Dot {
@@ -41,7 +48,8 @@ const SHARD_SIZE_MIN = 0.8;
 const SHARD_SIZE_MAX = 2;
 const DOT_RESPAWN_DELAY_MS = 2500;
 const RING_SAMPLE_STEPS = 8;
-const INTERACTIVE_SELECTOR = 'a, button, input, select, textarea, [role="button"]';
+const INTERACTIVE_SELECTOR =
+  'a, button, input, select, textarea, [role="button"]';
 const CONTENT_SELECTOR = `${INTERACTIVE_SELECTOR}, [data-cursor-hover]`;
 
 @Component({
@@ -52,7 +60,8 @@ const CONTENT_SELECTOR = `${INTERACTIVE_SELECTOR}, [data-cursor-hover]`;
   providers: [AnimationLoopService],
 })
 export class ParticleBackgroundComponent implements OnInit, OnDestroy {
-  @ViewChild('canvas', { static: true }) private canvasRef!: ElementRef<HTMLCanvasElement>;
+  @ViewChild('canvas', { static: true })
+  private canvasRef!: ElementRef<HTMLCanvasElement>;
 
   private readonly doc = inject(DOCUMENT);
   private readonly win = this.doc.defaultView!;
@@ -67,10 +76,12 @@ export class ParticleBackgroundComponent implements OnInit, OnDestroy {
   private resizeObserver!: ResizeObserver;
   private themeObserver!: MutationObserver;
   private resizeDebounceTimer: ReturnType<typeof setTimeout> | null = null;
-  private readonly clickHandler = (event: MouseEvent) => this.onBackgroundClick(event);
+  private readonly clickHandler = (event: MouseEvent) =>
+    this.onBackgroundClick(event);
 
-  private readonly prefersReducedMotion =
-    !this.win.matchMedia('(prefers-reduced-motion: no-preference)').matches;
+  private readonly prefersReducedMotion = !this.win.matchMedia(
+    '(prefers-reduced-motion: no-preference)',
+  ).matches;
 
   ngOnInit(): void {
     this.resizeCanvas(this.win.innerWidth, this.win.innerHeight);
@@ -79,7 +90,8 @@ export class ParticleBackgroundComponent implements OnInit, OnDestroy {
       const entry = entries[0];
       if (!entry) return;
 
-      if (this.resizeDebounceTimer !== null) clearTimeout(this.resizeDebounceTimer);
+      if (this.resizeDebounceTimer !== null)
+        clearTimeout(this.resizeDebounceTimer);
       this.resizeDebounceTimer = setTimeout(() => {
         this.resizeCanvas(entry.contentRect.width, entry.contentRect.height);
         if (this.prefersReducedMotion) this.drawStatic();
@@ -91,7 +103,10 @@ export class ParticleBackgroundComponent implements OnInit, OnDestroy {
     if (this.prefersReducedMotion) {
       this.drawStatic();
       this.themeObserver = new MutationObserver(() => this.drawStatic());
-      this.themeObserver.observe(this.doc.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+      this.themeObserver.observe(this.doc.documentElement, {
+        attributes: true,
+        attributeFilter: ['data-theme'],
+      });
     } else {
       this.animationLoop.start(() => this.draw());
       this.doc.addEventListener('click', this.clickHandler, { capture: true });
@@ -101,8 +116,9 @@ export class ParticleBackgroundComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.resizeObserver?.disconnect();
     this.themeObserver?.disconnect();
-    if (this.resizeDebounceTimer !== null) clearTimeout(this.resizeDebounceTimer);
-    this.respawnTimers.forEach(id => clearTimeout(id));
+    if (this.resizeDebounceTimer !== null)
+      clearTimeout(this.resizeDebounceTimer);
+    this.respawnTimers.forEach((id) => clearTimeout(id));
     this.doc.removeEventListener('click', this.clickHandler, { capture: true });
     this.animationLoop.stop();
   }
@@ -127,11 +143,13 @@ export class ParticleBackgroundComponent implements OnInit, OnDestroy {
   }
 
   private triggerPulse(x: number, y: number): void {
-    const insideRing = this.dots.filter(dot =>
-      Math.hypot(dot.positionX - x, dot.positionY - y) <= CURSOR_RING_RADIUS
+    const insideRing = this.dots.filter(
+      (dot) =>
+        Math.hypot(dot.positionX - x, dot.positionY - y) <= CURSOR_RING_RADIUS,
     );
-    this.dots = this.dots.filter(dot =>
-      Math.hypot(dot.positionX - x, dot.positionY - y) > CURSOR_RING_RADIUS
+    this.dots = this.dots.filter(
+      (dot) =>
+        Math.hypot(dot.positionX - x, dot.positionY - y) > CURSOR_RING_RADIUS,
     );
 
     for (const dot of insideRing) {
@@ -139,20 +157,25 @@ export class ParticleBackgroundComponent implements OnInit, OnDestroy {
       this.scheduleRespawn();
     }
 
-    this.pulses = [...this.pulses, { x, y, radius: CURSOR_RING_RADIUS, alpha: 1 }];
+    this.pulses = [
+      ...this.pulses,
+      { x, y, radius: CURSOR_RING_RADIUS, alpha: 1 },
+    ];
   }
 
   private spawnShards(x: number, y: number): void {
     const newShards = Array.from({ length: SHARD_COUNT }, () => {
       const angle = Math.random() * Math.PI * 2;
-      const speed = SHARD_SPEED_MIN + Math.random() * (SHARD_SPEED_MAX - SHARD_SPEED_MIN);
+      const speed =
+        SHARD_SPEED_MIN + Math.random() * (SHARD_SPEED_MAX - SHARD_SPEED_MIN);
       return {
         x,
         y,
         velocityX: Math.cos(angle) * speed,
         velocityY: Math.sin(angle) * speed,
         alpha: 1,
-        size: SHARD_SIZE_MIN + Math.random() * (SHARD_SIZE_MAX - SHARD_SIZE_MIN),
+        size:
+          SHARD_SIZE_MIN + Math.random() * (SHARD_SIZE_MAX - SHARD_SIZE_MIN),
       };
     });
     this.shards = [...this.shards, ...newShards];
@@ -160,13 +183,16 @@ export class ParticleBackgroundComponent implements OnInit, OnDestroy {
 
   private scheduleRespawn(): void {
     const timerId = setTimeout(() => {
-      this.dots = [...this.dots, {
-        positionX: Math.random() * this.logicalWidth,
-        positionY: Math.random() * this.logicalHeight,
-        velocityX: (Math.random() - 0.5) * DOT_SPEED * 2,
-        velocityY: (Math.random() - 0.5) * DOT_SPEED * 2,
-      }];
-      this.respawnTimers = this.respawnTimers.filter(id => id !== timerId);
+      this.dots = [
+        ...this.dots,
+        {
+          positionX: Math.random() * this.logicalWidth,
+          positionY: Math.random() * this.logicalHeight,
+          velocityX: (Math.random() - 0.5) * DOT_SPEED * 2,
+          velocityY: (Math.random() - 0.5) * DOT_SPEED * 2,
+        },
+      ];
+      this.respawnTimers = this.respawnTimers.filter((id) => id !== timerId);
     }, DOT_RESPAWN_DELAY_MS);
     this.respawnTimers = [...this.respawnTimers, timerId];
   }
@@ -177,7 +203,8 @@ export class ParticleBackgroundComponent implements OnInit, OnDestroy {
     const physicalWidth = Math.round(width * this.pixelScale);
     const physicalHeight = Math.round(height * this.pixelScale);
 
-    if (canvas.width === physicalWidth && canvas.height === physicalHeight) return;
+    if (canvas.width === physicalWidth && canvas.height === physicalHeight)
+      return;
 
     this.logicalWidth = width;
     this.logicalHeight = height;
@@ -222,7 +249,13 @@ export class ParticleBackgroundComponent implements OnInit, OnDestroy {
       if (dot.positionY > logicalHeight) dot.positionY -= logicalHeight;
 
       ctx.beginPath();
-      ctx.arc(dot.positionX * pixelScale, dot.positionY * pixelScale, DOT_RADIUS * pixelScale, 0, Math.PI * 2);
+      ctx.arc(
+        dot.positionX * pixelScale,
+        dot.positionY * pixelScale,
+        DOT_RADIUS * pixelScale,
+        0,
+        Math.PI * 2,
+      );
       ctx.fill();
     }
 
@@ -230,7 +263,11 @@ export class ParticleBackgroundComponent implements OnInit, OnDestroy {
     this.updateAndDrawShards(ctx, pixelScale, particleColor);
   }
 
-  private updateAndDrawPulses(ctx: CanvasRenderingContext2D, pixelScale: number, color: string): void {
+  private updateAndDrawPulses(
+    ctx: CanvasRenderingContext2D,
+    pixelScale: number,
+    color: string,
+  ): void {
     if (this.pulses.length === 0) return;
 
     const destroyedIndices = new Set<number>();
@@ -244,7 +281,10 @@ export class ParticleBackgroundComponent implements OnInit, OnDestroy {
       for (let i = 0; i < this.dots.length; i++) {
         if (destroyedIndices.has(i)) continue;
         const dot = this.dots[i];
-        const dist = Math.hypot(dot.positionX - pulse.x, dot.positionY - pulse.y);
+        const dist = Math.hypot(
+          dot.positionX - pulse.x,
+          dot.positionY - pulse.y,
+        );
         if (dist >= prevRadius && dist < nextRadius) {
           destroyedIndices.add(i);
         }
@@ -255,7 +295,13 @@ export class ParticleBackgroundComponent implements OnInit, OnDestroy {
       ctx.strokeStyle = color;
       ctx.lineWidth = PULSE_LINE_WIDTH * pixelScale;
       ctx.beginPath();
-      ctx.arc(pulse.x * pixelScale, pulse.y * pixelScale, nextRadius * pixelScale, 0, Math.PI * 2);
+      ctx.arc(
+        pulse.x * pixelScale,
+        pulse.y * pixelScale,
+        nextRadius * pixelScale,
+        0,
+        Math.PI * 2,
+      );
       ctx.stroke();
       ctx.restore();
 
@@ -276,7 +322,11 @@ export class ParticleBackgroundComponent implements OnInit, OnDestroy {
     }
   }
 
-  private updateAndDrawShards(ctx: CanvasRenderingContext2D, pixelScale: number, color: string): void {
+  private updateAndDrawShards(
+    ctx: CanvasRenderingContext2D,
+    pixelScale: number,
+    color: string,
+  ): void {
     if (this.shards.length === 0) return;
 
     const remainingShards: Shard[] = [];
@@ -292,7 +342,13 @@ export class ParticleBackgroundComponent implements OnInit, OnDestroy {
       ctx.globalAlpha = nextAlpha;
       ctx.fillStyle = color;
       ctx.beginPath();
-      ctx.arc(nextX * pixelScale, nextY * pixelScale, shard.size * pixelScale, 0, Math.PI * 2);
+      ctx.arc(
+        nextX * pixelScale,
+        nextY * pixelScale,
+        shard.size * pixelScale,
+        0,
+        Math.PI * 2,
+      );
       ctx.fill();
       ctx.restore();
 
@@ -316,7 +372,13 @@ export class ParticleBackgroundComponent implements OnInit, OnDestroy {
 
     for (const dot of this.dots) {
       ctx.beginPath();
-      ctx.arc(dot.positionX * pixelScale, dot.positionY * pixelScale, DOT_RADIUS * pixelScale, 0, Math.PI * 2);
+      ctx.arc(
+        dot.positionX * pixelScale,
+        dot.positionY * pixelScale,
+        DOT_RADIUS * pixelScale,
+        0,
+        Math.PI * 2,
+      );
       ctx.fill();
     }
   }

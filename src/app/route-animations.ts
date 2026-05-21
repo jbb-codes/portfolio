@@ -11,10 +11,14 @@ export const routeFadeAnimation: AnimationTriggerMetadata = trigger(
   'routeFadeAnimation',
   [
     transition('* <=> *', [
-      query(':enter', [
-        style({ opacity: 0 }),
-        animate('400ms ease-in-out', style({ opacity: 1 })),
-      ], { optional: true }),
+      query(
+        ':enter',
+        [
+          style({ opacity: 0 }),
+          animate('400ms ease-in-out', style({ opacity: 1 })),
+        ],
+        { optional: true },
+      ),
     ]),
   ],
 );

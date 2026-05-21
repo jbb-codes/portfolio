@@ -10,7 +10,11 @@ const BLINK_MS = 500;
   selector: 'test-host',
   standalone: true,
   imports: [TypingAnimationDirective],
-  template: `<span data-testid="typing-span" appTypingAnimation [strings]="strings"></span>`,
+  template: `<span
+    data-testid="typing-span"
+    appTypingAnimation
+    [strings]="strings"
+  ></span>`,
 })
 class TestHostComponent {
   strings: string[] = ['AB', 'CD'];
@@ -20,7 +24,11 @@ class TestHostComponent {
   selector: 'single-string-host',
   standalone: true,
   imports: [TypingAnimationDirective],
-  template: `<span data-testid="typing-span" appTypingAnimation [strings]="strings"></span>`,
+  template: `<span
+    data-testid="typing-span"
+    appTypingAnimation
+    [strings]="strings"
+  ></span>`,
 })
 class SingleStringHostComponent {
   strings: string[] = ['AB'];
@@ -39,12 +47,16 @@ describe('TypingAnimationDirective', () => {
       imports: [TestHostComponent, SingleStringHostComponent],
     }).compileComponents();
 
-    matchMediaSpy = spyOn(window, 'matchMedia').and.returnValue({ matches: true } as MediaQueryList);
+    matchMediaSpy = spyOn(window, 'matchMedia').and.returnValue({
+      matches: true,
+    } as MediaQueryList);
     jasmine.clock().install();
     fixture = TestBed.createComponent(TestHostComponent);
     host = fixture.componentInstance;
     fixture.detectChanges();
-    el = fixture.debugElement.query(By.css('[data-testid="typing-span"]')).nativeElement;
+    el = fixture.debugElement.query(
+      By.css('[data-testid="typing-span"]'),
+    ).nativeElement;
     textEl = el.querySelector('[data-testid="typing-text"]') as HTMLElement;
     cursorEl = el.querySelector('[data-testid="typing-cursor"]') as HTMLElement;
   });
@@ -219,9 +231,15 @@ describe('TypingAnimationDirective', () => {
     beforeEach(() => {
       singleFixture = TestBed.createComponent(SingleStringHostComponent);
       singleFixture.detectChanges();
-      const singleEl = singleFixture.debugElement.query(By.css('[data-testid="typing-span"]')).nativeElement as HTMLElement;
-      singleTextEl = singleEl.querySelector('[data-testid="typing-text"]') as HTMLElement;
-      singleCursorEl = singleEl.querySelector('[data-testid="typing-cursor"]') as HTMLElement;
+      const singleEl = singleFixture.debugElement.query(
+        By.css('[data-testid="typing-span"]'),
+      ).nativeElement as HTMLElement;
+      singleTextEl = singleEl.querySelector(
+        '[data-testid="typing-text"]',
+      ) as HTMLElement;
+      singleCursorEl = singleEl.querySelector(
+        '[data-testid="typing-cursor"]',
+      ) as HTMLElement;
     });
 
     it('should keep cursor visible immediately after the only string is typed', () => {
@@ -264,8 +282,12 @@ describe('TypingAnimationDirective', () => {
       matchMediaSpy.and.returnValue({ matches: false } as MediaQueryList);
       reducedFixture = TestBed.createComponent(TestHostComponent);
       reducedFixture.detectChanges();
-      reducedEl = reducedFixture.debugElement.query(By.css('[data-testid="typing-span"]')).nativeElement;
-      reducedTextEl = reducedEl.querySelector('[data-testid="typing-text"]') as HTMLElement;
+      reducedEl = reducedFixture.debugElement.query(
+        By.css('[data-testid="typing-span"]'),
+      ).nativeElement;
+      reducedTextEl = reducedEl.querySelector(
+        '[data-testid="typing-text"]',
+      ) as HTMLElement;
     });
 
     it('should display the last string immediately without waiting for ticks', () => {
@@ -278,7 +300,9 @@ describe('TypingAnimationDirective', () => {
     });
 
     it('should not render a cursor element', () => {
-      expect(reducedEl.querySelector('[data-testid="typing-cursor"]')).toBeNull();
+      expect(
+        reducedEl.querySelector('[data-testid="typing-cursor"]'),
+      ).toBeNull();
     });
   });
 });

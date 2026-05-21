@@ -8,7 +8,8 @@ function mockMatchMedia(prefersReducedMotion: boolean): void {
   spyOn(window, 'matchMedia').and.callFake(
     (query: string): MediaQueryList =>
       ({
-        matches: prefersReducedMotion && query === '(prefers-reduced-motion: reduce)',
+        matches:
+          prefersReducedMotion && query === '(prefers-reduced-motion: reduce)',
         media: query,
         onchange: null,
         addListener: () => {},
