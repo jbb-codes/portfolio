@@ -1,0 +1,42 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+build/
+.angular/
+
+# Images
+*.jpg
+*.jpeg
+*.png
+*.gif
+*.svg
+*.ico
+*.webp
+
+# Fonts
+*.woff
+*.woff2
+*.ttf
+*.eot
+
+# Documents
+*.pdf
+
+# Dotfiles
+.editorconfig
+.gitignore
+.prettierignore
+
+# Lock files
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Coverage
+coverage/
+
+# Environment
+.env
+.env.*
