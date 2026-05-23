@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { BUCKET_LIST, BucketListItem } from '../../data/portfolio-content';
-import { TypingAnimationDirective } from '../../shared/typing-animation/typing-animation.directive';
+import { TypingAnimationDirective } from './typing-animation.directive';
 
 @Component({
   selector: 'app-home',
@@ -11,6 +11,6 @@ import { TypingAnimationDirective } from '../../shared/typing-animation/typing-a
   styleUrl: './home.component.css',
 })
 export class HomeComponent {
-  readonly roleStrings = ['Agentic', 'Modern Software', 'Full Stack'];
+  readonly roleStrings = ['Agentic', 'Full Stack', 'Modern Software'];
   readonly bucketList: BucketListItem[] = BUCKET_LIST;
 }
