@@ -217,35 +217,35 @@ export const BUCKET_LIST: BucketListItem[] = [
 export const PROJECTS: Project[] = [
   {
     number: 1,
-    name: 'Portfolio Website',
-    githubUrl: 'https://github.com/jbb-codes/portfolio',
-    screenshotUrl: 'assets/images/projects/portfolio.png',
+    name: 'Paper to Colab',
+    githubUrl: 'https://github.com/jbb-codes/paper-to-colab',
+    screenshotUrl: 'assets/images/projects/paperToColab.png',
     description:
-      'A personal portfolio built with Angular and TypeScript, featuring animated backgrounds, a custom cursor, and a responsive layout.',
-    technologies: ['Angular', 'TypeScript', 'CSS'],
+      'A Next.js app that converts academic PDF papers into runnable Jupyter notebooks and opens them directly in Google Colab, powered by the Groq LLM API.',
+    technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Groq API'],
     whatILearned:
-      'Deepened my understanding of Angular standalone components, CSS animations, and responsive design patterns.',
+      'Built a full-stack AI pipeline end-to-end, implemented rate limiting and security hardening, and integrated the Groq and GitHub Gists APIs in a production-grade Next.js app.',
   },
   {
     number: 2,
-    name: 'Weather Dashboard',
-    githubUrl: 'https://github.com/jbb-codes/weather-dashboard',
-    screenshotUrl: 'assets/images/projects/weather.png',
+    name: 'Text to Audio',
+    githubUrl: 'https://github.com/jbb-codes/audiobook-app',
+    screenshotUrl: 'assets/images/projects/textToAudio.png',
     description:
-      'A weather app that fetches real-time data from an open weather API and displays forecasts with dynamic icons.',
-    technologies: ['JavaScript', 'HTML', 'CSS', 'REST API'],
+      'A cross-platform desktop app that converts text files and scanned document images into audiobooks using a local text-to-speech model.',
+    technologies: ['Electron', 'JavaScript', 'Node.js', 'kokoro-js'],
     whatILearned:
-      'Practiced working with third-party APIs, handling async data, and updating the DOM based on API responses.',
+      'Gained experience building desktop apps with Electron, running a local AI TTS model, and using Tesseract OCR to extract text from scanned images.',
   },
   {
     number: 3,
-    name: 'Task Manager',
-    githubUrl: 'https://github.com/jbb-codes/task-manager',
-    screenshotUrl: 'assets/images/projects/task-manager.png',
+    name: 'Weather App',
+    githubUrl: 'https://github.com/jbb-codes/weather-app',
+    screenshotUrl: 'assets/images/projects/weatherApp.png',
     description:
-      'A drag-and-drop kanban board for managing tasks across To Do, In Progress, and Done columns.',
-    technologies: ['TypeScript', 'Angular', 'CSS'],
+      'A web app that fetches real-time weather data for any city using the OpenWeatherMap API and displays current conditions and a 5-day forecast.',
+    technologies: ['JavaScript', 'HTML', 'CSS', 'OpenWeatherMap API'],
     whatILearned:
-      'Learned how to implement drag-and-drop interactions and manage complex component state in Angular.',
+      'Practiced consuming a third-party REST API, handling async data, and building a responsive UI with vanilla JavaScript.',
   },
 ];
