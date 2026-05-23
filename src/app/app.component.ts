@@ -7,10 +7,10 @@ import {
 } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { routeFadeAnimation } from './route-animations';
-import { CustomCursorComponent } from './ui/custom-cursor/custom-cursor.component';
-import { NavbarComponent } from './ui/navbar/navbar.component';
-import { OrbBackgroundComponent } from './ui/orb-background/orb-background.component';
-import { ParticleBackgroundComponent } from './ui/particle-background/particle-background.component';
+import { CustomCursorComponent } from './shared/custom-cursor/custom-cursor.component';
+import { NavbarComponent } from './shared/navbar/navbar.component';
+import { OrbBackgroundComponent } from './shared/orb-background/orb-background.component';
+import { ParticleBackgroundComponent } from './shared/particle-background/particle-background.component';
 
 const KNOWN_PATHS = ['/', '/about', '/resume', '/projects'];
 
