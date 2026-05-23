@@ -7,7 +7,7 @@ import {
   LucideBot,
   LucideDynamicIcon,
 } from '@lucide/angular';
-import { TimelineComponent } from '../../components/timeline/timeline.component';
+import { TimelineComponent } from '../../ui/timeline/timeline.component';
 import {
   InterestCard,
   TimelineEntry,
