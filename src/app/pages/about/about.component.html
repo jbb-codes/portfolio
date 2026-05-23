@@ -73,6 +73,18 @@
 
   <div class="about__timeline-section">
     <h2 class="about__timeline-heading">Experience &amp; Education</h2>
-    <app-timeline [entries]="timelineEntries" />
+    <div class="timeline">
+      @for (entry of timelineEntries; track entry.title) {
+        <div class="timeline__entry timeline__entry--{{ entry.type }}">
+          <div class="timeline__marker"></div>
+          <div class="timeline__content glass">
+            <span class="timeline__date">{{ entry.date }}</span>
+            <h3 class="timeline__title">{{ entry.title }}</h3>
+            <span class="timeline__organization">{{ entry.organization }}</span>
+            <p class="timeline__description">{{ entry.description }}</p>
+          </div>
+        </div>
+      }
+    </div>
   </div>
 </div>
