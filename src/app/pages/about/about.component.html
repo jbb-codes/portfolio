@@ -2,39 +2,17 @@
   <h1 class="sr-only">About Me</h1>
   <div class="about__upper">
     <div class="about__card about__card--profile glass" data-cursor-hover>
-      <img
-        class="about__photo"
-        src="assets/images/smallProfile.jpg"
-        alt="Jarren Bess"
-      />
+      <img class="about__photo" src="assets/images/smallProfile.jpg" alt="Jarren Bess" />
       <div class="about__social-links">
-        <a
-          class="about__social-btn"
-          href="mailto:bessjarren@yahoo.com"
-          aria-label="Send email"
-          data-testid="email-btn"
-          (click)="copyEmail()"
-          >Email</a
-        >
+        <a class="about__social-btn" href="mailto:bessjarren@yahoo.com" aria-label="Send email" data-testid="email-btn"
+          (click)="copyEmail()">Email</a>
         @if (emailCopied()) {
-          <div class="about__toast" data-testid="email-toast">Copied!</div>
+        <div class="about__toast" data-testid="email-toast">Copied!</div>
         }
-        <a
-          class="about__social-btn"
-          href="https://linkedin.com/in/jarrenbess"
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="LinkedIn profile"
-          >LinkedIn</a
-        >
-        <a
-          class="about__social-btn"
-          href="https://github.com/jbb-codes"
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="GitHub profile"
-          >GitHub</a
-        >
+        <a class="about__social-btn" href="https://linkedin.com/in/jarrenbess" target="_blank" rel="noopener noreferrer"
+          aria-label="LinkedIn profile">LinkedIn</a>
+        <a class="about__social-btn" href="https://github.com/jbb-codes" target="_blank" rel="noopener noreferrer"
+          aria-label="GitHub profile">GitHub</a>
       </div>
     </div>
 
@@ -61,8 +39,8 @@
         <h2 class="about__bio-heading">What I'm Passionate About</h2>
         <p class="about__bio-text">
           I care deeply about developer experience, clean architecture, and
-          creating interfaces that feel intuitive. Outside of code, I'm drawn to
-          travel, endurance sports, and continuous learning.
+          creating interfaces that feel intuitive. Outside of code, I'm interested in
+          travel, enjoy climbing, and continuous learning.
         </p>
       </section>
     </div>
@@ -70,14 +48,10 @@
 
   <section class="about__interests" aria-label="Interests">
     @for (interest of interests; track interest.label) {
-      <div class="about__interest-card glass" data-cursor-hover>
-        <svg
-          [lucideIcon]="iconMap[interest.iconName]"
-          [size]="32"
-          aria-hidden="true"
-        ></svg>
-        <span class="about__interest-label">{{ interest.label }}</span>
-      </div>
+    <div class="about__interest-card glass" data-cursor-hover>
+      <svg [lucideIcon]="iconMap[interest.iconName]" [size]="32" aria-hidden="true"></svg>
+      <span class="about__interest-label">{{ interest.label }}</span>
+    </div>
     }
   </section>
 
@@ -85,18 +59,16 @@
     <h2 class="about__timeline-heading">Education</h2>
     <div class="timeline">
       @for (entry of timelineEntries; track entry.title) {
-        <div
-          class="timeline__entry timeline__entry--{{ entry.type }}"
-          [class.timeline__entry--completed]="entry.completed"
-        >
-          <div class="timeline__marker"></div>
-          <div class="timeline__content glass">
-            <span class="timeline__date">{{ entry.date }}</span>
-            <h3 class="timeline__title">{{ entry.title }}</h3>
-            <span class="timeline__organization">{{ entry.organization }}</span>
-            <p class="timeline__description">{{ entry.description }}</p>
-          </div>
+      <div class="timeline__entry timeline__entry--{{ entry.type }}"
+        [class.timeline__entry--completed]="entry.completed">
+        <div class="timeline__marker"></div>
+        <div class="timeline__content glass">
+          <span class="timeline__date">{{ entry.date }}</span>
+          <h3 class="timeline__title">{{ entry.title }}</h3>
+          <span class="timeline__organization">{{ entry.organization }}</span>
+          <p class="timeline__description">{{ entry.description }}</p>
         </div>
+      </div>
       }
     </div>
   </div>
