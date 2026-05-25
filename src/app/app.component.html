@@ -1,11 +1,16 @@
+<a class="skip-link" href="#main-content" (click)="skipToMain($event)"
+  >Skip to main content</a
+>
 <app-custom-cursor />
 <app-orb-background />
 <app-particle-background data-testid="particle-background" />
 @if (showNavbar()) {
-  <app-navbar />
+  <header>
+    <app-navbar />
+  </header>
 }
 
-<main class="main-content">
+<main id="main-content" tabindex="-1" class="main-content">
   <div
     class="route-animation-wrapper"
     data-testid="route-animation-wrapper"
@@ -17,7 +22,7 @@
 
 <footer class="footer">
   <div class="footer__inner">
-    <nav class="footer__nav">
+    <nav class="footer__nav" aria-label="Footer navigation">
       <a class="footer__nav-link" data-testid="footer-nav-link" routerLink="/"
         >Home</a
       >
