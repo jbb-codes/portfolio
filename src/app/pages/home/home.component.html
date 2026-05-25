@@ -37,6 +37,7 @@
           <div
             class="bucket-list__checkbox"
             [class.bucket-list__checkbox--checked]="item.completed"
+            aria-hidden="true"
           >
             @if (item.completed) {
               <svg
@@ -54,6 +55,9 @@
               </svg>
             }
           </div>
+          <span class="sr-only"
+            >{{ item.completed ? "Completed" : "Not yet completed" }}:</span
+          >
           <div class="bucket-list__item-content">
             <p class="bucket-list__item-title">{{ item.title }}</p>
             <p class="bucket-list__item-description">{{ item.description }}</p>

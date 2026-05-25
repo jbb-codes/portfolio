@@ -54,7 +54,7 @@
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  background-color: var(--accent);
+  background-color: var(--btn-accent);
   color: #fff;
   font-size: 0.9375rem;
   font-weight: 600;

@@ -1,4 +1,5 @@
-<div class="about">
+<article class="about">
+  <h1 class="sr-only">About Me</h1>
   <div class="about__upper">
     <div class="about__card about__card--profile glass" data-cursor-hover>
       <img
@@ -62,14 +63,18 @@
     </div>
   </div>
 
-  <div class="about__interests">
+  <section class="about__interests" aria-label="Interests">
     @for (interest of interests; track interest.label) {
       <div class="about__interest-card glass" data-cursor-hover>
-        <svg [lucideIcon]="iconMap[interest.iconName]" [size]="32"></svg>
+        <svg
+          [lucideIcon]="iconMap[interest.iconName]"
+          [size]="32"
+          aria-hidden="true"
+        ></svg>
         <span class="about__interest-label">{{ interest.label }}</span>
       </div>
     }
-  </div>
+  </section>
 
   <div class="about__timeline-section">
     <h2 class="about__timeline-heading">Education</h2>
@@ -90,4 +95,4 @@
       }
     </div>
   </div>
-</div>
+</article>
