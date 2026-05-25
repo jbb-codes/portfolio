@@ -51,6 +51,54 @@ describe('AboutComponent', () => {
     });
   });
 
+  describe('email copy to clipboard', () => {
+    let clipboardSpy: jasmine.Spy;
+
+    beforeEach(() => {
+      clipboardSpy = spyOn(navigator.clipboard, 'writeText').and.returnValue(
+        Promise.resolve(),
+      );
+    });
+
+    it('should have the email button with the correct href and testid', () => {
+      const btn: HTMLAnchorElement = fixture.nativeElement.querySelector(
+        '[data-testid="email-btn"]',
+      );
+      expect(btn).toBeTruthy();
+      expect(btn.href).toContain('mailto:bessjarren@yahoo.com');
+    });
+
+    it('should copy the email address to clipboard when copyEmail is called', async () => {
+      component.copyEmail();
+      await fixture.whenStable();
+      expect(clipboardSpy).toHaveBeenCalledWith('bessjarren@yahoo.com');
+    });
+
+    it('should show a toast after copyEmail is called', async () => {
+      component.copyEmail();
+      await fixture.whenStable();
+      fixture.detectChanges();
+      const toast = fixture.nativeElement.querySelector(
+        '[data-testid="email-toast"]',
+      );
+      expect(toast).toBeTruthy();
+    });
+
+    it('should hide the toast after the confirmation period', async () => {
+      jasmine.clock().install();
+      component.copyEmail();
+      await fixture.whenStable();
+      fixture.detectChanges();
+      jasmine.clock().tick(2500);
+      fixture.detectChanges();
+      const toast = fixture.nativeElement.querySelector(
+        '[data-testid="email-toast"]',
+      );
+      expect(toast).toBeNull();
+      jasmine.clock().uninstall();
+    });
+  });
+
   describe('interests section', () => {
     it('should render the interests section', () => {
       const section = fixture.nativeElement.querySelector('.about__interests');

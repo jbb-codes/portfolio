@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, signal } from '@angular/core';
 import {
   LucideIcon,
   LucideNetwork,
@@ -14,6 +14,9 @@ import {
   TIMELINE_ENTRIES,
 } from '../../data/portfolio-content';
 
+const EMAIL_ADDRESS = 'bessjarren@yahoo.com';
+const TOAST_DURATION_MS = 2000;
+
 @Component({
   selector: 'app-about',
   standalone: true,
@@ -21,7 +24,7 @@ import {
   templateUrl: './about.component.html',
   styleUrl: './about.component.css',
 })
-export class AboutComponent {
+export class AboutComponent implements OnDestroy {
   readonly iconMap: Record<string, LucideIcon> = {
     'code-xml': LucideCodeXml,
     palette: LucidePalette,
@@ -31,4 +34,21 @@ export class AboutComponent {
 
   readonly interests: InterestCard[] = INTERESTS;
   readonly timelineEntries: TimelineEntry[] = TIMELINE_ENTRIES;
+  readonly emailCopied = signal(false);
+
+  private toastTimeoutId: ReturnType<typeof setTimeout> | null = null;
+
+  copyEmail(): void {
+    navigator.clipboard.writeText(EMAIL_ADDRESS).then(() => {
+      this.emailCopied.set(true);
+      if (this.toastTimeoutId !== null) clearTimeout(this.toastTimeoutId);
+      this.toastTimeoutId = setTimeout(() => {
+        this.emailCopied.set(false);
+      }, TOAST_DURATION_MS);
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.toastTimeoutId !== null) clearTimeout(this.toastTimeoutId);
+  }
 }

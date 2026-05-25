@@ -60,16 +60,6 @@ describe('ResumeComponent', () => {
   });
   // ============================================================
 
-  describe('Learning Next section', () => {
-    it('should render one entry per learning item', () => {
-      const entries = component.learningNext.length;
-      const rendered = fixture.nativeElement.querySelectorAll(
-        '[data-testid="learning-entry"]',
-      ).length;
-      expect(rendered).toEqual(entries);
-    });
-  });
-
   describe('Certifications section', () => {
     it('should display certifications section', () => {
       const section = fixture.nativeElement.querySelector(

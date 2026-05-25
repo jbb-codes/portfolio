@@ -11,8 +11,13 @@
           class="about__social-btn"
           href="mailto:bessjarren@yahoo.com"
           aria-label="Send email"
+          data-testid="email-btn"
+          (click)="copyEmail()"
           >Email</a
         >
+        @if (emailCopied()) {
+          <div class="about__toast" data-testid="email-toast">Copied!</div>
+        }
         <a
           class="about__social-btn"
           href="https://linkedin.com/in/jarrenbess"
