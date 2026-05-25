@@ -85,18 +85,18 @@ export const SKILLS: Skill[] = [
 
 export const CERTIFICATIONS: Certification[] = [
   {
-    name: 'AWS Certified Developer – Associate',
-    issuer: 'Amazon Web Services',
-    year: '2024',
+    name: 'Modern Software Developer Bootcamp',
+    issuer: 'Vizuara',
+    year: '2026',
     details:
-      'Proficiency in developing and deploying cloud-based applications on AWS.',
+      'Hands-on bootcamp covering AI-assisted development with Claude Code and building full-stack web applications.',
   },
   {
-    name: 'Angular Developer Certification',
-    issuer: 'Google',
-    year: '2023',
+    name: 'Pre-Security Certification',
+    issuer: 'TryHackMe',
+    year: '2025',
     details:
-      'Demonstrated expertise in building scalable Angular applications.',
+      'Completed modules covering networking fundamentals, how the web works, operating systems basics, and core cybersecurity concepts including the CIA triad and cryptography.',
   },
 ];
 
