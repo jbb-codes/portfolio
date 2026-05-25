@@ -14,6 +14,9 @@ import { ParticleBackgroundComponent } from './shared/particle-background/partic
 
 const KNOWN_PATHS = ['/', '/about', '/resume', '/projects'];
 
+// Used Claude to help implement the root app shell: the route-driven navbar
+// visibility signal, the skip-to-main accessibility link, and the fade
+// animation host binding that wraps the router outlet.
 @Component({
   selector: 'app-root',
   standalone: true,

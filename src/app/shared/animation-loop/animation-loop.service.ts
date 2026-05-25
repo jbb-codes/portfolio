@@ -1,5 +1,8 @@
 import { Injectable, NgZone, OnDestroy } from '@angular/core';
 
+// Used Claude to help implement the shared requestAnimationFrame service.
+// Running the loop outside Angular's NgZone prevents the change-detection
+// cycle from firing on every frame, which would tank performance.
 @Injectable()
 export class AnimationLoopService implements OnDestroy {
   private rafId: number | null = null;

@@ -6,6 +6,8 @@ import {
   SKILLS,
 } from '../../data/portfolio-content';
 
+// Used Claude to help implement the resume page as a pure display component
+// that pulls all content from the shared data module.
 @Component({
   selector: 'app-resume',
   standalone: true,

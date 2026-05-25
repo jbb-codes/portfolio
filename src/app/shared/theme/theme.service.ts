@@ -4,6 +4,9 @@ import { BehaviorSubject } from 'rxjs';
 const THEME_KEY = 'theme';
 const LIGHT_VALUE = 'light';
 
+// Used Claude to help implement the reactive theme toggle. Dark mode is the
+// default — localStorage stores 'light' explicitly, and the absence of that
+// key means dark. The animation lock prevents double-toggling mid-transition.
 @Injectable({ providedIn: 'root' })
 export class ThemeService {
   private readonly isDarkModeSubject = new BehaviorSubject<boolean>(

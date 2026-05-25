@@ -7,6 +7,9 @@ import {
 
 import { routes } from './app.routes';
 
+// Used Claude to help implement the app-level provider setup, including the
+// reduced-motion check that swaps Angular's animation engine for a no-op at
+// the root so every animated component inherits the preference automatically.
 export function createAppConfig(): ApplicationConfig {
   const prefersReducedMotion = window.matchMedia(
     '(prefers-reduced-motion: reduce)',

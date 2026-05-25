@@ -18,6 +18,11 @@ const RING_ACTIVE_CLASS = 'cursor-ring-active';
 const INTERACTIVE_SELECTOR =
   'a, button, input, select, textarea, [role="button"], [tabindex]:not([tabindex="-1"])';
 
+// Used Claude to help implement the custom cursor. The ring trails the dot
+// using linear interpolation (lerp) for a smooth lag effect. The proximity
+// click feature samples points around the ring's perimeter to find the nearest
+// interactive element and forwards the click to it — making the whole ring
+// feel clickable even when the user's click lands on empty space.
 @Component({
   selector: 'app-custom-cursor',
   standalone: true,

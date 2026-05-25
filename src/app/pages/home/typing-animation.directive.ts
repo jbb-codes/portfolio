@@ -4,6 +4,10 @@ const TYPING_INTERVAL_MS = 50;
 const BLINK_INTERVAL_MS = 500;
 const PAUSE_BLINK_COUNT = 3;
 
+// Used Claude to help implement the typing animation directive as a state
+// machine: type one character at a time → pause with blinking cursor →
+// delete → advance to the next string, cycling until the last string is
+// reached, which then blinks the cursor indefinitely.
 @Directive({
   selector: '[appTypingAnimation]',
   standalone: true,

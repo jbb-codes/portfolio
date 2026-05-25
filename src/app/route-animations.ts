@@ -1,3 +1,4 @@
+// Used Claude to help implement the page transition fade animation.
 import {
   AnimationTriggerMetadata,
   animate,

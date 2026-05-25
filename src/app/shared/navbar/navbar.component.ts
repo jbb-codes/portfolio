@@ -17,6 +17,10 @@ import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { ThemeService } from '../../shared/theme/theme.service';
 
+// Used Claude to help implement the navbar, including the sliding underline.
+// It works by measuring the active link's DOM position and writing those values
+// into CSS custom properties (--underline-left, --underline-width), which the
+// stylesheet then animates with a CSS transition.
 @Component({
   selector: 'app-navbar',
   standalone: true,

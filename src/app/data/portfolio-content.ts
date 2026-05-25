@@ -1,3 +1,6 @@
+// Used Claude to help design the data model interfaces and structure all content
+// as a single source of truth, keeping it separate from the presentation layer
+// so any component can import exactly what it needs.
 export interface ExperienceCard {
   title: string;
   company: string;

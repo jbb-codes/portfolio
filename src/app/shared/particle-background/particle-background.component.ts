@@ -52,6 +52,10 @@ const INTERACTIVE_SELECTOR =
   'a, button, input, select, textarea, [role="button"]';
 const CONTENT_SELECTOR = `${INTERACTIVE_SELECTOR}, [data-cursor-hover]`;
 
+// Used Claude to help implement the canvas particle system, including the
+// pulse ring and shard scatter effects triggered on background clicks.
+// Users who prefer reduced motion get a static snapshot instead; a
+// MutationObserver redraws it whenever the theme attribute changes.
 @Component({
   selector: 'app-particle-background',
   standalone: true,

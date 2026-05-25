@@ -17,6 +17,9 @@ import {
 const EMAIL_ADDRESS = 'bessjarren@yahoo.com';
 const TOAST_DURATION_MS = 2000;
 
+// Used Claude to help implement the about page, including the icon map that
+// bridges string-keyed Lucide icons from the data layer to the component, and
+// the email copy-to-clipboard toast with a debounced reset.
 @Component({
   selector: 'app-about',
   standalone: true,

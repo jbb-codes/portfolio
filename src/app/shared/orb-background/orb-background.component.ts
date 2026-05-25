@@ -94,6 +94,11 @@ export function resolveOrbCollisions(
   ];
 }
 
+// Used Claude to help implement the floating orb physics. Positions are
+// immutable state updated each frame using delta-time normalization so the
+// animation runs at the same apparent speed regardless of frame rate. The
+// collision resolver checks the dot product of the separation vector and
+// relative velocity to avoid repeated reversals when orbs are still overlapping.
 @Component({
   selector: 'app-orb-background',
   standalone: true,
