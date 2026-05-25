@@ -145,7 +145,7 @@ export const BUCKET_LIST: BucketListItem[] = [
     id: '2',
     title: 'Contribute to open source',
     description: 'Get a PR merged into a major open-source project',
-    completed: false,
+    completed: true,
   },
   {
     id: '3',
