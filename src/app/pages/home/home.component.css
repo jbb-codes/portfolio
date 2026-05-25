@@ -64,15 +64,12 @@
 
 @media (prefers-reduced-motion: no-preference) {
   .hero__cta {
-    transition:
-      filter 0.2s ease,
-      transform 0.2s ease;
+    transition: filter 0.2s ease;
   }
 }
 
 .hero__cta:hover {
-  filter: brightness(0.88);
-  transform: translateY(-1px);
+  filter: brightness(0.85);
 }
 
 /* ── Bucket List ─────────────────────────────────────── */
