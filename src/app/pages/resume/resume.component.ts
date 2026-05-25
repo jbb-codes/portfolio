@@ -3,7 +3,6 @@ import {
   CERTIFICATIONS,
   EDUCATION,
   EXPERIENCE,
-  LEARNING_NEXT,
   SKILLS,
 } from '../../data/portfolio-content';
 
@@ -19,5 +18,4 @@ export class ResumeComponent {
   readonly education = EDUCATION;
   readonly skills = SKILLS;
   readonly certifications = CERTIFICATIONS;
-  readonly learningNext = LEARNING_NEXT;
 }
