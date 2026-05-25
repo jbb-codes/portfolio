@@ -31,6 +31,7 @@ export interface TimelineEntry {
   organization: string;
   description: string;
   type: 'experience' | 'education';
+  completed: boolean;
 }
 
 export interface InterestCard {
@@ -55,36 +56,21 @@ export interface Project {
   whatILearned: string;
 }
 
-export const EXPERIENCE: ExperienceCard[] = [
-  {
-    title: 'Frontend Developer',
-    company: 'Acme Corp',
-    startDate: 'Jan 2023',
-    endDate: 'Present',
-    details:
-      'Built and maintained Angular applications for enterprise clients.',
-  },
-  {
-    title: 'Web Developer Intern',
-    company: 'Startup Co',
-    startDate: 'May 2022',
-    endDate: 'Dec 2022',
-    details: 'Developed responsive UI components and integrated REST APIs.',
-  },
-];
+export const EXPERIENCE: ExperienceCard[] = [];
 
 export const EDUCATION: EducationEntry[] = [
   {
-    degree: 'B.S. Computer Science',
-    institution: 'State University',
-    year: '2022',
-    details: 'Focused on software engineering and web technologies.',
+    degree: 'B.S. Web Development',
+    institution: 'Bellevue University',
+    year: 'In Progress',
+    details: "Currently pursuing a bachelor's degree in web development.",
   },
   {
-    degree: 'A.S. Information Technology',
-    institution: 'Community College',
-    year: '2020',
-    details: "Graduated with honors. Dean's List all semesters.",
+    degree: 'A.S. Computer Programming',
+    institution: 'Northeast State Technical Community College',
+    year: '2015',
+    details:
+      'Studied programming fundamentals and object-oriented programming principles.',
   },
 ];
 
@@ -130,36 +116,21 @@ export const INTERESTS: InterestCard[] = [
 
 export const TIMELINE_ENTRIES: TimelineEntry[] = [
   {
-    date: '2024 – Present',
-    title: 'Full Stack Developer',
-    organization: 'Freelance',
-    description:
-      'Building modern web applications with Angular, TypeScript, and Node.js for clients across various industries.',
-    type: 'experience',
-  },
-  {
-    date: '2022 – 2024',
-    title: 'Junior Software Engineer',
-    organization: 'Tech Startup',
-    description:
-      'Contributed to a SaaS platform, shipping features end-to-end from database schema to polished UI.',
-    type: 'experience',
-  },
-  {
-    date: '2019 – 2023',
-    title: 'B.S. Computer Science',
-    organization: 'State University',
-    description:
-      'Studied algorithms, systems, and software engineering. Graduated with honors.',
+    date: 'In Progress',
+    title: 'B.S. Web Development',
+    organization: 'Bellevue University',
+    description: "Currently pursuing a bachelor's degree in web development.",
     type: 'education',
+    completed: false,
   },
   {
-    date: '2017 – 2019',
-    title: 'A.S. Mathematics',
-    organization: 'Community College',
+    date: '2015',
+    title: 'A.S. Computer Programming',
+    organization: 'Northeast State Technical Community College',
     description:
-      'Foundation in discrete math, calculus, and linear algebra before transferring to a four-year program.',
+      'Studied programming fundamentals and object-oriented programming principles.',
     type: 'education',
+    completed: true,
   },
 ];
 

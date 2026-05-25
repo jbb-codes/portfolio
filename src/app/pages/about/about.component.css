@@ -203,6 +203,11 @@
   border-color: var(--accent);
 }
 
+.timeline__entry--completed .timeline__marker {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
 /* ── Content ─────────────────────────────────────────── */
 
 .timeline__content {
