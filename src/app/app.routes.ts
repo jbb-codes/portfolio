@@ -1,4 +1,6 @@
-// Used Claude to help generate
+// Used Claude to help implement the route config. The wildcard (**) must be
+// last — Angular matches routes top-to-bottom and would swallow valid paths
+// if it came first.
 import { Routes } from '@angular/router';
 import { HomeComponent } from './pages/home/home.component';
 import { AboutComponent } from './pages/about/about.component';
