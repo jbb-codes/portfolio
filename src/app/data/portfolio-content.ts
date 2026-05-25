@@ -110,7 +110,7 @@ export const LEARNING_NEXT: string[] = [
 export const INTERESTS: InterestCard[] = [
   { label: 'Modern Software Development Practices', iconName: 'code-xml' },
   { label: 'UI/UX Design', iconName: 'palette' },
-  { label: 'Cryptocurrency / Blockchain Development', iconName: 'network' },
+  { label: 'Blockchain Development', iconName: 'network' },
   { label: 'LLM Architecture & Internals', iconName: 'bot' },
 ];
 
