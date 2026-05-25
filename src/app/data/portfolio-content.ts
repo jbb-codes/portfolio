@@ -75,10 +75,10 @@ export const EDUCATION: EducationEntry[] = [
 ];
 
 export const SKILLS: Skill[] = [
-  { name: 'TypeScript', level: 85 },
-  { name: 'Angular', level: 80 },
-  { name: 'HTML & CSS', level: 90 },
-  { name: 'JavaScript', level: 88 },
+  { name: 'TypeScript', level: 50 },
+  { name: 'Angular', level: 50 },
+  { name: 'HTML & CSS', level: 80 },
+  { name: 'JavaScript', level: 80 },
   { name: 'Node.js', level: 65 },
   { name: 'Git', level: 75 },
 ];
