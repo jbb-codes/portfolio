@@ -30,15 +30,18 @@
 
 .hero__role-group {
   display: block;
+  width: fit-content;
 }
 
 .hero__role {
   display: block;
+  width: fit-content;
   color: var(--accent);
 }
 
 .hero__role-label {
   display: block;
+  width: fit-content;
   color: var(--accent);
 }
 
