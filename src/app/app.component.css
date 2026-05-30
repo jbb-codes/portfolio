@@ -76,3 +76,38 @@
 .footer__social-link:hover {
   color: var(--accent);
 }
+
+/* ── Mobile responsive ───────────────────────────────── */
+
+@media (max-width: 425px) {
+  .footer {
+    padding: 1.25rem 1rem;
+  }
+
+  .footer__nav {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  .footer__copyright {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+}
+
+@media (max-width: 320px) {
+  .footer {
+    padding: 1rem 0.75rem;
+  }
+
+  .footer__nav-link,
+  .footer__separator {
+    font-size: 0.8125rem;
+  }
+
+  .footer__copyright {
+    font-size: 0.75rem;
+  }
+}

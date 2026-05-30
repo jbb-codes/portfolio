@@ -65,6 +65,31 @@
   }
 }
 
+/* ── Mobile responsive ───────────────────────────────── */
+
+@media (max-width: 425px) {
+  .resume {
+    padding: 2.5rem 1.25rem;
+  }
+
+  .resume__header {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .resume__download-btn {
+    position: static;
+  }
+}
+
+@media (max-width: 320px) {
+  .resume {
+    padding: 2rem 1rem;
+  }
+}
+
 /* ── Cards ───────────────────────────────────────────── */
 
 .resume__card {
