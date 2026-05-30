@@ -280,6 +280,61 @@ describe('ParticleBackgroundComponent', () => {
       expect(canvas.width).toBe(800);
       expect(canvas.height).toBe(700);
     }));
+
+    it('rescales existing dot positions proportionally when the canvas grows', () => {
+      Object.defineProperty(window, 'devicePixelRatio', {
+        value: 1,
+        configurable: true,
+      });
+
+      (component as any).resizeCanvas(500, 400);
+      (component as any).dots = [
+        { positionX: 250, positionY: 200, velocityX: 0, velocityY: 0 },
+      ];
+
+      (component as any).resizeCanvas(1000, 800);
+
+      const dot = (component as any).dots[0];
+      expect(dot.positionX).toBeCloseTo(500, 5);
+      expect(dot.positionY).toBeCloseTo(400, 5);
+    });
+
+    it('preserves dot count after canvas resize', () => {
+      Object.defineProperty(window, 'devicePixelRatio', {
+        value: 1,
+        configurable: true,
+      });
+
+      (component as any).resizeCanvas(500, 400);
+      const dotCountBefore = (component as any).dots.length;
+
+      (component as any).resizeCanvas(1000, 800);
+
+      expect((component as any).dots.length).toBe(dotCountBefore);
+    });
+
+    it('rescales dots via resize observer when window is maximized', fakeAsync(() => {
+      Object.defineProperty(window, 'devicePixelRatio', {
+        value: 1,
+        configurable: true,
+      });
+
+      (component as any).resizeCanvas(500, 400);
+      (component as any).dots = [
+        { positionX: 250, positionY: 200, velocityX: 0, velocityY: 0 },
+      ];
+
+      resizeCallback([
+        {
+          contentRect: { width: 1000, height: 800 },
+        } as unknown as ResizeObserverEntry,
+      ]);
+      tick(100);
+
+      const dot = (component as any).dots[0];
+      expect(dot.positionX).toBeCloseTo(500, 5);
+      expect(dot.positionY).toBeCloseTo(400, 5);
+    }));
   });
 
   describe('drawing', () => {
@@ -390,7 +445,7 @@ describe('ParticleBackgroundComponent', () => {
       reducedFixture.destroy();
     });
 
-    it('draws particles at the same positions after resize when reduced motion is preferred', fakeAsync(() => {
+    it('draws particles at rescaled positions after resize when reduced motion is preferred', fakeAsync(() => {
       (win.matchMedia as jasmine.Spy).and.returnValue({
         matches: false,
       } as MediaQueryList);
@@ -399,13 +454,16 @@ describe('ParticleBackgroundComponent', () => {
         configurable: true,
       });
 
-      mockCtx.arc.calls.reset();
       const reducedFixture = TestBed.createComponent(
         ParticleBackgroundComponent,
       );
+      const reducedComponent = reducedFixture.componentInstance;
       reducedFixture.detectChanges();
 
-      const initialArcCalls = mockCtx.arc.calls.allArgs();
+      (reducedComponent as any).resizeCanvas(500, 400);
+      (reducedComponent as any).dots = [
+        { positionX: 250, positionY: 200, velocityX: 0, velocityY: 0 },
+      ];
       mockCtx.arc.calls.reset();
 
       resizeCallback([
@@ -415,7 +473,9 @@ describe('ParticleBackgroundComponent', () => {
       ]);
       tick(100);
 
-      expect(mockCtx.arc.calls.allArgs()).toEqual(initialArcCalls);
+      const arcArgs = mockCtx.arc.calls.argsFor(0);
+      expect(arcArgs[0]).toBeCloseTo(500, 5);
+      expect(arcArgs[1]).toBeCloseTo(400, 5);
       reducedFixture.destroy();
     }));
   });

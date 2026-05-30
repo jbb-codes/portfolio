@@ -210,21 +210,42 @@ export class ParticleBackgroundComponent implements OnInit, OnDestroy {
     if (canvas.width === physicalWidth && canvas.height === physicalHeight)
       return;
 
+    const prevWidth = this.logicalWidth;
+    const prevHeight = this.logicalHeight;
+
     this.logicalWidth = width;
     this.logicalHeight = height;
     canvas.width = physicalWidth;
     canvas.height = physicalHeight;
 
-    this.initDots(width, height);
+    if (this.dots.length === 0) {
+      this.initDots(width, height);
+    } else if (prevWidth > 0 && prevHeight > 0) {
+      this.rescaleDots(prevWidth, prevHeight, width, height);
+    }
   }
 
   private initDots(width: number, height: number): void {
-    if (this.dots.length > 0) return;
     this.dots = Array.from({ length: DOT_COUNT }, () => ({
       positionX: Math.random() * width,
       positionY: Math.random() * height,
       velocityX: (Math.random() - 0.5) * DOT_SPEED * 2,
       velocityY: (Math.random() - 0.5) * DOT_SPEED * 2,
+    }));
+  }
+
+  private rescaleDots(
+    prevWidth: number,
+    prevHeight: number,
+    newWidth: number,
+    newHeight: number,
+  ): void {
+    const scaleX = newWidth / prevWidth;
+    const scaleY = newHeight / prevHeight;
+    this.dots = this.dots.map((dot) => ({
+      ...dot,
+      positionX: dot.positionX * scaleX,
+      positionY: dot.positionY * scaleY,
     }));
   }
 
