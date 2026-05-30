@@ -15,11 +15,14 @@
       data-testid="project-card"
       data-cursor-hover
     >
-      <img
-        class="projects__screenshot"
-        [src]="project.screenshotUrl"
-        [alt]="project.name"
-      />
+      <picture>
+        <source [srcset]="toWebpUrl(project.screenshotUrl)" type="image/webp" />
+        <img
+          class="projects__screenshot"
+          [src]="project.screenshotUrl"
+          [alt]="project.name"
+        />
+      </picture>
 
       <div class="projects__details">
         <h2 class="projects__name">{{ project.name }}</h2>

@@ -13,5 +13,9 @@ import { PROJECTS, Project } from '../../data/portfolio-content';
 })
 export class ProjectsComponent {
   readonly projects: Project[] = PROJECTS;
+
+  toWebpUrl(url: string): string {
+    return url.replace(/\.(png|jpe?g)$/, '.webp');
+  }
 }
 // === End: written with Claude guidance ===
