@@ -29,7 +29,9 @@ export class ThemeService {
     const isDark = !this.isDarkModeSubject.getValue();
     this.isDarkModeSubject.next(isDark);
     this.applyTheme(isDark);
-    localStorage.setItem(THEME_KEY, isDark ? '' : LIGHT_VALUE);
+    if (typeof localStorage !== 'undefined') {
+      localStorage.setItem(THEME_KEY, isDark ? '' : LIGHT_VALUE);
+    }
 
     this.animationTimeout = setTimeout(() => this.clearAnimation(), 400);
   }
@@ -43,10 +45,12 @@ export class ThemeService {
   }
 
   private loadIsDark(): boolean {
+    if (typeof localStorage === 'undefined') return true;
     return localStorage.getItem(THEME_KEY) !== LIGHT_VALUE;
   }
 
   private applyTheme(isDark: boolean): void {
+    if (typeof document === 'undefined') return;
     if (isDark) {
       document.documentElement.removeAttribute('data-theme');
     } else {

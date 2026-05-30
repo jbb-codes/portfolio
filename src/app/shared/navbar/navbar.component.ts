@@ -48,7 +48,7 @@ export class NavbarComponent implements OnDestroy {
     this.routerSub = this.router.events
       .pipe(filter((e) => e instanceof NavigationEnd))
       .subscribe(() => {
-        window.scrollTo({ top: 0 });
+        if (typeof window !== 'undefined') window.scrollTo({ top: 0 });
         afterNextRender(() => this.updateUnderline(), {
           injector: this.injector,
         });

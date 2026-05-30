@@ -26,8 +26,13 @@ export class TypingAnimationDirective implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     if (this.strings.length === 0) return;
+    if (typeof document === 'undefined') return;
 
-    if (!window.matchMedia('(prefers-reduced-motion: no-preference)').matches) {
+    const isReducedMotion =
+      typeof window === 'undefined' ||
+      !window.matchMedia('(prefers-reduced-motion: no-preference)').matches;
+
+    if (isReducedMotion) {
       const textEl = document.createElement('span');
       textEl.setAttribute('data-testid', 'typing-text');
       textEl.textContent = this.strings[this.strings.length - 1] ?? '';

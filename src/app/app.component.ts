@@ -1,4 +1,5 @@
-import { Component, signal } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { Component, inject, PLATFORM_ID, signal } from '@angular/core';
 import {
   NavigationEnd,
   Router,
@@ -33,6 +34,7 @@ const KNOWN_PATHS = ['/', '/about', '/resume', '/projects'];
   animations: [routeFadeAnimation],
 })
 export class AppComponent {
+  readonly isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
   readonly showNavbar = signal(true);
 
   constructor(private readonly router: Router) {
