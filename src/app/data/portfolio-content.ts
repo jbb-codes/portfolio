@@ -65,8 +65,8 @@ export const EDUCATION: EducationEntry[] = [
   {
     degree: 'B.S. Web Development',
     institution: 'Bellevue University',
-    year: 'In Progress',
-    details: "Currently pursuing a bachelor's degree in web development.",
+    year: 'May 2025 – Dec 2026',
+    details: 'GPA: 4.0 · Expected graduation: Dec 2026',
   },
   {
     degree: 'A.S. Computer Programming',
@@ -115,11 +115,11 @@ export const SKILLS: SkillCategory[] = [
 
 export const CERTIFICATIONS: Certification[] = [
   {
-    name: 'Modern Software Developer Bootcamp',
-    issuer: 'Vizuara',
-    year: '2026',
+    name: 'The Modern Software Developer',
+    issuer: 'Vizuara AI Labs',
+    year: 'Mar 2026',
     details:
-      'Hands-on bootcamp covering AI-assisted development with Claude Code and building full-stack web applications.',
+      'Completed bootcamp covering coding LLMs, AI development with coding agents, Model Context Protocol (MCP), AI testing and security practices, deployment with Amazon Web Services (AWS), and DevOps.',
   },
   {
     name: 'Pre-Security Certification',
