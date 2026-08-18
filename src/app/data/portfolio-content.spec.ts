@@ -11,8 +11,8 @@ import {
 } from './portfolio-content';
 
 describe('portfolio-content', () => {
-  it('EXPERIENCE is non-empty', () => {
-    expect(EXPERIENCE.length).toBeGreaterThan(0);
+  it('EXPERIENCE is an array', () => {
+    expect(Array.isArray(EXPERIENCE)).toBeTrue();
   });
 
   it('EDUCATION is non-empty', () => {

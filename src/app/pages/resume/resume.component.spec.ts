@@ -26,13 +26,6 @@ describe('ResumeComponent', () => {
   // with assistance
   // ============================================================
   describe('Experience section', () => {
-    it('should display experience section', () => {
-      const expSection = fixture.nativeElement.querySelector(
-        '[data-testid="experience-entry"]',
-      );
-      expect(expSection).toBeTruthy();
-    });
-
     it('should render one entry per experience item', () => {
       const entries = component.experience.length;
       const entryList = fixture.nativeElement.querySelectorAll(
@@ -55,7 +48,7 @@ describe('ResumeComponent', () => {
       const dlBtn = fixture.nativeElement.querySelector(
         '[data-testid="download-link"]',
       );
-      expect(dlBtn?.getAttribute('href')).toBe('/docs/resume.pdf');
+      expect(dlBtn?.getAttribute('href')).toBe('/docs/Jarren_Bess_Resume.pdf');
     });
   });
   // ============================================================

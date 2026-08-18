@@ -49,11 +49,11 @@ describe('HomeComponent', () => {
   });
 
   describe('bucket list', () => {
-    it('should render section title "My Bucket List"', () => {
+    it('should render section title "Bucket List"', () => {
       const el: HTMLElement = fixture.nativeElement.querySelector(
         '.bucket-list__title',
       );
-      expect(el?.textContent).toContain('My Bucket List');
+      expect(el?.textContent).toContain('Bucket List');
     });
 
     it('should render at least one item', () => {
