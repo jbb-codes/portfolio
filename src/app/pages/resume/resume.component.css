@@ -182,30 +182,34 @@
 
 /* ── Skills ──────────────────────────────────────────── */
 
-.resume__skill {
+.resume__skill-category {
   margin-bottom: 1rem;
 }
 
-.resume__skill-label {
-  display: block;
+.resume__skill-category-label {
   color: var(--text-on-surface);
   font-size: 0.875rem;
   font-weight: 500;
-  margin-bottom: 0.375rem;
+  margin: 0 0 0.5rem;
 }
 
-.resume__skill-bar {
-  background-color: var(--bg-primary);
+.resume__skill-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.resume__skill-tag {
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
   border: 1px solid var(--border);
-  border-radius: 999px;
-  height: 8px;
-  overflow: hidden;
-}
-
-.resume__skill-fill {
-  height: 100%;
-  background-color: var(--accent);
-  border-radius: 999px;
+  background: var(--card-nested-bg);
+  color: var(--accent);
+  font-size: 0.75rem;
+  font-weight: 500;
 }
 
 .resume__card-details {

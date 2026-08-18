@@ -65,15 +65,14 @@
     <section class="resume__col resume__col--right">
       <div class="resume__section glass" data-cursor-hover>
         <h2 class="resume__section-heading">Skills</h2>
-        @for (skill of skills; track skill.name) {
-          <div class="resume__skill" data-testid="skill-entry">
-            <span class="resume__skill-label">{{ skill.name }}</span>
-            <div class="resume__skill-bar">
-              <div
-                class="resume__skill-fill"
-                [style.width.%]="skill.level"
-              ></div>
-            </div>
+        @for (category of skills; track category.name) {
+          <div class="resume__skill-category" data-testid="skill-entry">
+            <h3 class="resume__skill-category-label">{{ category.name }}</h3>
+            <ul class="resume__skill-tags">
+              @for (skill of category.skills; track skill) {
+                <li class="resume__skill-tag">{{ skill }}</li>
+              }
+            </ul>
           </div>
         }
       </div>

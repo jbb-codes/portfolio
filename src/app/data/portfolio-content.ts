@@ -16,9 +16,9 @@ export interface EducationEntry {
   details: string;
 }
 
-export interface Skill {
+export interface SkillCategory {
   name: string;
-  level: number;
+  skills: string[];
 }
 
 export interface Certification {
@@ -77,13 +77,40 @@ export const EDUCATION: EducationEntry[] = [
   },
 ];
 
-export const SKILLS: Skill[] = [
-  { name: 'TypeScript', level: 50 },
-  { name: 'Angular', level: 50 },
-  { name: 'HTML & CSS', level: 80 },
-  { name: 'JavaScript', level: 80 },
-  { name: 'Node.js', level: 65 },
-  { name: 'Git', level: 75 },
+export const SKILLS: SkillCategory[] = [
+  {
+    name: 'Programming Languages',
+    skills: ['JavaScript', 'TypeScript', 'Python', 'HTML', 'CSS', 'Lua'],
+  },
+  {
+    name: 'Frameworks & Libraries',
+    skills: ['Angular', 'Node.js', 'Express', 'Next.js', 'React'],
+  },
+  {
+    name: 'Databases & Storage',
+    skills: ['MongoDB', 'SQL', 'NoSQL'],
+  },
+  {
+    name: 'Tools & Platforms',
+    skills: [
+      'Git',
+      'GitHub',
+      'REST APIs',
+      'Agile Development',
+      'Model Context Protocol (MCP)',
+      'CI/CD',
+    ],
+  },
+  {
+    name: 'AI & Automation',
+    skills: [
+      'Agentic AI',
+      'Claude Code',
+      'AI Agent Orchestration',
+      'Automation Workflows',
+      'LLM-Integrated Tooling',
+    ],
+  },
 ];
 
 export const CERTIFICATIONS: Certification[] = [

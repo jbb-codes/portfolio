@@ -23,10 +23,9 @@ describe('portfolio-content', () => {
     expect(SKILLS.length).toBeGreaterThan(0);
   });
 
-  it('each skill level is within 0–100', () => {
-    for (const skill of SKILLS) {
-      expect(skill.level).toBeGreaterThanOrEqual(0);
-      expect(skill.level).toBeLessThanOrEqual(100);
+  it('each skill category has at least one skill', () => {
+    for (const category of SKILLS) {
+      expect(category.skills.length).toBeGreaterThan(0);
     }
   });
 
