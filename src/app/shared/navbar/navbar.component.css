@@ -3,25 +3,18 @@
 }
 
 .navbar {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  justify-content: space-between;
   padding: 0 2rem;
   height: 64px;
   position: relative;
   z-index: 100;
 }
 
-.navbar__logo {
-  font-size: 1.125rem;
-  font-weight: 700;
-  color: var(--text-on-surface);
-  letter-spacing: -0.02em;
-  text-decoration: none;
-}
-
 .navbar__links {
   display: flex;
+  grid-column: 2;
   gap: 2rem;
   list-style: none;
   margin: 0;
@@ -66,8 +59,10 @@
 
 .navbar__theme-toggle {
   display: flex;
+  grid-column: 3;
   align-items: center;
   justify-content: center;
+  justify-self: end;
   width: 36px;
   height: 36px;
   border-radius: 50%;
@@ -118,13 +113,11 @@
 
 @media (max-width: 425px) {
   .navbar {
+    display: flex;
     flex-wrap: wrap;
+    justify-content: flex-end;
     height: auto;
     padding: 0.625rem 1rem 0;
-  }
-
-  .navbar__logo {
-    font-size: 1rem;
   }
 
   .navbar__links {
@@ -158,10 +151,6 @@
 @media (max-width: 320px) {
   .navbar {
     padding: 0.5rem 0.75rem 0;
-  }
-
-  .navbar__logo {
-    font-size: 0.9375rem;
   }
 
   .navbar__links {

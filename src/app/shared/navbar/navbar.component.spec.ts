@@ -33,15 +33,6 @@ describe('NavbarComponent', () => {
     fixture.detectChanges();
   });
 
-  describe('logo', () => {
-    it('should display the site name', () => {
-      const el: HTMLElement = fixture.nativeElement.querySelector(
-        '[data-testid="navbar-logo"]',
-      );
-      expect(el?.textContent?.trim()).toContain('Jarren Bess');
-    });
-  });
-
   describe('navigation links', () => {
     it('should display links to Home, About, Resume, and Projects', () => {
       const links: NodeListOf<HTMLElement> =
