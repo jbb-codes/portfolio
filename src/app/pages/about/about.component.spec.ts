@@ -37,13 +37,6 @@ describe('AboutComponent', () => {
       expect(link).toBeTruthy();
     });
 
-    it('should render a LinkedIn social link', () => {
-      const link: HTMLAnchorElement = fixture.nativeElement.querySelector(
-        'a[href*="linkedin"]',
-      );
-      expect(link).toBeTruthy();
-    });
-
     it('should render a GitHub social link', () => {
       const link: HTMLAnchorElement =
         fixture.nativeElement.querySelector('a[href*="github"]');

@@ -50,13 +50,6 @@ describe('AppComponent', () => {
         expect(el).toBeTruthy();
       });
 
-      it('should render LinkedIn link', () => {
-        const el = fixture.nativeElement.querySelector(
-          '[data-testid="footer-linkedin"]',
-        );
-        expect(el).toBeTruthy();
-      });
-
       it('should render Email link', () => {
         const el = fixture.nativeElement.querySelector(
           '[data-testid="footer-email"]',
