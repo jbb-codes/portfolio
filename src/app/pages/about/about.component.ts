@@ -1,7 +1,7 @@
 import { Component, OnDestroy, signal } from '@angular/core';
 import {
   LucideIcon,
-  LucideNetwork,
+  LucideShield,
   LucideCodeXml,
   LucidePalette,
   LucideBot,
@@ -31,7 +31,7 @@ export class AboutComponent implements OnDestroy {
   readonly iconMap: Record<string, LucideIcon> = {
     'code-xml': LucideCodeXml,
     palette: LucidePalette,
-    network: LucideNetwork,
+    shield: LucideShield,
     bot: LucideBot,
   };
 
