@@ -168,8 +168,8 @@ export const BUCKET_LIST: BucketListItem[] = [
   {
     id: '1',
     title: 'Build and deploy a full-stack app',
-    description: 'Ship something real that actual users interact with',
-    completed: false,
+    description: 'Design, build, and launch a complete app',
+    completed: true,
   },
   {
     id: '2',
@@ -199,7 +199,7 @@ export const BUCKET_LIST: BucketListItem[] = [
     id: '6',
     title: 'Build a production AI-powered application',
     description: 'Ship an app where AI drives the core user experience',
-    completed: false,
+    completed: true,
   },
   {
     id: '7',
