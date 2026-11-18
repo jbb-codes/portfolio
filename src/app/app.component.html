@@ -1,9 +1,11 @@
 <a class="skip-link" href="#main-content" (click)="skipToMain($event)"
   >Skip to main content</a
 >
+<app-orb-background />
 @if (isBrowser) {
   <app-custom-cursor />
-  <app-orb-background />
+}
+@if (showParticles()) {
   <app-particle-background />
 }
 @if (showNavbar()) {

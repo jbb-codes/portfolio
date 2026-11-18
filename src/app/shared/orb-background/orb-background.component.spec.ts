@@ -1,3 +1,4 @@
+import { PLATFORM_ID } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import {
   ORB_RADIUS_PX,
@@ -178,6 +179,36 @@ describe('stepOrb', () => {
     const orb: OrbState = { left: 70.5, top: 30, driftX: 0.5, driftY: 0 };
     const next = stepOrb(orb, 1, VW, VH);
     expect(next.driftX).toBeGreaterThan(0);
+  });
+});
+
+describe('OrbBackgroundComponent on the server', () => {
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [OrbBackgroundComponent],
+      providers: [{ provide: PLATFORM_ID, useValue: 'server' }],
+    }).compileComponents();
+  });
+
+  it('renders both orbs at inline starting positions so they paint without JS', () => {
+    const fixture = TestBed.createComponent(OrbBackgroundComponent);
+    fixture.detectChanges();
+    const orbs: HTMLElement[] = Array.from(
+      fixture.nativeElement.querySelectorAll('[data-testid="orb"]'),
+    );
+    expect(orbs.length).toBe(2);
+    orbs.forEach((orb) =>
+      expect(orb.style.transform).toMatch(/translate\(.+vw, .+vh\)/),
+    );
+    fixture.destroy();
+  });
+
+  it('does not start the animation loop', () => {
+    const rafSpy = spyOn(window, 'requestAnimationFrame');
+    const fixture = TestBed.createComponent(OrbBackgroundComponent);
+    fixture.detectChanges();
+    expect(rafSpy).not.toHaveBeenCalled();
+    fixture.destroy();
   });
 });
 

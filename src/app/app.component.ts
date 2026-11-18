@@ -1,5 +1,11 @@
 import { isPlatformBrowser } from '@angular/common';
-import { Component, inject, PLATFORM_ID, signal } from '@angular/core';
+import {
+  afterNextRender,
+  Component,
+  inject,
+  PLATFORM_ID,
+  signal,
+} from '@angular/core';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { routeFadeAnimation } from './route-animations';
@@ -32,8 +38,17 @@ const KNOWN_PATHS = ['/'];
 export class AppComponent {
   readonly isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
   readonly showNavbar = signal(true);
+  readonly showParticles = signal(false);
 
   constructor(private readonly router: Router) {
+    // rAF fires just before the next paint, so the timeout runs after it:
+    // the page paints first and the particle canvas never competes with it.
+    afterNextRender(() =>
+      requestAnimationFrame(() =>
+        setTimeout(() => this.showParticles.set(true)),
+      ),
+    );
+
     this.router.events
       .pipe(filter((e) => e instanceof NavigationEnd))
       .subscribe((e) => {
