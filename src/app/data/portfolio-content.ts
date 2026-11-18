@@ -179,7 +179,7 @@ export const PROJECTS: Project[] = [
     number: 1,
     name: 'Paper to Colab',
     githubUrl: 'https://github.com/jbb-codes/paper-to-colab',
-    screenshotUrl: 'assets/images/projects/paperToColab.png',
+    screenshotUrl: 'assets/images/projects/paperToColab.webp',
     description:
       'A Next.js app that converts academic PDF papers into runnable Jupyter notebooks and opens them directly in Google Colab, powered by the Groq LLM API.',
     technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Groq API'],
@@ -190,7 +190,7 @@ export const PROJECTS: Project[] = [
     number: 2,
     name: 'Text to Audio',
     githubUrl: 'https://github.com/jbb-codes/audiobook-app',
-    screenshotUrl: 'assets/images/projects/textToAudio.png',
+    screenshotUrl: 'assets/images/projects/textToAudio.webp',
     description:
       'A cross-platform desktop app that converts text files and scanned document images into audiobooks using a local text-to-speech model.',
     technologies: ['Electron', 'JavaScript', 'Node.js', 'kokoro-js'],
@@ -201,7 +201,7 @@ export const PROJECTS: Project[] = [
     number: 3,
     name: 'Weather App',
     githubUrl: 'https://github.com/jbb-codes/weather-app',
-    screenshotUrl: 'assets/images/projects/weatherApp.png',
+    screenshotUrl: 'assets/images/projects/weatherApp.webp',
     description:
       'A web app that fetches real-time weather data for any city using the OpenWeatherMap API and displays current conditions and a 5-day forecast.',
     technologies: ['JavaScript', 'HTML', 'CSS', 'OpenWeatherMap API'],

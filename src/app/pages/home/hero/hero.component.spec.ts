@@ -34,6 +34,11 @@ describe('HeroComponent', () => {
     expect(avatar.getAttribute('alt')).toBeTruthy();
   });
 
+  it('fetches the avatar at high priority since it is the largest paint', () => {
+    const avatar = query('hero-avatar') as HTMLImageElement;
+    expect(avatar.getAttribute('fetchpriority')).toBe('high');
+  });
+
   it('renders decorative orbit rings hidden from assistive tech', () => {
     const rings = root.querySelectorAll('[data-testid="hero-orbit-ring"]');
     expect(rings.length).toBeGreaterThanOrEqual(2);
