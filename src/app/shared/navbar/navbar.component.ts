@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
 import { LucideMoon, LucideSun } from '@lucide/angular';
@@ -9,6 +9,7 @@ import { ThemeService } from '../../shared/theme/theme.service';
 @Component({
   selector: 'app-navbar',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [RouterLink, LucideSun, LucideMoon],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css',
