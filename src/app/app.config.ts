@@ -1,6 +1,6 @@
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { provideClientHydration } from '@angular/platform-browser';
-import { provideRouter } from '@angular/router';
+import { provideRouter, withInMemoryScrolling } from '@angular/router';
 import {
   provideAnimations,
   provideNoopAnimations,
@@ -19,7 +19,13 @@ export function createAppConfig(): ApplicationConfig {
     providers: [
       provideZoneChangeDetection({ eventCoalescing: true }),
       provideClientHydration(),
-      provideRouter(routes),
+      provideRouter(
+        routes,
+        withInMemoryScrolling({
+          anchorScrolling: 'enabled',
+          scrollPositionRestoration: 'enabled',
+        }),
+      ),
       prefersReducedMotion ? provideNoopAnimations() : provideAnimations(),
     ],
   };
