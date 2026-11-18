@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { AboutSectionComponent } from './about-section/about-section.component';
 import { BucketListComponent } from './bucket-list/bucket-list.component';
 import { ContactSectionComponent } from './contact-section/contact-section.component';
-import { TypingAnimationDirective } from './typing-animation.directive';
+import { HeroComponent } from './hero/hero.component';
+import { StackComponent } from './stack/stack.component';
+import { WorkSpotlightComponent } from './work-spotlight/work-spotlight.component';
 
 // Used Claude to help implement the home page shell: the hero and the empty
 // anchored sections that later tickets fill in.
@@ -10,14 +12,14 @@ import { TypingAnimationDirective } from './typing-animation.directive';
   selector: 'app-home',
   standalone: true,
   imports: [
-    RouterLink,
-    TypingAnimationDirective,
+    HeroComponent,
+    AboutSectionComponent,
+    WorkSpotlightComponent,
+    StackComponent,
     BucketListComponent,
     ContactSectionComponent,
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
 })
-export class HomeComponent {
-  readonly roleStrings = ['Agentic', 'Full Stack', 'Modern Software'];
-}
+export class HomeComponent {}
