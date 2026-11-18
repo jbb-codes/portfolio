@@ -25,27 +25,8 @@ describe('HomeComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('hero section', () => {
-    it('should render CTA button with "View My Projects" text', () => {
-      const btn: HTMLElement = fixture.nativeElement.querySelector(
-        '[data-testid="cta-button"]',
-      );
-      expect(btn?.textContent).toContain('View My Projects');
-    });
-
-    it('should link the CTA button to the work section', () => {
-      const btn: HTMLElement = fixture.nativeElement.querySelector(
-        '[data-testid="cta-button"]',
-      );
-      expect(btn?.getAttribute('href')).toBe('/#work');
-    });
-
-    it('should render the hero role element', () => {
-      const role: HTMLElement = fixture.nativeElement.querySelector(
-        '[data-testid="hero-role"]',
-      );
-      expect(role).toBeTruthy();
-    });
+  it('should render the hero', () => {
+    expect(fixture.nativeElement.querySelector('app-hero')).toBeTruthy();
   });
 
   describe('anchored sections', () => {
