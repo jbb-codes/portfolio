@@ -1,10 +1,11 @@
-import { Component, computed, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, signal } from '@angular/core';
 import { LucideArrowLeft, LucideArrowRight, LucideArrowUpRight } from '@lucide/angular';
 import { PROJECTS } from '../../../data/portfolio-content';
 
 @Component({
   selector: 'app-work-spotlight',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [LucideArrowLeft, LucideArrowRight, LucideArrowUpRight],
   templateUrl: './work-spotlight.component.html',
   styleUrl: './work-spotlight.component.css',

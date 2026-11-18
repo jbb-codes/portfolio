@@ -55,6 +55,12 @@
   transition: background 0.2s, color 0.2s, border-color 0.2s;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .work-controls__button {
+    transition: none;
+  }
+}
+
 .work-controls__button:hover,
 .work-controls__button:focus-visible {
   background: var(--surface-hover-bg);
@@ -161,6 +167,13 @@
   font: inherit;
   color: var(--text-secondary);
   cursor: pointer;
+}
+
+.work-tab:focus-visible,
+.work-controls__button:focus-visible,
+.spotlight__link:focus-visible {
+  outline: 2px solid var(--accent-text);
+  outline-offset: 4px;
 }
 
 .work-tab--active {
