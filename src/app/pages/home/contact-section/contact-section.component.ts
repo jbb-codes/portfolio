@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 interface ContactLink {
   label: string;
@@ -10,11 +10,12 @@ interface ContactLink {
 @Component({
   selector: 'app-contact-section',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './contact-section.component.html',
   styleUrl: './contact-section.component.css',
 })
 export class ContactSectionComponent {
-  readonly links: ContactLink[] = [
+  readonly links: readonly ContactLink[] = [
     {
       label: 'Email',
       href: 'mailto:bessjarren@yahoo.com',
