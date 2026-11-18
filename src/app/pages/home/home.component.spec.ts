@@ -33,11 +33,11 @@ describe('HomeComponent', () => {
       expect(btn?.textContent).toContain('View My Projects');
     });
 
-    it('should link the CTA button to /projects', () => {
+    it('should link the CTA button to the work section', () => {
       const btn: HTMLElement = fixture.nativeElement.querySelector(
         '[data-testid="cta-button"]',
       );
-      expect(btn?.getAttribute('routerlink')).toBe('/projects');
+      expect(btn?.getAttribute('href')).toBe('/#work');
     });
 
     it('should render the hero role element', () => {
@@ -48,42 +48,28 @@ describe('HomeComponent', () => {
     });
   });
 
-  describe('bucket list', () => {
-    it('should render section title "Bucket List"', () => {
-      const el: HTMLElement = fixture.nativeElement.querySelector(
-        '.bucket-list__title',
-      );
-      expect(el?.textContent).toContain('Bucket List');
+  describe('anchored sections', () => {
+    it('should render one section for each jump-link target', () => {
+      const ids = ['about', 'work', 'stack', 'bucket-list', 'contact'];
+      for (const id of ids) {
+        const section = fixture.nativeElement.querySelector(
+          `section#${id}`,
+        );
+        expect(section).withContext(id).toBeTruthy();
+      }
     });
 
-    it('should render at least one item', () => {
-      const items =
-        fixture.nativeElement.querySelectorAll('.bucket-list__item');
-      expect(items.length).toBeGreaterThan(0);
-    });
-
-    it('should render a title for each item', () => {
-      const titles = fixture.nativeElement.querySelectorAll(
-        '.bucket-list__item-title',
-      );
-      expect(titles.length).toBeGreaterThan(0);
-    });
-
-    it('should render a description for each item', () => {
-      const descriptions = fixture.nativeElement.querySelectorAll(
-        '.bucket-list__item-description',
-      );
-      expect(descriptions.length).toBeGreaterThan(0);
-    });
-
-    it('should apply checked class to exactly the completed items', () => {
-      const expectedCount = component.bucketList.filter(
-        (item) => item.completed,
-      ).length;
-      const checked = fixture.nativeElement.querySelectorAll(
-        '.bucket-list__checkbox--checked',
-      );
-      expect(checked.length).toBe(expectedCount);
+    it('should order the sections as About, Work, Stack, Bucket List, Contact', () => {
+      const ids = Array.from(
+        fixture.nativeElement.querySelectorAll('section[id]'),
+      ).map((section) => (section as HTMLElement).id);
+      expect(ids).toEqual([
+        'about',
+        'work',
+        'stack',
+        'bucket-list',
+        'contact',
+      ]);
     });
   });
 });

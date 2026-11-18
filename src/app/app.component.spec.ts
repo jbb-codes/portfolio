@@ -1,6 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideLocationMocks } from '@angular/common/testing';
-import { provideRouter, withDisabledInitialNavigation } from '@angular/router';
+import {
+  provideRouter,
+  Router,
+  withDisabledInitialNavigation,
+} from '@angular/router';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { AppComponent } from './app.component';
 
@@ -28,11 +32,18 @@ describe('AppComponent', () => {
   });
 
   describe('footer', () => {
-    it('should render 4 footer nav links', () => {
-      const links = fixture.nativeElement.querySelectorAll(
-        '[data-testid="footer-nav-link"]',
-      );
-      expect(links.length).toBe(4);
+    it('should render footer jump links to About, Work, Stack, and Bucket List', () => {
+      const links: NodeListOf<HTMLElement> =
+        fixture.nativeElement.querySelectorAll(
+          '[data-testid="footer-nav-link"]',
+        );
+      const hrefs = Array.from(links).map((l) => l.getAttribute('href'));
+      expect(hrefs).toEqual([
+        '/#about',
+        '/#work',
+        '/#stack',
+        '/#bucket-list',
+      ]);
     });
 
     it('should render copyright with year', () => {
@@ -82,5 +93,42 @@ describe('AppComponent', () => {
       );
       expect(outlet).toBeTruthy();
     });
+  });
+});
+
+describe('AppComponent – navbar visibility', () => {
+  let fixture: ComponentFixture<AppComponent>;
+  let router: Router;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [AppComponent],
+      providers: [
+        provideRouter([
+          { path: '', children: [] },
+          { path: '**', children: [] },
+        ]),
+        provideLocationMocks(),
+        provideAnimations(),
+      ],
+    }).compileComponents();
+    fixture = TestBed.createComponent(AppComponent);
+    router = TestBed.inject(Router);
+    fixture.detectChanges();
+  });
+
+  it('should hide the navbar on an unknown route', async () => {
+    await router.navigateByUrl('/does-not-exist');
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.querySelector('header')).toBeNull();
+  });
+
+  it('should show the navbar again when a jump link adds a fragment to the home route', async () => {
+    await router.navigateByUrl('/does-not-exist');
+    await router.navigateByUrl('/#about');
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.querySelector('header')).toBeTruthy();
   });
 });

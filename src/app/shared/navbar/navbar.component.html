@@ -5,17 +5,7 @@
         class="navbar__link"
         data-testid="navbar-link"
         routerLink="/"
-        routerLinkActive="navbar__link--active"
-        [routerLinkActiveOptions]="{ exact: true }"
-        >Home</a
-      >
-    </li>
-    <li>
-      <a
-        class="navbar__link"
-        data-testid="navbar-link"
-        routerLink="/about"
-        routerLinkActive="navbar__link--active"
+        fragment="about"
         >About</a
       >
     </li>
@@ -23,25 +13,29 @@
       <a
         class="navbar__link"
         data-testid="navbar-link"
-        routerLink="/resume"
-        routerLinkActive="navbar__link--active"
-        >Resume</a
+        routerLink="/"
+        fragment="work"
+        >Work</a
       >
     </li>
     <li>
       <a
         class="navbar__link"
         data-testid="navbar-link"
-        routerLink="/projects"
-        routerLinkActive="navbar__link--active"
-        >Projects</a
+        routerLink="/"
+        fragment="stack"
+        >Stack</a
       >
     </li>
-    <div
-      class="nav-underline"
-      data-testid="nav-underline"
-      aria-hidden="true"
-    ></div>
+    <li>
+      <a
+        class="navbar__link"
+        data-testid="navbar-link"
+        routerLink="/"
+        fragment="bucket-list"
+        >Bucket List</a
+      >
+    </li>
   </ul>
   <button
     class="navbar__theme-toggle"

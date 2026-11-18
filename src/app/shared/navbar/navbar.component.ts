@@ -1,34 +1,19 @@
-import {
-  Component,
-  ElementRef,
-  Injector,
-  OnDestroy,
-  afterNextRender,
-} from '@angular/core';
-import {
-  NavigationEnd,
-  Router,
-  RouterLink,
-  RouterLinkActive,
-} from '@angular/router';
+import { Component } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { RouterLink } from '@angular/router';
 import { LucideMoon, LucideSun } from '@lucide/angular';
-import { Subscription } from 'rxjs';
-import { filter } from 'rxjs/operators';
 import { ThemeService } from '../../shared/theme/theme.service';
 
-// Used Claude to help implement the navbar, including the sliding underline.
-// It works by measuring the active link's DOM position and writing those values
-// into CSS custom properties (--underline-left, --underline-width), which the
-// stylesheet then animates with a CSS transition.
+// Links are jump links to sections of the single page. Scrolling to the
+// fragment is handled by the router's anchorScrolling option.
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [RouterLink, RouterLinkActive, LucideSun, LucideMoon],
+  imports: [RouterLink, LucideSun, LucideMoon],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css',
 })
-export class NavbarComponent implements OnDestroy {
+export class NavbarComponent {
   readonly isDarkMode = toSignal(this.themeService.isDarkMode$, {
     requireSync: true,
   });
@@ -36,36 +21,5 @@ export class NavbarComponent implements OnDestroy {
     requireSync: true,
   });
 
-  private routerSub!: Subscription;
-
-  constructor(
-    private readonly router: Router,
-    private readonly el: ElementRef,
-    private readonly injector: Injector,
-    readonly themeService: ThemeService,
-  ) {
-    afterNextRender(() => this.updateUnderline());
-    this.routerSub = this.router.events
-      .pipe(filter((e) => e instanceof NavigationEnd))
-      .subscribe(() => {
-        if (typeof window !== 'undefined') window.scrollTo({ top: 0 });
-        afterNextRender(() => this.updateUnderline(), {
-          injector: this.injector,
-        });
-      });
-  }
-
-  ngOnDestroy(): void {
-    this.routerSub?.unsubscribe();
-  }
-
-  private updateUnderline(): void {
-    const ul: HTMLElement | null =
-      this.el.nativeElement.querySelector('.navbar__links');
-    const active: HTMLElement | null =
-      ul?.querySelector('.navbar__link--active') ?? null;
-    if (!ul || !active) return;
-    ul.style.setProperty('--underline-left', `${active.offsetLeft}px`);
-    ul.style.setProperty('--underline-width', `${active.offsetWidth}px`);
-  }
+  constructor(readonly themeService: ThemeService) {}
 }

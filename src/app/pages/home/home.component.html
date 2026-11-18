@@ -22,51 +22,25 @@
         from front to back.</span
       >
     </p>
-    <a class="hero__cta" data-testid="cta-button" routerLink="/projects">
+    <a class="hero__cta" data-testid="cta-button" routerLink="/"
+      fragment="work">
       View My Projects <span aria-hidden="true">→</span>
     </a>
   </div>
 </section>
 
-<section class="bucket-list">
-  <div class="bucket-list__inner">
-    <div class="bucket-list__header">
-      <h2 class="bucket-list__title">Bucket List</h2>
-      <p class="bucket-list__subtitle">A list of things I want to accomplish</p>
-    </div>
-    <div class="bucket-list__grid">
-      @for (item of bucketList; track item.id) {
-        <div class="bucket-list__item" data-cursor-hover>
-          <div
-            class="bucket-list__checkbox"
-            [class.bucket-list__checkbox--checked]="item.completed"
-            aria-hidden="true"
-          >
-            @if (item.completed) {
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="12"
-                height="12"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="3"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <polyline points="20 6 9 17 4 12" />
-              </svg>
-            }
-          </div>
-          <span class="sr-only"
-            >{{ item.completed ? "Completed" : "Not yet completed" }}:</span
-          >
-          <div class="bucket-list__item-content">
-            <p class="bucket-list__item-title">{{ item.title }}</p>
-            <p class="bucket-list__item-description">{{ item.description }}</p>
-          </div>
-        </div>
-      }
-    </div>
-  </div>
+<section id="about" class="page-section" aria-labelledby="about-heading">
+  <h2 id="about-heading" class="page-section__heading">About</h2>
+</section>
+<section id="work" class="page-section" aria-labelledby="work-heading">
+  <h2 id="work-heading" class="page-section__heading">Work</h2>
+</section>
+<section id="stack" class="page-section" aria-labelledby="stack-heading">
+  <h2 id="stack-heading" class="page-section__heading">Stack</h2>
+</section>
+<section id="bucket-list" class="page-section" aria-labelledby="bucket-list-heading">
+  <h2 id="bucket-list-heading" class="page-section__heading">Bucket List</h2>
+</section>
+<section id="contact" class="page-section" aria-labelledby="contact-heading">
+  <h2 id="contact-heading" class="page-section__heading">Contact</h2>
 </section>

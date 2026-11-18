@@ -34,27 +34,8 @@
   }
 }
 
-.navbar__link:hover,
-.navbar__link--active {
+.navbar__link:hover {
   color: var(--text-on-surface);
-}
-
-.nav-underline {
-  position: absolute;
-  bottom: -1px;
-  left: 0;
-  height: 2px;
-  background: var(--accent);
-  transform: translateX(var(--underline-left, 0px));
-  width: var(--underline-width, 0px);
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .nav-underline {
-    transition:
-      transform 0.25s ease,
-      width 0.25s ease;
-  }
 }
 
 .navbar__theme-toggle {

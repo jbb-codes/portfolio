@@ -1,20 +1,8 @@
-import {
-  ComponentFixture,
-  TestBed,
-  discardPeriodicTasks,
-  fakeAsync,
-  tick,
-} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideLocationMocks } from '@angular/common/testing';
-import {
-  provideRouter,
-  Router,
-  withDisabledInitialNavigation,
-} from '@angular/router';
-import { ApplicationRef } from '@angular/core';
+import { provideRouter, withDisabledInitialNavigation } from '@angular/router';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { NavbarComponent } from './navbar.component';
-import { routes } from '../../app.routes';
 
 describe('NavbarComponent', () => {
   let fixture: ComponentFixture<NavbarComponent>;
@@ -34,14 +22,23 @@ describe('NavbarComponent', () => {
   });
 
   describe('navigation links', () => {
-    it('should display links to Home, About, Resume, and Projects', () => {
+    it('should display jump links to About, Work, Stack, and Bucket List', () => {
       const links: NodeListOf<HTMLElement> =
         fixture.nativeElement.querySelectorAll('[data-testid="navbar-link"]');
       const texts = Array.from(links).map((l) => l.textContent?.trim());
-      expect(texts).toContain('Home');
-      expect(texts).toContain('About');
-      expect(texts).toContain('Resume');
-      expect(texts).toContain('Projects');
+      expect(texts).toEqual(['About', 'Work', 'Stack', 'Bucket List']);
+    });
+
+    it('should point each link at its section on the home page', () => {
+      const links: NodeListOf<HTMLElement> =
+        fixture.nativeElement.querySelectorAll('[data-testid="navbar-link"]');
+      const hrefs = Array.from(links).map((l) => l.getAttribute('href'));
+      expect(hrefs).toEqual([
+        '/#about',
+        '/#work',
+        '/#stack',
+        '/#bucket-list',
+      ]);
     });
   });
 
@@ -127,68 +124,4 @@ describe('NavbarComponent', () => {
       });
     });
   });
-
-  describe('sliding underline', () => {
-    it('should scope the underline indicator inside the nav links so it positions relative to them', () => {
-      const container: HTMLElement = fixture.nativeElement.querySelector(
-        '[data-testid="navbar-links"]',
-      );
-      const underline: HTMLElement | null =
-        container?.querySelector('[data-testid="nav-underline"]') ?? null;
-      expect(underline).toBeTruthy();
-    });
-  });
-});
-
-describe('NavbarComponent – underline positioning', () => {
-  let fixture: ComponentFixture<NavbarComponent>;
-  let router: Router;
-  let appRef: ApplicationRef;
-
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [NavbarComponent],
-      providers: [
-        provideRouter(routes, withDisabledInitialNavigation()),
-        provideLocationMocks(),
-        provideAnimations(),
-      ],
-    }).compileComponents();
-
-    fixture = TestBed.createComponent(NavbarComponent);
-    router = TestBed.inject(Router);
-    appRef = TestBed.inject(ApplicationRef);
-    fixture.detectChanges();
-  });
-
-  it('should position the underline under the active link on initial load', fakeAsync(() => {
-    router.navigate(['/']);
-    tick();
-    appRef.tick();
-
-    const container: HTMLElement = fixture.nativeElement.querySelector(
-      '[data-testid="navbar-links"]',
-    );
-    expect(container.style.getPropertyValue('--underline-left')).not.toBe('');
-    expect(container.style.getPropertyValue('--underline-width')).not.toBe('');
-    discardPeriodicTasks();
-  }));
-
-  it('should reposition the underline when navigating to a different route', fakeAsync(() => {
-    router.navigate(['/']);
-    tick();
-    appRef.tick();
-
-    const container: HTMLElement = fixture.nativeElement.querySelector(
-      '[data-testid="navbar-links"]',
-    );
-    const spy = spyOn(container.style, 'setProperty');
-
-    router.navigate(['/about']);
-    tick();
-    appRef.tick();
-
-    expect(spy).toHaveBeenCalled();
-    discardPeriodicTasks();
-  }));
 });
