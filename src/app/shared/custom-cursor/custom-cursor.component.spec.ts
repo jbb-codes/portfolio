@@ -250,6 +250,50 @@ describe('CustomCursorComponent – ring proximity', () => {
     });
   });
 
+  describe('hover on elements marked for the cursor', () => {
+    const dotOnInteractiveClass = 'custom-cursor__dot--on-interactive';
+    let card: HTMLElement;
+
+    beforeEach(() => {
+      card = doc.createElement('div');
+      card.setAttribute('data-cursor-hover', '');
+      doc.body.appendChild(card);
+    });
+
+    afterEach(() => doc.body.removeChild(card));
+
+    it('applies --on-interactive when the dot is over a non-native [data-cursor-hover] element', () => {
+      card.dispatchEvent(new MouseEvent('mouseover', { bubbles: true }));
+
+      const dot: HTMLElement = fixture.nativeElement.querySelector(
+        '[data-testid="cursor-dot"]',
+      );
+      expect(dot.classList).toContain(dotOnInteractiveClass);
+    });
+
+    it('applies --on-interactive when the dot is over a child of a [data-cursor-hover] element', () => {
+      const label = doc.createElement('span');
+      card.appendChild(label);
+      label.dispatchEvent(new MouseEvent('mouseover', { bubbles: true }));
+
+      const dot: HTMLElement = fixture.nativeElement.querySelector(
+        '[data-testid="cursor-dot"]',
+      );
+      expect(dot.classList).toContain(dotOnInteractiveClass);
+    });
+
+    it('does not forward clicks on [data-cursor-hover] elements as proximity clicks', () => {
+      const clickSpy = spyOn(card, 'click');
+      spyOn(doc, 'elementFromPoint').and.returnValue(card);
+
+      doc.body.dispatchEvent(
+        new MouseEvent('click', { bubbles: true, clientX: 5, clientY: 5 }),
+      );
+
+      expect(clickSpy).not.toHaveBeenCalled();
+    });
+  });
+
   describe('hoverable element detection', () => {
     it('adds cursor-ring-active to a [data-cursor-hover] element when ring edge touches it', () => {
       const card = doc.createElement('div');
