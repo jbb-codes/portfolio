@@ -1,0 +1,17 @@
+<section id="contact" class="contact" aria-labelledby="contact-heading">
+  <h2 id="contact-heading" class="contact__headline">
+    Let's build<br />something<br />together.
+  </h2>
+  <div class="contact__actions">
+    @for (link of links; track link.testId) {
+      <a
+        class="contact__button"
+        [attr.data-testid]="link.testId"
+        [href]="link.href"
+        [attr.target]="link.opensNewTab ? '_blank' : null"
+        [attr.rel]="link.opensNewTab ? 'noopener noreferrer' : null"
+        >{{ link.label }}</a
+      >
+    }
+  </div>
+</section>

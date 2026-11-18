@@ -17,6 +17,9 @@ const RING_ANGLE_STEPS = 12;
 const RING_ACTIVE_CLASS = 'cursor-ring-active';
 const INTERACTIVE_SELECTOR =
   'a, button, input, select, textarea, [role="button"], [tabindex]:not([tabindex="-1"])';
+// Cards opt in to the hover look via data-cursor-hover, but they are not
+// click targets, so they stay out of INTERACTIVE_SELECTOR (proximity clicks).
+const HOVER_STATE_SELECTOR = `${INTERACTIVE_SELECTOR}, [data-cursor-hover]`;
 
 // Used Claude to help implement the custom cursor. The ring trails the dot
 // using linear interpolation (lerp) for a smooth lag effect. The proximity
@@ -81,7 +84,7 @@ export class CustomCursorComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private onMouseOver(event: MouseEvent): void {
     this.dotOnInteractive = !!(event.target as Element).closest(
-      INTERACTIVE_SELECTOR,
+      HOVER_STATE_SELECTOR,
     );
     this.updateCursorInteractiveState();
   }
@@ -163,7 +166,7 @@ export class CustomCursorComponent implements OnInit, AfterViewInit, OnDestroy {
     }).filter((el): el is Element => el !== null);
 
     this.ringNearInteractive = perimeter.some(
-      (el) => !!el.closest(INTERACTIVE_SELECTOR),
+      (el) => !!el.closest(HOVER_STATE_SELECTOR),
     );
 
     const nextActive = new Set(

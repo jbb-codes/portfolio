@@ -1,14 +1,10 @@
 import { isPlatformBrowser } from '@angular/common';
 import { Component, inject, PLATFORM_ID, signal } from '@angular/core';
-import {
-  NavigationEnd,
-  Router,
-  RouterLink,
-  RouterOutlet,
-} from '@angular/router';
+import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { routeFadeAnimation } from './route-animations';
 import { CustomCursorComponent } from './shared/custom-cursor/custom-cursor.component';
+import { FooterComponent } from './shared/footer/footer.component';
 import { NavbarComponent } from './shared/navbar/navbar.component';
 import { OrbBackgroundComponent } from './shared/orb-background/orb-background.component';
 import { ParticleBackgroundComponent } from './shared/particle-background/particle-background.component';
@@ -23,7 +19,7 @@ const KNOWN_PATHS = ['/'];
   standalone: true,
   imports: [
     RouterOutlet,
-    RouterLink,
+    FooterComponent,
     NavbarComponent,
     CustomCursorComponent,
     OrbBackgroundComponent,

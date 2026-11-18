@@ -21,6 +21,52 @@ describe('NavbarComponent', () => {
     fixture.detectChanges();
   });
 
+  describe('layout', () => {
+    it('should show the name on the left, before the links', () => {
+      const brand: HTMLElement = fixture.nativeElement.querySelector(
+        '[data-testid="navbar-brand"]',
+      );
+      const links = fixture.nativeElement.querySelector(
+        '[data-testid="navbar-links"]',
+      );
+      expect(brand.textContent?.trim()).toBe('Jarren Bess');
+      expect(
+        brand.compareDocumentPosition(links) & Node.DOCUMENT_POSITION_FOLLOWING,
+      ).toBeTruthy();
+    });
+
+    it('should link the name to the top of the home page', () => {
+      const brand: HTMLElement = fixture.nativeElement.querySelector(
+        '[data-testid="navbar-brand"]',
+      );
+      expect(brand.getAttribute('href')).toBe('/');
+    });
+
+    it('should pin the bar to the top of the viewport', () => {
+      const bar = fixture.nativeElement.querySelector('.navbar');
+      document.body.appendChild(fixture.nativeElement);
+      const style = getComputedStyle(bar);
+      expect(style.position).toBe('fixed');
+      expect(style.top).toBe('0px');
+    });
+
+    it('should expose a labelled navigation landmark', () => {
+      const nav = fixture.nativeElement.querySelector('nav');
+      expect(nav.getAttribute('aria-label')).toBe('Main navigation');
+    });
+
+    it('should show a visible focus ring on links and the toggle', () => {
+      const focusables: HTMLElement[] = Array.from(
+        fixture.nativeElement.querySelectorAll('a, button'),
+      );
+      expect(focusables.length).toBe(6);
+      focusables.forEach((el) => {
+        el.focus();
+        expect(getComputedStyle(el).outlineStyle).not.toBe('none');
+      });
+    });
+  });
+
   describe('navigation links', () => {
     it('should display jump links to About, Work, Stack, and Bucket List', () => {
       const links: NodeListOf<HTMLElement> =
