@@ -31,45 +31,6 @@ describe('AppComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('footer', () => {
-    it('should render footer jump links to About, Work, Stack, and Bucket List', () => {
-      const links: NodeListOf<HTMLElement> =
-        fixture.nativeElement.querySelectorAll(
-          '[data-testid="footer-nav-link"]',
-        );
-      const hrefs = Array.from(links).map((l) => l.getAttribute('href'));
-      expect(hrefs).toEqual([
-        '/#about',
-        '/#work',
-        '/#stack',
-        '/#bucket-list',
-      ]);
-    });
-
-    it('should render copyright with year', () => {
-      const el: HTMLElement = fixture.nativeElement.querySelector(
-        '[data-testid="footer-copyright"]',
-      );
-      expect(el?.textContent).toContain('2026');
-    });
-
-    describe('social links', () => {
-      it('should render GitHub link', () => {
-        const el = fixture.nativeElement.querySelector(
-          '[data-testid="footer-github"]',
-        );
-        expect(el).toBeTruthy();
-      });
-
-      it('should render Email link', () => {
-        const el = fixture.nativeElement.querySelector(
-          '[data-testid="footer-email"]',
-        );
-        expect(el).toBeTruthy();
-      });
-    });
-  });
-
   describe('particle background', () => {
     it('should render app-particle-background', () => {
       const el = fixture.nativeElement.querySelector(

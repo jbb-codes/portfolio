@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { AboutSectionComponent } from './about-section/about-section.component';
+import { ContactSectionComponent } from './contact-section/contact-section.component';
 import { TypingAnimationDirective } from './typing-animation.directive';
 
 // Used Claude to help implement the home page shell: the hero and the empty
@@ -8,7 +9,12 @@ import { TypingAnimationDirective } from './typing-animation.directive';
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [RouterLink, AboutSectionComponent, TypingAnimationDirective],
+  imports: [
+    RouterLink,
+    AboutSectionComponent,
+    TypingAnimationDirective,
+    ContactSectionComponent,
+  ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
 })
