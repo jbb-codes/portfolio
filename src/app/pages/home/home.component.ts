@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { ContactSectionComponent } from './contact-section/contact-section.component';
 import { StackComponent } from './stack/stack.component';
 import { TypingAnimationDirective } from './typing-animation.directive';
 
@@ -8,7 +9,12 @@ import { TypingAnimationDirective } from './typing-animation.directive';
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [RouterLink, StackComponent, TypingAnimationDirective],
+  imports: [
+    RouterLink,
+    TypingAnimationDirective,
+    ContactSectionComponent,
+    StackComponent,
+  ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
 })
