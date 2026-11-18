@@ -4,6 +4,27 @@ import { provideRouter, withDisabledInitialNavigation } from '@angular/router';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { NavbarComponent } from './navbar.component';
 
+// Selectors (without the pseudo-class) of every element-specific :focus-visible
+// rule that draws an outline. The global `:focus-visible` rule is skipped so
+// the navbar cannot pass on it alone. The shorthand is read as text because
+// var() leaves the longhand outline-style empty in the CSSOM.
+function collectFocusRingSelectors(): string[] {
+  return Array.from(document.styleSheets)
+    .flatMap((sheet) => Array.from(sheet.cssRules))
+    .filter(
+      (rule): rule is CSSStyleRule =>
+        rule instanceof CSSStyleRule &&
+        rule.selectorText.includes(':focus-visible') &&
+        /^(?!none|0\b)\S/.test(rule.style.getPropertyValue('outline')),
+    )
+    .flatMap((rule) =>
+      rule.selectorText
+        .split(',')
+        .map((selector) => selector.replace(':focus-visible', '').trim()),
+    )
+    .filter((selector) => selector !== '');
+}
+
 describe('NavbarComponent', () => {
   let fixture: ComponentFixture<NavbarComponent>;
 
@@ -55,14 +76,18 @@ describe('NavbarComponent', () => {
       expect(nav.getAttribute('aria-label')).toBe('Main navigation');
     });
 
+    // el.focus() does not trigger :focus-visible in a headless browser (the
+    // document has no window focus), so assert the stylesheet rules instead.
     it('should show a visible focus ring on links and the toggle', () => {
+      const focusRingSelectors = collectFocusRingSelectors();
       const focusables: HTMLElement[] = Array.from(
         fixture.nativeElement.querySelectorAll('a, button'),
       );
       expect(focusables.length).toBe(6);
       focusables.forEach((el) => {
-        el.focus();
-        expect(getComputedStyle(el).outlineStyle).not.toBe('none');
+        expect(focusRingSelectors.some((selector) => el.matches(selector)))
+          .withContext(el.outerHTML)
+          .toBeTrue();
       });
     });
   });
