@@ -76,4 +76,15 @@ describe('HeroComponent', () => {
     expect(link?.getAttribute('target')).toBe('_blank');
     expect(link?.getAttribute('rel')).toContain('noopener');
   });
+
+  it('keeps the focus tag inside a 320px wide layout', () => {
+    root.style.display = 'block';
+    root.style.width = '320px';
+
+    const hostBox = root.getBoundingClientRect();
+    const tagBox = query('hero-focus-tag')!.getBoundingClientRect();
+
+    expect(tagBox.left).toBeGreaterThanOrEqual(hostBox.left);
+    expect(tagBox.right).toBeLessThanOrEqual(hostBox.right);
+  });
 });

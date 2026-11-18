@@ -39,6 +39,10 @@ describe('WorkSpotlightComponent', () => {
   describe('selection', () => {
     beforeEach(render);
 
+    it('shares the page gutters with the other sections', () => {
+      expect(query('#work').classList).toContain('page-section');
+    });
+
     it('renders the work section anchor with a heading', () => {
       expect(query('section#work')).toBeTruthy();
       expect(query('#work-heading')).toBeTruthy();
