@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { ContactSectionComponent } from './contact-section/contact-section.component';
 import { TypingAnimationDirective } from './typing-animation.directive';
 import { WorkSpotlightComponent } from './work-spotlight/work-spotlight.component';
 
@@ -8,7 +9,12 @@ import { WorkSpotlightComponent } from './work-spotlight/work-spotlight.componen
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [RouterLink, TypingAnimationDirective, WorkSpotlightComponent],
+  imports: [
+    RouterLink,
+    TypingAnimationDirective,
+    ContactSectionComponent,
+    WorkSpotlightComponent,
+  ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
 })

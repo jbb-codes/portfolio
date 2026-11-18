@@ -7,6 +7,7 @@
 }
 
 :root {
+  --navbar-height: 64px;
   --bg-primary: #09090f;
   --bg-surface: #11111b;
   --bg-surface-alt: #1a1a2e;
@@ -152,4 +153,10 @@ ul {
   clip-path: inset(50%);
   white-space: nowrap;
   border: 0;
+}
+
+@media (max-width: 425px) {
+  :root {
+    --navbar-height: 5rem;
+  }
 }
