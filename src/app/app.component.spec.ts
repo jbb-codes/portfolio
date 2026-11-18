@@ -96,20 +96,37 @@ describe('AppComponent', () => {
   });
 });
 
-describe('AppComponent – navbar visibility on jump links', () => {
-  it('should keep the navbar visible when the URL has a fragment', async () => {
+describe('AppComponent – navbar visibility', () => {
+  let fixture: ComponentFixture<AppComponent>;
+  let router: Router;
+
+  beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [AppComponent],
       providers: [
-        provideRouter([{ path: '', children: [] }]),
+        provideRouter([
+          { path: '', children: [] },
+          { path: '**', children: [] },
+        ]),
         provideLocationMocks(),
         provideAnimations(),
       ],
     }).compileComponents();
-    const fixture = TestBed.createComponent(AppComponent);
+    fixture = TestBed.createComponent(AppComponent);
+    router = TestBed.inject(Router);
+    fixture.detectChanges();
+  });
+
+  it('should hide the navbar on an unknown route', async () => {
+    await router.navigateByUrl('/does-not-exist');
     fixture.detectChanges();
 
-    await TestBed.inject(Router).navigateByUrl('/#about');
+    expect(fixture.nativeElement.querySelector('header')).toBeNull();
+  });
+
+  it('should show the navbar again when a jump link adds a fragment to the home route', async () => {
+    await router.navigateByUrl('/does-not-exist');
+    await router.navigateByUrl('/#about');
     fixture.detectChanges();
 
     expect(fixture.nativeElement.querySelector('header')).toBeTruthy();
