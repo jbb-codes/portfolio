@@ -16,7 +16,7 @@
   --btn-accent: #5b5bd6;
   --text-primary: #f4f4f8;
   --text-secondary: #a3a3bc;
-  --text-tertiary: #7a7a94;
+  --text-tertiary: #8686a2;
   --text-on-surface: #f4f4f8;
   --text-on-surface-secondary: #a3a3bc;
   --border: #1f1f33;
@@ -45,11 +45,11 @@
   --bg-surface: #ffffff;
   --bg-surface-alt: #f0eeff;
   --accent: #5b5bd6;
-  --accent-text: #5457e0;
+  --accent-text: #4447c9;
   --btn-accent: #5b5bd6;
   --text-primary: #14141f;
   --text-secondary: #55556b;
-  --text-tertiary: #6b6b85;
+  --text-tertiary: #5c5c75;
   --text-on-surface: #14141f;
   --text-on-surface-secondary: #55556b;
   --border: #e4e2f7;
@@ -65,7 +65,7 @@
   /* Background effects */
   --particle-color: rgba(124, 124, 176, 0.6);
   --orb-color: #6366f1;
-  --orb-opacity: 0.52;
+  --orb-opacity: 0.3;
 }
 
 @media (pointer: fine) {
@@ -173,6 +173,6 @@ ul {
 
 @media (max-width: 425px) {
   :root {
-    --navbar-height: 5rem;
+    --navbar-height: 6rem;
   }
 }

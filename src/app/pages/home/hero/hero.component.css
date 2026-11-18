@@ -13,6 +13,7 @@
   position: relative;
   width: min(500px, 100%);
   aspect-ratio: 1;
+  container: hero-stage / inline-size;
 }
 
 .hero__avatar {
@@ -138,6 +139,27 @@
   background-color: var(--glass-bg);
   border-color: var(--border-strong);
   color: var(--text-primary);
+}
+
+/* The desktop offset pushes the tag past the right edge on a narrow stage, so
+   centre it under the portrait. Keyed to the stage width, not the viewport. */
+@container hero-stage (max-width: 420px) {
+  .hero__focus-tag {
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 0.4375rem 0.75rem;
+    letter-spacing: 0.1em;
+  }
+}
+
+@media (max-width: 600px) {
+  .hero {
+    padding-inline: 1rem;
+  }
+
+  .hero__button {
+    min-height: 44px;
+  }
 }
 
 @media (prefers-reduced-motion: no-preference) {
