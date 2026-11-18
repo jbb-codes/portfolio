@@ -2,6 +2,16 @@
   display: flex;
   flex-direction: column;
   gap: 2.75rem;
+  scroll-margin-top: 5rem;
+  max-width: 1328px;
+  margin: 0 auto;
+  padding: 4rem 2rem;
+}
+
+@media (max-width: 425px) {
+  .work {
+    padding: 2.5rem 1.25rem;
+  }
 }
 
 .work__header {
