@@ -212,6 +212,44 @@ describe('OrbBackgroundComponent on the server', () => {
   });
 });
 
+describe('OrbBackgroundComponent on touch devices', () => {
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [OrbBackgroundComponent],
+    }).compileComponents();
+  });
+
+  it('keeps the orbs static so the phone GPU is not re-blurring every frame', () => {
+    spyOn(window, 'matchMedia').and.callFake(
+      (query: string) =>
+        ({
+          matches:
+            query === '(prefers-reduced-motion: no-preference)' ||
+            query === '(pointer: coarse)',
+        }) as MediaQueryList,
+    );
+    const rafSpy = spyOn(window, 'requestAnimationFrame');
+    const fixture = TestBed.createComponent(OrbBackgroundComponent);
+    fixture.detectChanges();
+    expect(rafSpy).not.toHaveBeenCalled();
+    fixture.destroy();
+  });
+
+  it('still animates the orbs for a fine pointer with motion allowed', () => {
+    spyOn(window, 'matchMedia').and.callFake(
+      (query: string) =>
+        ({
+          matches: query === '(prefers-reduced-motion: no-preference)',
+        }) as MediaQueryList,
+    );
+    const rafSpy = spyOn(window, 'requestAnimationFrame').and.returnValue(1);
+    const fixture = TestBed.createComponent(OrbBackgroundComponent);
+    fixture.detectChanges();
+    expect(rafSpy).toHaveBeenCalled();
+    fixture.destroy();
+  });
+});
+
 describe('OrbBackgroundComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -221,9 +259,12 @@ describe('OrbBackgroundComponent', () => {
 
   describe('without reduced motion', () => {
     it('renders exactly two orb elements', () => {
-      spyOn(window, 'matchMedia').and.returnValue({
-        matches: true,
-      } as MediaQueryList);
+      spyOn(window, 'matchMedia').and.callFake(
+        (query: string) =>
+          ({
+            matches: query === '(prefers-reduced-motion: no-preference)',
+          }) as MediaQueryList,
+      );
       const fixture = TestBed.createComponent(OrbBackgroundComponent);
       fixture.detectChanges();
       const orbs = fixture.nativeElement.querySelectorAll(
@@ -234,9 +275,12 @@ describe('OrbBackgroundComponent', () => {
     });
 
     it('starts a requestAnimationFrame loop', () => {
-      spyOn(window, 'matchMedia').and.returnValue({
-        matches: true,
-      } as MediaQueryList);
+      spyOn(window, 'matchMedia').and.callFake(
+        (query: string) =>
+          ({
+            matches: query === '(prefers-reduced-motion: no-preference)',
+          }) as MediaQueryList,
+      );
       const rafSpy = spyOn(window, 'requestAnimationFrame').and.returnValue(1);
       const fixture = TestBed.createComponent(OrbBackgroundComponent);
       fixture.detectChanges();
@@ -245,9 +289,12 @@ describe('OrbBackgroundComponent', () => {
     });
 
     it('cancels the animation frame on destroy', () => {
-      spyOn(window, 'matchMedia').and.returnValue({
-        matches: true,
-      } as MediaQueryList);
+      spyOn(window, 'matchMedia').and.callFake(
+        (query: string) =>
+          ({
+            matches: query === '(prefers-reduced-motion: no-preference)',
+          }) as MediaQueryList,
+      );
       spyOn(window, 'requestAnimationFrame').and.returnValue(42);
       const cancelSpy = spyOn(window, 'cancelAnimationFrame');
       const fixture = TestBed.createComponent(OrbBackgroundComponent);

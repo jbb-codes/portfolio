@@ -104,6 +104,15 @@ body {
   -webkit-backdrop-filter: var(--glass-blur);
 }
 
+/* Backdrop blur re-samples whatever is behind it; on phone GPUs that stalls
+   scrolling. Declared after both theme blocks so it wins in either theme. */
+@media (pointer: coarse) {
+  :root,
+  [data-theme="light"] {
+    --glass-blur: none;
+  }
+}
+
 a {
   text-decoration: none;
   color: inherit;

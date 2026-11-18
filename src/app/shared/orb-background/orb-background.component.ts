@@ -135,6 +135,10 @@ export class OrbBackgroundComponent implements OnDestroy {
   }
 
   private startAnimation(): void {
+    // Touch devices keep the orbs as a static glow: moving a blurred layer
+    // every frame is what stalls phone GPUs.
+    if (window.matchMedia('(pointer: coarse)').matches) return;
+
     const orb1El = this.el.nativeElement.querySelector(
       '.orb-background__orb--1',
     ) as HTMLElement;
