@@ -1,7 +1,5 @@
 import {
   BUCKET_LIST,
-  CERTIFICATIONS,
-  EDUCATION,
   EXPERIENCE,
   INTERESTS,
   LEARNING_NEXT,
@@ -15,10 +13,6 @@ describe('portfolio-content', () => {
     expect(Array.isArray(EXPERIENCE)).toBeTrue();
   });
 
-  it('EDUCATION is non-empty', () => {
-    expect(EDUCATION.length).toBeGreaterThan(0);
-  });
-
   it('SKILLS is non-empty', () => {
     expect(SKILLS.length).toBeGreaterThan(0);
   });
@@ -27,10 +21,6 @@ describe('portfolio-content', () => {
     for (const category of SKILLS) {
       expect(category.skills.length).toBeGreaterThan(0);
     }
-  });
-
-  it('CERTIFICATIONS is non-empty', () => {
-    expect(CERTIFICATIONS.length).toBeGreaterThan(0);
   });
 
   it('LEARNING_NEXT is non-empty', () => {

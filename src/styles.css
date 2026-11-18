@@ -115,6 +115,22 @@ ul {
   padding: 0;
 }
 
+/* ── Page sections ───────────────────────────────────── */
+
+.page-section {
+  scroll-margin-top: 5rem;
+  width: 100%;
+  max-width: 1440px;
+  margin-inline: auto;
+  padding-inline: 2.5rem;
+}
+
+@media (max-width: 425px) {
+  .page-section {
+    padding-inline: 1.25rem;
+  }
+}
+
 /* ── Accessibility ───────────────────────────────────── */
 
 .skip-link {

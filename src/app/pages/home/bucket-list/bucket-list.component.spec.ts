@@ -18,15 +18,37 @@ describe('BucketListComponent', () => {
     host = fixture.nativeElement;
   });
 
-  it('should render the section heading', () => {
-    expect(host.querySelector('h2')?.textContent).toContain('Bucket List');
+  it('should render the numbered eyebrow and section heading', () => {
+    expect(
+      host.querySelector('[data-testid="section-eyebrow"]')?.textContent,
+    ).toBe('04 — BUCKET LIST');
+    expect(host.querySelector('h2')?.textContent).toBe(
+      "Where I'm headed next.",
+    );
   });
 
   it('should show how many items are completed out of the total', () => {
     const count = host.querySelector('[data-testid="bucket-count"]');
-    expect(count?.textContent).toContain(
-      `${completedTotal} of ${BUCKET_LIST.length}`,
+    expect(count?.textContent?.trim()).toBe(
+      `${completedTotal} / ${BUCKET_LIST.length} COMPLETE`,
     );
+  });
+
+  it('should list completed goals before open ones', () => {
+    const completionOrder = BUCKET_LIST.map((item) => item.completed);
+    expect(completionOrder).toEqual([...completionOrder].sort().reverse());
+  });
+
+  it('should render one bar segment per item, filled up to the completed count', () => {
+    const segments = Array.from(
+      host.querySelectorAll('[data-testid="bucket-segment"]'),
+    );
+    expect(segments.length).toBe(BUCKET_LIST.length);
+    segments.forEach((segment, index) => {
+      expect(segment.classList.contains('bucket__segment--filled'))
+        .withContext(`segment ${index}`)
+        .toBe(index < completedTotal);
+    });
   });
 
   it('should expose progress to assistive tech as a progressbar', () => {
@@ -35,12 +57,6 @@ describe('BucketListComponent', () => {
     expect(bar?.getAttribute('aria-valuemin')).toBe('0');
     expect(bar?.getAttribute('aria-valuemax')).toBe(String(BUCKET_LIST.length));
     expect(bar?.getAttribute('aria-label')).toBeTruthy();
-  });
-
-  it('should size the bar fill to the completed percentage', () => {
-    const fill = host.querySelector<HTMLElement>('[data-testid="bucket-fill"]');
-    const expected = (completedTotal / BUCKET_LIST.length) * 100;
-    expect(parseFloat(fill!.style.width)).toBeCloseTo(expected, 1);
   });
 
   it('should render one pill per bucket list item', () => {

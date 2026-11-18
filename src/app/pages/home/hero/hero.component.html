@@ -7,6 +7,7 @@
         aria-hidden="true"
       ></span>
     }
+    <span class="hero__satellite" aria-hidden="true"></span>
     <picture>
       <source srcset="assets/images/smallProfile.webp" type="image/webp" />
       <img
@@ -14,25 +15,34 @@
         data-testid="hero-avatar"
         src="assets/images/smallProfile.jpg"
         alt="Portrait of Jarren Bess"
-        width="144"
-        height="144"
+        width="308"
+        height="308"
       />
     </picture>
+    <p class="hero__focus-tag" data-testid="hero-focus-tag">
+      <span class="hero__dot" aria-hidden="true"></span>
+      AGENTIC AI · LLM TOOLING
+    </p>
   </div>
+
+  <p class="hero__status" data-testid="hero-status">
+    <span class="hero__dot hero__dot--large" aria-hidden="true"></span>
+    HI, I'M — SYSTEM ONLINE
+  </p>
 
   <h1 id="hero-heading" class="hero__name">
     <span data-cursor-hover>Jarren Bess</span>
   </h1>
 
-  <p class="hero__role-line">
+  <p class="hero__role-line" data-testid="hero-role-line">
     <span
       class="hero__role"
       data-cursor-hover
       data-testid="hero-role"
       appTypingAnimation
       [strings]="roleStrings"
-    ></span>
-    <span class="hero__role-label" data-cursor-hover>Developer</span>
+    ></span
+    >&ngsp;<span class="hero__role-label" data-cursor-hover>Developer</span>
   </p>
 
   <div class="hero__actions">

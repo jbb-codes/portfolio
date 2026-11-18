@@ -20,14 +20,16 @@ describe('ContactSectionComponent', () => {
 
   it('renders the headline as the section heading', () => {
     const heading = root.querySelector('h2#contact-heading');
-    expect(heading?.textContent?.trim()).toBeTruthy();
+    expect(heading?.textContent?.replace(/\s+/g, ' ').trim()).toBe(
+      "Let's build something together.",
+    );
   });
 
-  it('renders Email, GitHub and Resume buttons in order', () => {
+  it('renders Email me, GitHub and Resume buttons in order', () => {
     const labels = Array.from(
-      root.querySelectorAll('[data-testid^="contact-"]'),
+      root.querySelectorAll('a[data-testid^="contact-"]'),
     ).map((button) => button.textContent?.trim());
-    expect(labels).toEqual(['Email', 'GitHub', 'Resume']);
+    expect(labels).toEqual(['Email me', 'GitHub', 'Resume']);
   });
 
   it('opens the mail client from the Email button', () => {

@@ -42,6 +42,23 @@ describe('HeroComponent', () => {
     );
   });
 
+  it('introduces the hero with a system-online status eyebrow', () => {
+    expect(query('hero-status')?.textContent?.trim()).toBe(
+      "HI, I'M — SYSTEM ONLINE",
+    );
+  });
+
+  it('labels the avatar with the current focus badge', () => {
+    expect(query('hero-focus-tag')?.textContent?.trim()).toBe(
+      'AGENTIC AI · LLM TOOLING',
+    );
+  });
+
+  it('separates the typed role from the Developer label with a space', () => {
+    const roleLine = query('hero-role-line');
+    expect(roleLine?.textContent).toMatch(/\sDeveloper$/);
+  });
+
   it('renders the typing role element', () => {
     expect(query('hero-role')).toBeTruthy();
   });
