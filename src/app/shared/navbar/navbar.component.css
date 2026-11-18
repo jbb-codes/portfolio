@@ -11,8 +11,8 @@
   position: fixed;
   inset: 0 0 auto;
   z-index: 100;
-  background: var(--glass-bg);
-  backdrop-filter: var(--glass-blur);
+  background: var(--navbar-glass-bg);
+  backdrop-filter: var(--navbar-glass-blur);
   border-bottom: 1px solid var(--border);
 }
 
