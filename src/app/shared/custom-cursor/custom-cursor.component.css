@@ -29,12 +29,12 @@
 }
 
 .custom-cursor__dot--on-interactive {
-  background-color: #b8b8c8;
+  background-color: var(--accent-text);
   filter: drop-shadow(0 0 3px rgba(0, 0, 0, 0.7));
 }
 
 .custom-cursor__ring--on-interactive {
-  border-color: #b8b8c8;
+  border-color: var(--accent-text);
   opacity: 1;
   filter: drop-shadow(0 0 3px rgba(0, 0, 0, 0.7));
 }
