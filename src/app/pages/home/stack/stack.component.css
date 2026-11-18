@@ -1,0 +1,107 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2.25rem;
+}
+
+.stack__header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.875rem;
+  text-align: center;
+}
+
+.stack__eyebrow {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.25em;
+  color: var(--accent-text);
+}
+
+.stack__heading {
+  margin: 0;
+  max-width: 760px;
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.035em;
+  color: var(--text-primary);
+}
+
+/* 12 columns so the bento rows can split 6/6, 3/9 and 12 without
+   hard-coding pixel widths. */
+.stack__grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 1.25rem;
+  width: 100%;
+}
+
+.stack__tile {
+  grid-column: span 6;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.625rem;
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+}
+
+.stack__tile:nth-child(3) {
+  grid-column: span 3;
+}
+
+.stack__tile:nth-child(4) {
+  grid-column: span 9;
+}
+
+.stack__tile--featured {
+  grid-column: 1 / -1;
+  border-color: var(--accent-text);
+}
+
+.stack__label {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+
+.stack__tile--featured .stack__label {
+  color: var(--accent-text);
+}
+
+.stack__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.stack__tag {
+  padding: 0.3125rem 0.625rem;
+  border: 1px solid var(--border-strong);
+  border-radius: 6px;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  color: var(--text-secondary);
+}
+
+@media (max-width: 768px) {
+  .stack__tile,
+  .stack__tile:nth-child(3),
+  .stack__tile:nth-child(4) {
+    grid-column: 1 / -1;
+  }
+}
