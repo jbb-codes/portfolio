@@ -28,6 +28,8 @@
       class="spotlight__screenshot"
       [src]="selectedProject().screenshotUrl"
       [alt]="selectedProject().name + ' screenshot'"
+      loading="lazy"
+      decoding="async"
     />
     <div class="spotlight__details">
       <h3 class="spotlight__title">{{ selectedProject().name }}</h3>

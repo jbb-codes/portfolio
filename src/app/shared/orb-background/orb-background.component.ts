@@ -1,4 +1,9 @@
-import { Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
+import {
+  afterNextRender,
+  Component,
+  ElementRef,
+  OnDestroy,
+} from '@angular/core';
 import { AnimationLoopService } from '../../shared/animation-loop/animation-loop.service';
 
 export const ORB_RANGE_MIN = -10;
@@ -12,6 +17,13 @@ export interface OrbState {
   top: number;
   driftX: number;
   driftY: number;
+}
+
+const ORB_1_START = { left: 15, top: 15 };
+const ORB_2_START = { left: 65, top: 55 };
+
+function toTransform(left: number, top: number): string {
+  return `translate(${left}vw, ${top}vh)`;
 }
 
 function makeOrbState(left: number, top: number): OrbState {
@@ -106,16 +118,23 @@ export function resolveOrbCollisions(
   styleUrl: './orb-background.component.css',
   providers: [AnimationLoopService],
 })
-export class OrbBackgroundComponent implements OnInit, OnDestroy {
-  private orb1State: OrbState = makeOrbState(15, 15);
-  private orb2State: OrbState = makeOrbState(65, 55);
+export class OrbBackgroundComponent implements OnDestroy {
+  private orb1State: OrbState = makeOrbState(ORB_1_START.left, ORB_1_START.top);
+  private orb2State: OrbState = makeOrbState(ORB_2_START.left, ORB_2_START.top);
+
+  // Bound in the template so the glow is in the prerendered HTML and paints
+  // before any JS runs; the animation loop takes over once the page is live.
+  readonly orb1StartTransform = toTransform(ORB_1_START.left, ORB_1_START.top);
+  readonly orb2StartTransform = toTransform(ORB_2_START.left, ORB_2_START.top);
 
   constructor(
     private readonly el: ElementRef,
     private readonly animationLoop: AnimationLoopService,
-  ) {}
+  ) {
+    afterNextRender(() => this.startAnimation());
+  }
 
-  ngOnInit(): void {
+  private startAnimation(): void {
     const orb1El = this.el.nativeElement.querySelector(
       '.orb-background__orb--1',
     ) as HTMLElement;
@@ -124,11 +143,8 @@ export class OrbBackgroundComponent implements OnInit, OnDestroy {
     ) as HTMLElement;
 
     const setTransform = (el: HTMLElement, left: number, top: number) => {
-      el.style.transform = `translate(${left}vw, ${top}vh)`;
+      el.style.transform = toTransform(left, top);
     };
-
-    setTransform(orb1El, this.orb1State.left, this.orb1State.top);
-    setTransform(orb2El, this.orb2State.left, this.orb2State.top);
 
     let lastTime: number | null = null;
 

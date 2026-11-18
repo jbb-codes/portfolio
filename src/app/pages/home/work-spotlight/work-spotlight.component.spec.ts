@@ -55,6 +55,19 @@ describe('WorkSpotlightComponent', () => {
       );
     });
 
+    it('serves each project screenshot as WebP', () => {
+      PROJECTS.forEach((_, index) => {
+        click('.work-tab', index);
+        const screenshot = query('.spotlight__screenshot') as HTMLImageElement;
+        expect(screenshot.getAttribute('src')).toMatch(/\.webp$/);
+      });
+    });
+
+    it('lazy-loads the screenshot so it cannot compete with the hero image', () => {
+      const screenshot = query('.spotlight__screenshot') as HTMLImageElement;
+      expect(screenshot.getAttribute('loading')).toBe('lazy');
+    });
+
     it('links the spotlight to the project repository', () => {
       expect(query('.spotlight__link').getAttribute('href')).toBe(
         PROJECTS[0].githubUrl,

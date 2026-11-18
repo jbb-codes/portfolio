@@ -1,11 +1,22 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { PLATFORM_ID } from '@angular/core';
+import {
+  ComponentFixture,
+  TestBed,
+  discardPeriodicTasks,
+  fakeAsync,
+  flush,
+  tick,
+} from '@angular/core/testing';
 import { provideLocationMocks } from '@angular/common/testing';
 import {
   provideRouter,
   Router,
   withDisabledInitialNavigation,
 } from '@angular/router';
-import { provideAnimations } from '@angular/platform-browser/animations';
+import {
+  provideAnimations,
+  provideNoopAnimations,
+} from '@angular/platform-browser/animations';
 import { AppComponent } from './app.component';
 
 describe('AppComponent', () => {
@@ -31,12 +42,11 @@ describe('AppComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('particle background', () => {
-    it('should render app-particle-background', () => {
-      const el = fixture.nativeElement.querySelector(
-        '[data-testid="particle-canvas"]',
-      );
-      expect(el).toBeTruthy();
+  describe('orb background', () => {
+    it('should render the orbs immediately', () => {
+      expect(
+        fixture.nativeElement.querySelectorAll('[data-testid="orb"]').length,
+      ).toBe(2);
     });
   });
 
@@ -54,6 +64,62 @@ describe('AppComponent', () => {
       );
       expect(outlet).toBeTruthy();
     });
+  });
+});
+
+describe('AppComponent – deferred particle background', () => {
+  const particleCanvas = (fixture: ComponentFixture<AppComponent>) =>
+    fixture.nativeElement.querySelector('[data-testid="particle-canvas"]');
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [AppComponent],
+      providers: [
+        provideRouter([], withDisabledInitialNavigation()),
+        provideLocationMocks(),
+        provideAnimations(),
+      ],
+    }).compileComponents();
+  });
+
+  it('does not render the particle canvas during the first render', fakeAsync(() => {
+    const fixture = TestBed.createComponent(AppComponent);
+    fixture.detectChanges();
+    expect(particleCanvas(fixture)).toBeNull();
+    discardPeriodicTasks();
+    flush();
+    fixture.destroy();
+  }));
+
+  it('renders the particle canvas once the first paint has happened', fakeAsync(() => {
+    const fixture = TestBed.createComponent(AppComponent);
+    fixture.detectChanges();
+    tick(100);
+    fixture.detectChanges();
+    expect(particleCanvas(fixture)).toBeTruthy();
+    discardPeriodicTasks();
+    flush();
+    fixture.destroy();
+  }));
+});
+
+describe('AppComponent – server render', () => {
+  it('includes the orbs but not the browser-only particle canvas', async () => {
+    await TestBed.configureTestingModule({
+      imports: [AppComponent],
+      providers: [
+        provideRouter([], withDisabledInitialNavigation()),
+        provideLocationMocks(),
+        provideNoopAnimations(),
+        { provide: PLATFORM_ID, useValue: 'server' },
+      ],
+    }).compileComponents();
+    const fixture = TestBed.createComponent(AppComponent);
+    fixture.detectChanges();
+    const root: HTMLElement = fixture.nativeElement;
+    expect(root.querySelectorAll('[data-testid="orb"]').length).toBe(2);
+    expect(root.querySelector('[data-testid="particle-canvas"]')).toBeNull();
+    fixture.destroy();
   });
 });
 
