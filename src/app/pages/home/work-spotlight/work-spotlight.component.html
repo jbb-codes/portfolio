@@ -1,0 +1,62 @@
+<section id="work" class="page-section work" aria-labelledby="work-heading">
+  <div class="work__header">
+    <div>
+      <p class="work__eyebrow">02 — WORK</p>
+      <h2 id="work-heading" class="work__heading">Things I've built.</h2>
+    </div>
+    <div class="work-controls">
+      <span class="work-controls__counter" aria-live="polite">{{ counterLabel() }}</span>
+      <button type="button" class="work-controls__button work-controls__previous" aria-label="Previous project" (click)="previous()">
+        <svg lucideArrowLeft [size]="17" aria-hidden="true"></svg>
+      </button>
+      <button type="button" class="work-controls__button work-controls__next" aria-label="Next project" (click)="next()">
+        <svg lucideArrowRight [size]="17" aria-hidden="true"></svg>
+      </button>
+    </div>
+  </div>
+
+  <article class="spotlight" [attr.aria-label]="selectedProject().name">
+    <img
+      class="spotlight__screenshot"
+      [src]="selectedProject().screenshotUrl"
+      [alt]="selectedProject().name + ' screenshot'"
+    />
+    <div class="spotlight__details">
+      <h3 class="spotlight__title">{{ selectedProject().name }}</h3>
+      <p class="spotlight__description">{{ selectedProject().description }}</p>
+      <ul class="spotlight__tags">
+        @for (technology of selectedProject().technologies; track technology) {
+          <li class="spotlight__tag">{{ technology }}</li>
+        }
+      </ul>
+      <p class="spotlight__learned">{{ selectedProject().whatILearned }}</p>
+      <a
+        class="spotlight__link"
+        [href]="selectedProject().githubUrl"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        GitHub <svg lucideArrowUpRight [size]="15" aria-hidden="true"></svg>
+      </a>
+    </div>
+  </article>
+
+  <div class="work-tabs" role="tablist" aria-label="Projects">
+    @for (project of projects; track project.number; let index = $index) {
+      <button
+        type="button"
+        role="tab"
+        class="work-tab"
+        [class.work-tab--active]="index === selectedIndex()"
+        [attr.aria-selected]="index === selectedIndex()"
+        (click)="select(index)"
+      >
+        <span class="work-tab__title">
+          <span class="work-tab__number">{{ index + 1 < 10 ? '0' : '' }}{{ index + 1 }}</span>
+          {{ project.name }}
+        </span>
+        <span class="work-tab__stack">{{ project.technologies.slice(0, 3).join(' · ') }}</span>
+      </button>
+    }
+  </div>
+</section>

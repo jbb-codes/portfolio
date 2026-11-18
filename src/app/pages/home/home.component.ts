@@ -1,13 +1,14 @@
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TypingAnimationDirective } from './typing-animation.directive';
+import { WorkSpotlightComponent } from './work-spotlight/work-spotlight.component';
 
 // Used Claude to help implement the home page shell: the hero and the empty
 // anchored sections that later tickets fill in.
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [RouterLink, TypingAnimationDirective],
+  imports: [RouterLink, TypingAnimationDirective, WorkSpotlightComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
 })
