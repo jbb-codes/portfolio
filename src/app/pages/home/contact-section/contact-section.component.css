@@ -1,0 +1,85 @@
+:host {
+  display: block;
+  /* Headline bleeds past the content column on purpose; clip it at the page edge. */
+  overflow-x: clip;
+}
+
+.contact {
+  scroll-margin-top: 5rem;
+  max-width: 1328px;
+  margin: 0 auto;
+  padding: 6rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 3rem;
+}
+
+.contact__headline {
+  margin: 0;
+  flex: 0 0 auto;
+  font-size: clamp(3rem, 9vw, 8rem);
+  font-weight: 800;
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+
+.contact__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  min-width: 11rem;
+  position: relative;
+  z-index: 1;
+}
+
+.contact__button {
+  padding: 0.875rem 1.5rem;
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  color: var(--text-primary);
+  font-weight: 600;
+  text-align: center;
+}
+
+.contact__button:first-child {
+  background: var(--btn-accent);
+  border-color: var(--btn-accent);
+  color: #fff;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .contact__button {
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+  }
+}
+
+.contact__button:hover {
+  border-color: var(--accent);
+  background: var(--surface-hover-bg);
+}
+
+.contact__button:first-child:hover {
+  background: var(--btn-accent);
+  filter: brightness(0.85);
+}
+
+@media (max-width: 768px) {
+  .contact {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 3rem 1.25rem;
+  }
+
+  .contact__headline {
+    white-space: normal;
+  }
+
+  .contact__actions {
+    width: 100%;
+  }
+}
