@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import {
   ABOUT_BIO,
   CERTIFICATIONS,
@@ -11,6 +11,7 @@ import {
 @Component({
   selector: 'app-about-section',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './about-section.component.html',
   styleUrl: './about-section.component.css',
 })
