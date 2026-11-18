@@ -2,7 +2,17 @@ import { TestBed } from '@angular/core/testing';
 import { ANIMATION_MODULE_TYPE } from '@angular/platform-browser/animations';
 import { provideLocationMocks } from '@angular/common/testing';
 import { provideRouter, withDisabledInitialNavigation } from '@angular/router';
-import { createAppConfig } from './app.config';
+import { createAppConfig, resolveScrollRestoration } from './app.config';
+
+describe('resolveScrollRestoration', () => {
+  it('leaves Angular scroll-to-top on for desktop pointers', () => {
+    expect(resolveScrollRestoration(false)).toBe('enabled');
+  });
+
+  it('hands scroll restoration to the browser on touch devices', () => {
+    expect(resolveScrollRestoration(true)).toBe('disabled');
+  });
+});
 
 function mockMatchMedia(prefersReducedMotion: boolean): void {
   spyOn(window, 'matchMedia').and.callFake(

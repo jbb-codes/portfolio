@@ -29,3 +29,19 @@
     will-change: transform;
   }
 }
+
+/* Touch devices: a static radial gradient stands in for the blurred orb, so
+   there is no large blur to re-rasterize and no extra compositor layer. */
+@media (pointer: coarse) {
+  .orb-background__orb {
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(
+      circle closest-side,
+      var(--orb-color),
+      transparent
+    );
+    filter: none;
+    will-change: auto;
+  }
+}
