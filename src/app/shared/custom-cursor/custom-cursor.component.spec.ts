@@ -252,47 +252,37 @@ describe('CustomCursorComponent – ring proximity', () => {
 
   describe('hover on elements marked for the cursor', () => {
     const dotOnInteractiveClass = 'custom-cursor__dot--on-interactive';
+    let card: HTMLElement;
 
-    function hoverElement(element: Element): void {
-      doc.body.appendChild(element);
-      spyOn(doc, 'elementFromPoint').and.returnValue(null);
-      element.dispatchEvent(new MouseEvent('mouseover', { bubbles: true }));
-    }
+    beforeEach(() => {
+      card = doc.createElement('div');
+      card.setAttribute('data-cursor-hover', '');
+      doc.body.appendChild(card);
+    });
+
+    afterEach(() => doc.body.removeChild(card));
 
     it('applies --on-interactive when the dot is over a non-native [data-cursor-hover] element', () => {
-      const card = doc.createElement('div');
-      card.setAttribute('data-cursor-hover', '');
-      hoverElement(card);
+      card.dispatchEvent(new MouseEvent('mouseover', { bubbles: true }));
 
       const dot: HTMLElement = fixture.nativeElement.querySelector(
         '[data-testid="cursor-dot"]',
       );
       expect(dot.classList).toContain(dotOnInteractiveClass);
-
-      doc.body.removeChild(card);
     });
 
     it('applies --on-interactive when the dot is over a child of a [data-cursor-hover] element', () => {
-      const card = doc.createElement('div');
-      card.setAttribute('data-cursor-hover', '');
       const label = doc.createElement('span');
       card.appendChild(label);
-      doc.body.appendChild(card);
-      spyOn(doc, 'elementFromPoint').and.returnValue(null);
       label.dispatchEvent(new MouseEvent('mouseover', { bubbles: true }));
 
       const dot: HTMLElement = fixture.nativeElement.querySelector(
         '[data-testid="cursor-dot"]',
       );
       expect(dot.classList).toContain(dotOnInteractiveClass);
-
-      doc.body.removeChild(card);
     });
 
     it('does not forward clicks on [data-cursor-hover] elements as proximity clicks', () => {
-      const card = doc.createElement('div');
-      card.setAttribute('data-cursor-hover', '');
-      doc.body.appendChild(card);
       const clickSpy = spyOn(card, 'click');
       spyOn(doc, 'elementFromPoint').and.returnValue(card);
 
@@ -301,7 +291,6 @@ describe('CustomCursorComponent – ring proximity', () => {
       );
 
       expect(clickSpy).not.toHaveBeenCalled();
-      doc.body.removeChild(card);
     });
   });
 
