@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { BUCKET_LIST } from '../../../data/portfolio-content';
 
 @Component({
   selector: 'app-bucket-list',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './bucket-list.component.html',
   styleUrl: './bucket-list.component.css',
 })
