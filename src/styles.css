@@ -21,12 +21,12 @@
   --border: #1f1f33;
   --border-strong: #34344f;
   --card-nested-bg: rgba(255, 255, 255, 0.05);
-  --surface-hover-bg: rgba(108, 99, 255, 0.08);
+  --surface-hover-bg: rgba(91, 91, 214, 0.08);
 
   /* Glassmorphism */
   --glass-bg: rgba(26, 26, 46, 0.5);
   --glass-blur: blur(12px);
-  --glass-border: rgba(108, 99, 255, 0.25);
+  --glass-border: rgba(91, 91, 214, 0.25);
 
   /* Typography */
   --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
@@ -54,12 +54,12 @@
   --border: #e4e2f7;
   --border-strong: #c9c6ee;
   --card-nested-bg: #f0eeff;
-  --surface-hover-bg: rgba(108, 99, 255, 0.06);
+  --surface-hover-bg: rgba(91, 91, 214, 0.06);
 
   /* Glassmorphism */
   --glass-bg: rgba(255, 255, 255, 0.82);
   --glass-blur: blur(12px);
-  --glass-border: rgba(108, 99, 255, 0.18);
+  --glass-border: rgba(91, 91, 214, 0.18);
 
   /* Background effects */
   --particle-color: rgba(124, 124, 176, 0.6);
