@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 // Section links are jump links; scrolling to the fragment is handled by the
@@ -6,6 +6,7 @@ import { RouterLink } from '@angular/router';
 @Component({
   selector: 'app-footer',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [RouterLink],
   templateUrl: './footer.component.html',
   styleUrl: './footer.component.css',
