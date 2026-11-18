@@ -29,11 +29,6 @@
 .navbar__theme-toggle:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 3px;
-  border-radius: 4px;
-}
-
-.navbar__theme-toggle:focus-visible {
-  border-radius: 50%;
 }
 
 .navbar__links {
@@ -155,7 +150,7 @@
 
 @media (max-width: 320px) {
   .navbar {
-    padding: 0.5rem 0.75rem 0;
+    padding: 0 0.75rem;
   }
 
   .navbar__links {
