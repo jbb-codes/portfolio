@@ -1,4 +1,12 @@
-<section id="work" class="work" aria-labelledby="work-heading">
+<section
+  id="work"
+  class="work"
+  aria-labelledby="work-heading"
+  (mouseenter)="isHovered.set(true)"
+  (mouseleave)="isHovered.set(false)"
+  (focusin)="onFocusIn($event)"
+  (focusout)="onFocusOut()"
+>
   <div class="work__header">
     <div>
       <p class="work__eyebrow">02 — WORK</p>
@@ -48,6 +56,7 @@
         role="tab"
         class="work-tab"
         [class.work-tab--active]="index === selectedIndex()"
+        [class.work-tab--idle]="!isRotating()"
         [attr.aria-selected]="index === selectedIndex()"
         (click)="select(index)"
       >
@@ -55,6 +64,11 @@
           <span class="work-tab__number">{{ index + 1 < 10 ? '0' : '' }}{{ index + 1 }}</span>
           {{ project.name }}
         </span>
+        @if (index === selectedIndex() && isRotating()) {
+          @for (restart of [cycle()]; track restart) {
+            <span class="work-tab__progress" aria-hidden="true"></span>
+          }
+        }
         <span class="work-tab__stack">{{ project.technologies.slice(0, 3).join(' · ') }}</span>
       </button>
     }
