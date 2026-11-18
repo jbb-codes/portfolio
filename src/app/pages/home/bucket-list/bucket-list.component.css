@@ -1,0 +1,120 @@
+:host {
+  display: block;
+}
+
+/* Home's .page-section styles are encapsulated, so they don't reach this child. */
+.bucket {
+  scroll-margin-top: 5rem;
+  padding: 4rem 2rem;
+  max-width: 1328px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.bucket__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.bucket__heading {
+  margin: 0;
+  font-size: 1.5rem;
+  color: var(--text-on-surface);
+}
+
+.bucket__count {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  color: var(--text-tertiary);
+}
+
+.bucket__count-number {
+  color: var(--accent-text);
+}
+
+.bucket__bar {
+  height: 6px;
+  border-radius: 999px;
+  background: var(--border);
+  overflow: hidden;
+}
+
+.bucket__bar-fill {
+  height: 100%;
+  border-radius: inherit;
+  background: var(--accent);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .bucket__bar-fill {
+    transition: width 0.6s ease;
+  }
+}
+
+.bucket__pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.bucket-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.bucket-pill__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.125rem;
+  height: 1.125rem;
+  border: 1px solid var(--border-strong);
+  border-radius: 50%;
+  font-size: 0.7rem;
+  line-height: 1;
+}
+
+.bucket-pill--checked {
+  border-color: var(--glass-border);
+  background: var(--surface-hover-bg);
+  color: var(--text-primary);
+}
+
+.bucket-pill--checked .bucket-pill__icon {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: #fff;
+}
+
+@media (max-width: 425px) {
+  .bucket {
+    padding: 2.5rem 1.25rem;
+  }
+}
+
+@media (max-width: 375px) {
+  .bucket {
+    padding: 2rem 1rem;
+  }
+}
+
+@media (max-width: 320px) {
+  .bucket {
+    padding: 1.75rem 0.75rem;
+  }
+}

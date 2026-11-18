@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { AboutSectionComponent } from './about-section/about-section.component';
+import { BucketListComponent } from './bucket-list/bucket-list.component';
 import { ContactSectionComponent } from './contact-section/contact-section.component';
 import { HeroComponent } from './hero/hero.component';
 import { StackComponent } from './stack/stack.component';
@@ -15,6 +16,7 @@ import { WorkSpotlightComponent } from './work-spotlight/work-spotlight.componen
     AboutSectionComponent,
     WorkSpotlightComponent,
     StackComponent,
+    BucketListComponent,
     ContactSectionComponent,
   ],
   templateUrl: './home.component.html',

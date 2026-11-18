@@ -1,0 +1,38 @@
+<section id="bucket-list" class="bucket" aria-labelledby="bucket-list-heading">
+  <div class="bucket__header">
+    <h2 id="bucket-list-heading" class="bucket__heading">Bucket List</h2>
+    <p class="bucket__count" data-testid="bucket-count">
+      <span class="bucket__count-number">{{ completedCount }} of {{ totalCount }}</span> completed
+    </p>
+  </div>
+
+  <div
+    class="bucket__bar"
+    role="progressbar"
+    aria-label="Bucket list progress"
+    aria-valuemin="0"
+    [attr.aria-valuemax]="totalCount"
+    [attr.aria-valuenow]="completedCount"
+  >
+    <div
+      class="bucket__bar-fill"
+      data-testid="bucket-fill"
+      [style.width.%]="completedPercent"
+    ></div>
+  </div>
+
+  <ul class="bucket__pills">
+    @for (item of items; track item.id) {
+      <li
+        class="bucket-pill"
+        data-testid="bucket-pill"
+        [class.bucket-pill--checked]="item.completed"
+        [title]="item.description"
+      >
+        <span class="bucket-pill__icon" aria-hidden="true">{{ item.completed ? '✓' : '' }}</span>
+        <span>{{ item.title }}</span>
+        <span class="sr-only">{{ item.completed ? 'Completed' : 'Not completed' }}</span>
+      </li>
+    }
+  </ul>
+</section>
