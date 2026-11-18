@@ -22,7 +22,7 @@ describe('StackComponent', () => {
     );
 
   it('renders the numbered eyebrow and heading', () => {
-    expect(host.querySelector('.stack__eyebrow')?.textContent).toContain(
+    expect(host.querySelector('[data-testid="section-eyebrow"]')?.textContent).toContain(
       '03 — STACK',
     );
     const heading = host.querySelector('h2');

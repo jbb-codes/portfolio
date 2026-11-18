@@ -12,5 +12,5 @@ import { TypingAnimationDirective } from '../typing-animation.directive';
 })
 export class HeroComponent {
   readonly roleStrings = ['Agentic', 'Full Stack', 'Modern Software'];
-  readonly orbitRings = [1, 2, 3];
+  readonly orbitRings = [1, 2];
 }

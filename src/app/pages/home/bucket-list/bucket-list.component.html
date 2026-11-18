@@ -1,24 +1,30 @@
-<section id="bucket-list" class="bucket" aria-labelledby="bucket-list-heading">
-  <div class="bucket__header">
-    <h2 id="bucket-list-heading" class="bucket__heading">Bucket List</h2>
-    <p class="bucket__count" data-testid="bucket-count">
-      <span class="bucket__count-number">{{ completedCount }} of {{ totalCount }}</span> completed
-    </p>
-  </div>
+<section id="bucket-list" class="page-section bucket" aria-labelledby="bucket-list-heading">
+  <app-section-header
+    eyebrow="04 — BUCKET LIST"
+    heading="Where I'm headed next."
+    headingId="bucket-list-heading"
+  />
 
-  <div
-    class="bucket__bar"
-    role="progressbar"
-    aria-label="Bucket list progress"
-    aria-valuemin="0"
-    [attr.aria-valuemax]="totalCount"
-    [attr.aria-valuenow]="completedCount"
-  >
+  <div class="bucket__progress">
+    <p class="bucket__count" data-testid="bucket-count">
+      {{ completedCount }} / {{ totalCount }} COMPLETE
+    </p>
     <div
-      class="bucket__bar-fill"
-      data-testid="bucket-fill"
-      [style.width.%]="completedPercent"
-    ></div>
+      class="bucket__bar"
+      role="progressbar"
+      aria-label="Bucket list progress"
+      aria-valuemin="0"
+      [attr.aria-valuemax]="totalCount"
+      [attr.aria-valuenow]="completedCount"
+    >
+      @for (item of items; track item.id; let index = $index) {
+        <span
+          class="bucket__segment"
+          [class.bucket__segment--filled]="index < completedCount"
+          data-testid="bucket-segment"
+        ></span>
+      }
+    </div>
   </div>
 
   <ul class="bucket__pills">

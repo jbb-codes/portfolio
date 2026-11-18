@@ -1,11 +1,24 @@
-<section id="about" class="about" aria-labelledby="about-heading">
-  <h2 id="about-heading" class="about__heading" data-testid="about-heading">About</h2>
+<section id="about" class="page-section about" aria-labelledby="about-heading">
+  <app-section-header
+    eyebrow="01 — ABOUT"
+    heading="Clean code, thoughtful design."
+    headingId="about-heading"
+  />
 
   <div class="about__grid">
     <article class="about__card about__card--bio" data-testid="bio-card" data-cursor-hover>
       <p class="about__blurb">{{ bio.blurb }}</p>
-      <p class="about__text">{{ bio.journey }}</p>
-      <p class="about__text">{{ bio.passion }}</p>
+
+      <div class="about__group">
+        <p class="about__label" data-testid="bio-label">MY JOURNEY</p>
+        <p class="about__journey">{{ bio.journey }}</p>
+      </div>
+
+      <div class="about__group">
+        <p class="about__label" data-testid="bio-label">WHAT I'M PASSIONATE ABOUT</p>
+        <p class="about__passion">{{ bio.passion }}</p>
+      </div>
+
       <ul class="about__tags" aria-label="Interests">
         @for (interest of interests; track interest.label) {
           <li class="about__tag" data-testid="interest-tag">{{ interest.label }}</li>
@@ -13,25 +26,22 @@
       </ul>
     </article>
 
-    <article class="about__card" data-cursor-hover>
-      <h3 class="about__card-heading">Education</h3>
-      <ul class="about__entries">
-        @for (entry of education; track entry.degree) {
-          <li class="about__entry" data-testid="education-entry">
-            <span class="about__entry-title">{{ entry.degree }}</span>
-            <span class="about__entry-meta">{{ entry.institution }} · {{ entry.year }}</span>
-            <span class="about__entry-details">{{ entry.details }}</span>
-          </li>
-        }
-      </ul>
-
-      <h3 class="about__card-heading">Certifications</h3>
-      <ul class="about__entries">
-        @for (certification of certifications; track certification.name) {
-          <li class="about__entry" data-testid="certification-entry">
-            <span class="about__entry-title">{{ certification.name }}</span>
-            <span class="about__entry-meta">{{ certification.issuer }} · {{ certification.year }}</span>
-            <span class="about__entry-details">{{ certification.details }}</span>
+    <article class="about__card about__card--timeline" data-cursor-hover>
+      <h3 class="about__label about__label--muted" data-testid="timeline-heading">
+        EDUCATION &amp; CERTIFICATIONS
+      </h3>
+      <ul class="about__timeline">
+        @for (entry of timeline; track entry.title) {
+          <li
+            class="about__timeline-entry"
+            [class.about__timeline-entry--active]="entry.inProgress"
+            data-testid="timeline-entry"
+          >
+            <span class="about__timeline-date" data-testid="timeline-date">{{ entry.date }}</span>
+            <span class="about__timeline-title" data-testid="timeline-title">{{ entry.title }}</span>
+            <span class="about__timeline-organization" data-testid="timeline-organization">{{
+              entry.organization
+            }}</span>
           </li>
         }
       </ul>

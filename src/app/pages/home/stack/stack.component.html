@@ -1,21 +1,24 @@
-<header class="stack__header">
-  <p class="stack__eyebrow">03 — STACK</p>
-  <h2 id="stack-heading" class="stack__heading">Tools I work with.</h2>
-</header>
+<section id="stack" class="page-section stack" aria-labelledby="stack-heading">
+  <app-section-header
+    eyebrow="03 — STACK"
+    heading="Tools I work with."
+    headingId="stack-heading"
+  />
 
-<div class="stack__grid">
-  @for (category of skillCategories; track category.name; let isLast = $last) {
-    <article
-      class="stack__tile"
-      [class.stack__tile--featured]="isLast"
-      data-testid="stack-tile"
-    >
-      <h3 class="stack__label" data-testid="stack-label">{{ category.name }}</h3>
-      <ul class="stack__tags">
-        @for (skill of category.skills; track skill) {
-          <li class="stack__tag" data-testid="stack-tag">{{ skill }}</li>
-        }
-      </ul>
-    </article>
-  }
-</div>
+  <div class="stack__grid">
+    @for (category of skillCategories; track category.name; let isLast = $last) {
+      <article
+        class="stack__tile"
+        [class.stack__tile--featured]="isLast"
+        data-testid="stack-tile"
+      >
+        <h3 class="stack__label" data-testid="stack-label">{{ category.name }}</h3>
+        <ul class="stack__tags">
+          @for (skill of category.skills; track skill) {
+            <li class="stack__tag" data-testid="stack-tag">{{ skill }}</li>
+          }
+        </ul>
+      </article>
+    }
+  </div>
+</section>

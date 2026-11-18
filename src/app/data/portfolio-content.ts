@@ -9,32 +9,16 @@ export interface ExperienceCard {
   details: string;
 }
 
-export interface EducationEntry {
-  degree: string;
-  institution: string;
-  year: string;
-  details: string;
-}
-
 export interface SkillCategory {
   name: string;
   skills: string[];
-}
-
-export interface Certification {
-  name: string;
-  issuer: string;
-  year: string;
-  details: string;
 }
 
 export interface TimelineEntry {
   date: string;
   title: string;
   organization: string;
-  description: string;
-  type: 'experience' | 'education';
-  completed: boolean;
+  inProgress: boolean;
 }
 
 export interface InterestCard {
@@ -60,22 +44,6 @@ export interface Project {
 }
 
 export const EXPERIENCE: ExperienceCard[] = [];
-
-export const EDUCATION: EducationEntry[] = [
-  {
-    degree: 'B.S. Web Development',
-    institution: 'Bellevue University',
-    year: 'May 2025 – Dec 2026',
-    details: 'GPA: 4.0 · Expected graduation: Dec 2026',
-  },
-  {
-    degree: 'A.S. Computer Programming',
-    institution: 'Northeast State Technical Community College',
-    year: '2015',
-    details:
-      'Studied programming fundamentals and object-oriented programming principles.',
-  },
-];
 
 export const SKILLS: SkillCategory[] = [
   {
@@ -113,23 +81,6 @@ export const SKILLS: SkillCategory[] = [
   },
 ];
 
-export const CERTIFICATIONS: Certification[] = [
-  {
-    name: 'The Modern Software Developer',
-    issuer: 'Vizuara AI Labs',
-    year: 'Mar 2026',
-    details:
-      'Completed bootcamp covering coding LLMs, AI development with coding agents, Model Context Protocol (MCP), AI testing and security practices, deployment with Amazon Web Services (AWS), and DevOps.',
-  },
-  {
-    name: 'Pre-Security Certification',
-    issuer: 'TryHackMe',
-    year: '2025',
-    details:
-      'Completed modules covering networking fundamentals, how the web works, operating systems basics, and core cybersecurity concepts including the CIA triad and cryptography.',
-  },
-];
-
 export const LEARNING_NEXT: string[] = [
   'Rust programming language',
   'WebAssembly (WASM)',
@@ -138,32 +89,40 @@ export const LEARNING_NEXT: string[] = [
 ];
 
 export const INTERESTS: InterestCard[] = [
-  { label: 'Modern Software Development Practices', iconName: 'code-xml' },
+  { label: 'Modern Software Practices', iconName: 'code-xml' },
   { label: 'UI/UX Design', iconName: 'palette' },
-  { label: 'AI & Application Security', iconName: 'shield' },
-  { label: 'LLM Architecture & Internals', iconName: 'bot' },
+  { label: 'AI & App Security', iconName: 'shield' },
+  { label: 'LLM Internals', iconName: 'bot' },
 ];
 
 export const TIMELINE_ENTRIES: TimelineEntry[] = [
   {
-    date: 'In Progress',
+    date: 'IN PROGRESS',
     title: 'B.S. Web Development',
-    organization: 'Bellevue University',
-    description: "Currently pursuing a bachelor's degree in web development.",
-    type: 'education',
-    completed: false,
+    organization: 'Bellevue University · GPA 4.0',
+    inProgress: true,
+  },
+  {
+    date: 'MAR 2026',
+    title: 'The Modern Software Developer',
+    organization: 'Vizuara AI Labs',
+    inProgress: false,
+  },
+  {
+    date: '2025',
+    title: 'Pre-Security Certification',
+    organization: 'TryHackMe',
+    inProgress: false,
   },
   {
     date: '2015',
     title: 'A.S. Computer Programming',
-    organization: 'Northeast State Technical Community College',
-    description:
-      'Studied programming fundamentals and object-oriented programming principles.',
-    type: 'education',
-    completed: true,
+    organization: 'Northeast State CC',
+    inProgress: false,
   },
 ];
 
+// Completed goals lead, then the rest in the design's order.
 export const BUCKET_LIST: BucketListItem[] = [
   {
     id: '1',
@@ -176,24 +135,6 @@ export const BUCKET_LIST: BucketListItem[] = [
     title: 'Contribute to open source',
     description: 'Get a PR merged into a major open-source project',
     completed: true,
-  },
-  {
-    id: '3',
-    title: 'Ship a mobile app',
-    description: 'Build a mobile app and publish it to the App Store',
-    completed: false,
-  },
-  {
-    id: '4',
-    title: 'Work at a MAANG company',
-    description: 'Land a role at Meta, Apple, Amazon, Netflix, or Google',
-    completed: false,
-  },
-  {
-    id: '5',
-    title: 'Build a revenue-generating side project',
-    description: 'Create something people value enough to pay for',
-    completed: false,
   },
   {
     id: '6',
@@ -211,6 +152,24 @@ export const BUCKET_LIST: BucketListItem[] = [
     id: '8',
     title: 'Climb a V10 boulder problem',
     description: 'Push my climbing to an elite bouldering grade',
+    completed: false,
+  },
+  {
+    id: '3',
+    title: 'Ship a mobile app',
+    description: 'Build a mobile app and publish it to the App Store',
+    completed: false,
+  },
+  {
+    id: '4',
+    title: 'Work at a MAANG company',
+    description: 'Land a role at Meta, Apple, Amazon, Netflix, or Google',
+    completed: false,
+  },
+  {
+    id: '5',
+    title: 'Build a revenue-generating side project',
+    description: 'Create something people value enough to pay for',
     completed: false,
   },
 ];
@@ -259,7 +218,7 @@ export interface AboutBio {
 
 export const ABOUT_BIO: AboutBio = {
   blurb:
-    "I'm a full stack developer based in the US, focused on building modern web applications with clean code and thoughtful design.",
+    "I build modern, performant web applications with clean code and thoughtful design. Passionate about creating seamless user experiences from front to back.",
   journey:
     'I discovered programming through a desire to build things that solve real problems. That curiosity led me to dive deep into web development, where I found the perfect intersection of logic and creativity.',
   passion:

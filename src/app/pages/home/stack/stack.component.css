@@ -1,34 +1,7 @@
-:host {
+.stack {
   display: flex;
   flex-direction: column;
-  align-items: center;
   gap: 2.25rem;
-}
-
-.stack__header {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.875rem;
-  text-align: center;
-}
-
-.stack__eyebrow {
-  margin: 0;
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  letter-spacing: 0.25em;
-  color: var(--accent-text);
-}
-
-.stack__heading {
-  margin: 0;
-  max-width: 760px;
-  font-size: clamp(2rem, 5vw, 3rem);
-  font-weight: 700;
-  line-height: 1.08;
-  letter-spacing: -0.035em;
-  color: var(--text-primary);
 }
 
 /* 12 columns so the bento rows can split 6/6, 3/9 and 12 without
