@@ -7,16 +7,19 @@
 }
 
 :root {
-  --bg-primary: #0a0a0f;
-  --bg-surface: #1a1a2e;
-  --bg-surface-alt: #1e1e34;
-  --accent: #6c63ff;
-  --btn-accent: #5853d9;
-  --text-primary: #f0f0f5;
-  --text-secondary: #8a8a9a;
-  --text-on-surface: #f0f0f5;
-  --text-on-surface-secondary: #8a8a9a;
-  --border: rgba(108, 99, 255, 0.2);
+  --bg-primary: #09090f;
+  --bg-surface: #11111b;
+  --bg-surface-alt: #1a1a2e;
+  --accent: #5b5bd6;
+  --accent-text: #8c8fff;
+  --btn-accent: #5b5bd6;
+  --text-primary: #f4f4f8;
+  --text-secondary: #a3a3bc;
+  --text-tertiary: #7a7a94;
+  --text-on-surface: #f4f4f8;
+  --text-on-surface-secondary: #a3a3bc;
+  --border: #1f1f33;
+  --border-strong: #34344f;
   --card-nested-bg: rgba(255, 255, 255, 0.05);
   --surface-hover-bg: rgba(108, 99, 255, 0.08);
 
@@ -25,9 +28,14 @@
   --glass-blur: blur(12px);
   --glass-border: rgba(108, 99, 255, 0.25);
 
+  /* Typography */
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Helvetica, Arial, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
   /* Background effects */
-  --particle-color: rgba(255, 255, 255, 0.35);
-  --orb-color: #6c63ff;
+  --particle-color: rgba(200, 200, 232, 0.4);
+  --orb-color: #6366f1;
   --orb-opacity: 0.18;
 }
 
@@ -35,13 +43,16 @@
   --bg-primary: #f8f7ff;
   --bg-surface: #ffffff;
   --bg-surface-alt: #f0eeff;
-  --accent: #6c63ff;
-  --btn-accent: #5853d9;
-  --text-primary: #0f0e1a;
-  --text-secondary: #5c5875;
-  --text-on-surface: #0f0e1a;
-  --text-on-surface-secondary: #6b6882;
-  --border: rgba(108, 99, 255, 0.15);
+  --accent: #5b5bd6;
+  --accent-text: #5457e0;
+  --btn-accent: #5b5bd6;
+  --text-primary: #14141f;
+  --text-secondary: #55556b;
+  --text-tertiary: #6b6b85;
+  --text-on-surface: #14141f;
+  --text-on-surface-secondary: #55556b;
+  --border: #e4e2f7;
+  --border-strong: #c9c6ee;
   --card-nested-bg: #f0eeff;
   --surface-hover-bg: rgba(108, 99, 255, 0.06);
 
@@ -51,8 +62,8 @@
   --glass-border: rgba(108, 99, 255, 0.18);
 
   /* Background effects */
-  --particle-color: rgba(108, 99, 255, 0.6);
-  --orb-color: #6c63ff;
+  --particle-color: rgba(124, 124, 176, 0.6);
+  --orb-color: #6366f1;
   --orb-opacity: 0.52;
 }
 
@@ -66,6 +77,12 @@ html {
   scrollbar-gutter: stable;
 }
 
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
 html,
 body {
   margin: 0;
@@ -73,9 +90,7 @@ body {
   height: 100%;
   background-color: var(--bg-primary);
   color: var(--text-primary);
-  font-family:
-    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial,
-    sans-serif;
+  font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   transition:
     background-color 0.3s ease,
