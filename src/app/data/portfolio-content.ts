@@ -250,3 +250,18 @@ export const PROJECTS: Project[] = [
       'Practiced consuming a third-party REST API, handling async data, and building a responsive UI with vanilla JavaScript.',
   },
 ];
+
+export interface AboutBio {
+  blurb: string;
+  journey: string;
+  passion: string;
+}
+
+export const ABOUT_BIO: AboutBio = {
+  blurb:
+    "I'm a full stack developer based in the US, focused on building modern web applications with clean code and thoughtful design.",
+  journey:
+    'I discovered programming through a desire to build things that solve real problems. That curiosity led me to dive deep into web development, where I found the perfect intersection of logic and creativity.',
+  passion:
+    "I care deeply about developer experience, clean architecture, and creating interfaces that feel intuitive. Outside of code, I'm interested in travel, enjoy climbing, and continuous learning.",
+};

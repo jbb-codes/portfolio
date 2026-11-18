@@ -1,0 +1,40 @@
+<section id="about" class="about" aria-labelledby="about-heading">
+  <h2 id="about-heading" class="about__heading" data-testid="about-heading">About</h2>
+
+  <div class="about__grid">
+    <article class="about__card about__card--bio" data-testid="bio-card" data-cursor-hover>
+      <p class="about__blurb">{{ bio.blurb }}</p>
+      <p class="about__text">{{ bio.journey }}</p>
+      <p class="about__text">{{ bio.passion }}</p>
+      <ul class="about__tags" aria-label="Interests">
+        @for (interest of interests; track interest.label) {
+          <li class="about__tag" data-testid="interest-tag">{{ interest.label }}</li>
+        }
+      </ul>
+    </article>
+
+    <article class="about__card" data-cursor-hover>
+      <h3 class="about__card-heading">Education</h3>
+      <ul class="about__entries">
+        @for (entry of education; track entry.degree) {
+          <li class="about__entry" data-testid="education-entry">
+            <span class="about__entry-title">{{ entry.degree }}</span>
+            <span class="about__entry-meta">{{ entry.institution }} · {{ entry.year }}</span>
+            <span class="about__entry-details">{{ entry.details }}</span>
+          </li>
+        }
+      </ul>
+
+      <h3 class="about__card-heading">Certifications</h3>
+      <ul class="about__entries">
+        @for (certification of certifications; track certification.name) {
+          <li class="about__entry" data-testid="certification-entry">
+            <span class="about__entry-title">{{ certification.name }}</span>
+            <span class="about__entry-meta">{{ certification.issuer }} · {{ certification.year }}</span>
+            <span class="about__entry-details">{{ certification.details }}</span>
+          </li>
+        }
+      </ul>
+    </article>
+  </div>
+</section>

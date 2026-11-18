@@ -1,40 +1,7 @@
-<!-- Used Claude to help generate -->
-<section class="hero">
-  <div class="hero__inner">
-    <p class="hero__intro"><span data-cursor-hover>Hi, I'm</span></p>
-    <h1 class="hero__headline">
-      <span data-cursor-hover>Jarren Bess</span>
-      <span class="hero__role-group" data-cursor-hover>
-        <span
-          class="hero__role"
-          data-cursor-hover
-          data-testid="hero-role"
-          appTypingAnimation
-          [strings]="roleStrings"
-        ></span>
-        <span class="hero__role-label" data-cursor-hover>Developer</span>
-      </span>
-    </h1>
-    <p class="hero__description">
-      <span data-cursor-hover
-        >I build modern, performant web applications with clean code and
-        thoughtful design. Passionate about creating seamless user experiences
-        from front to back.</span
-      >
-    </p>
-    <a class="hero__cta" data-testid="cta-button" routerLink="/"
-      fragment="work">
-      View My Projects <span aria-hidden="true">→</span>
-    </a>
-  </div>
-</section>
+<app-hero />
 
-<section id="about" class="page-section" aria-labelledby="about-heading">
-  <h2 id="about-heading" class="page-section__heading">About</h2>
-</section>
-<section id="work" class="page-section" aria-labelledby="work-heading">
-  <h2 id="work-heading" class="page-section__heading">Work</h2>
-</section>
+<app-about-section />
+<app-work-spotlight />
 <section id="stack" class="page-section" aria-labelledby="stack-heading">
   <app-stack />
 </section>
