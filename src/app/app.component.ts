@@ -13,7 +13,7 @@ import { NavbarComponent } from './shared/navbar/navbar.component';
 import { OrbBackgroundComponent } from './shared/orb-background/orb-background.component';
 import { ParticleBackgroundComponent } from './shared/particle-background/particle-background.component';
 
-const KNOWN_PATHS = ['/', '/about', '/resume', '/projects'];
+const KNOWN_PATHS = ['/'];
 
 // Used Claude to help implement the root app shell: the route-driven navbar
 // visibility signal, the skip-to-main accessibility link, and the fade
@@ -41,7 +41,7 @@ export class AppComponent {
     this.router.events
       .pipe(filter((e) => e instanceof NavigationEnd))
       .subscribe((e) => {
-        const path = (e as NavigationEnd).urlAfterRedirects.split('?')[0];
+        const path = (e as NavigationEnd).urlAfterRedirects.split(/[?#]/)[0];
         this.showNavbar.set(KNOWN_PATHS.includes(path));
       });
   }
