@@ -7,7 +7,6 @@
         aria-hidden="true"
       ></span>
     }
-    <span class="hero__satellite" aria-hidden="true"></span>
     <picture>
       <source srcset="assets/images/smallProfile.webp" type="image/webp" />
       <img
@@ -20,19 +19,45 @@
         fetchpriority="high"
       />
     </picture>
-    <p class="hero__focus-tag" data-testid="hero-focus-tag">
-      <span class="hero__dot" aria-hidden="true"></span>
-      AGENTIC AI · LLM TOOLING
-    </p>
+    @for (orbit of orbitDots; track orbit.name) {
+      <div
+        class="hero__orbit hero__orbit--{{ orbit.name }}"
+        [class.hero__orbit--expanded]="expandedOrbit() === orbit.name"
+      >
+        <div class="hero__orbit-slot">
+          <button
+            type="button"
+            class="hero__orbit-dot"
+            data-orbit-dot
+            [attr.data-testid]="'hero-orbit-dot-' + orbit.name"
+            [attr.aria-label]="orbit.label"
+            [attr.aria-expanded]="expandedOrbit() === orbit.name"
+            (pointerenter)="onPointerEnter(orbit.name, $event)"
+            (pointerleave)="onPointerLeave(orbit.name, $event)"
+            (pointerdown)="onPointerDown($event)"
+            (focus)="onFocus(orbit.name)"
+            (blur)="onBlur(orbit.name)"
+            (click)="onClick(orbit.name)"
+            (keydown.escape)="onEscape()"
+          >
+            <span class="hero__dot" aria-hidden="true"></span>
+            <span
+              class="hero__orbit-label"
+              aria-hidden="true"
+              [attr.data-testid]="'hero-orbit-label-' + orbit.name"
+              >{{ orbit.label }}</span
+            >
+          </button>
+        </div>
+      </div>
+    }
   </div>
 
-  <p class="hero__status" data-testid="hero-status">
-    <span class="hero__dot hero__dot--large" aria-hidden="true"></span>
-    HI, I'M — SYSTEM ONLINE
-  </p>
-
-  <h1 id="hero-heading" class="hero__name">
-    <span data-cursor-hover>Jarren Bess</span>
+  <h1 id="hero-heading" class="hero__heading">
+    <span class="hero__greeting" data-testid="hero-greeting">Hi, I'm</span>
+    <span class="hero__name" data-testid="hero-name" data-cursor-hover
+      >Jarren Bess</span
+    >
   </h1>
 
   <p class="hero__role-line" data-testid="hero-role-line">
@@ -40,10 +65,8 @@
       class="hero__role"
       data-cursor-hover
       data-testid="hero-role"
-      appTypingAnimation
-      [strings]="roleStrings"
-    ></span
-    >&ngsp;<span class="hero__role-label" data-cursor-hover>Developer</span>
+      [appScrambleText]="rolePhrase"
+    ></span>
   </p>
 
   <div class="hero__actions">
