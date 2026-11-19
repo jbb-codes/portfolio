@@ -14,6 +14,21 @@
     </div>
     <div class="work-controls">
       <span class="work-controls__counter" aria-live="polite">{{ counterLabel() }}</span>
+      <div class="work-timer" aria-hidden="true">
+        @for (project of projects; track project.number; let index = $index) {
+          <span
+            class="work-timer__segment"
+            [class.work-timer__segment--completed]="index < selectedIndex()"
+            [class.work-timer__segment--active]="index === selectedIndex()"
+          >
+            @if (index === selectedIndex() && isRotating()) {
+              @for (restart of [cycle()]; track restart) {
+                <span class="work-timer__fill"></span>
+              }
+            }
+          </span>
+        }
+      </div>
       <button type="button" class="work-controls__button work-controls__previous" aria-label="Previous project" (click)="previous()">
         <svg lucideArrowLeft [size]="17" aria-hidden="true"></svg>
       </button>

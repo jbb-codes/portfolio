@@ -230,6 +230,40 @@
   color: var(--text-tertiary);
 }
 
+.work-timer {
+  display: none;
+}
+
+.work-timer__segment {
+  position: relative;
+  flex: 1;
+  height: 10px;
+  border-radius: 5px;
+  overflow: hidden;
+  background: var(--border-strong);
+}
+
+.work-timer__segment--completed {
+  background: var(--accent-text);
+}
+
+/* Paused or reduced motion: no fill runs, so the active segment shows a static marker. */
+.work-timer__segment--active {
+  background: var(--accent-text);
+}
+
+.work-timer__segment--active:has(.work-timer__fill) {
+  background: var(--border-strong);
+}
+
+.work-timer__fill {
+  position: absolute;
+  inset: 0;
+  background: var(--accent-text);
+  transform-origin: left;
+  animation: work-tab-progress 3s linear forwards;
+}
+
 @media (max-width: 900px) {
   .spotlight {
     grid-template-columns: 1fr;
@@ -244,6 +278,18 @@
   .work-tabs {
     grid-template-columns: 1fr;
     gap: 0.75rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .work-controls {
+    gap: 0.875rem;
+  }
+
+  .work-timer {
+    display: flex;
+    gap: 6px;
+    width: 96px;
   }
 }
 
