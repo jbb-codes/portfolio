@@ -32,16 +32,20 @@ describe('FooterComponent', () => {
     ]);
   });
 
-  it('links to GitHub in a new tab', () => {
-    const link = host.querySelector('[data-testid="footer-github"]');
-    expect(link?.getAttribute('href')).toBe('https://github.com/jbb-codes');
-    expect(link?.getAttribute('target')).toBe('_blank');
-    expect(link?.getAttribute('rel')).toContain('noopener');
+  it('offers only the four section links', () => {
+    const links = host.querySelectorAll('a');
+    expect(Array.from(links).map((link) => link.textContent?.trim())).toEqual([
+      'About',
+      'Work',
+      'Stack',
+      'Bucket List',
+    ]);
   });
 
-  it('links to email with a mailto address', () => {
-    const link = host.querySelector('[data-testid="footer-email"]');
-    expect(link?.getAttribute('href')).toBe('mailto:bessjarren@yahoo.com');
+  it('draws no top border', () => {
+    document.body.appendChild(host);
+    const footer = host.querySelector('footer')!;
+    expect(getComputedStyle(footer).borderTopWidth).toBe('0px');
   });
 
   it('places the copyright before the links', () => {

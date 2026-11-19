@@ -3,6 +3,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
 import { LucideMoon, LucideSun } from '@lucide/angular';
 import { ThemeService } from '../../shared/theme/theme.service';
+import { PageScroller } from './page-scroller';
 
 // Links are jump links to sections of the single page. Scrolling to the
 // fragment is handled by the router's anchorScrolling option.
@@ -22,5 +23,13 @@ export class NavbarComponent {
     requireSync: true,
   });
 
-  constructor(readonly themeService: ThemeService) {}
+  constructor(
+    readonly themeService: ThemeService,
+    private readonly pageScroller: PageScroller,
+  ) {}
+
+  scrollToTop(event: Event): void {
+    event.preventDefault();
+    this.pageScroller.scrollToTop();
+  }
 }
