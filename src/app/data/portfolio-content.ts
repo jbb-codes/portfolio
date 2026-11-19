@@ -149,12 +149,6 @@ export const BUCKET_LIST: BucketListItem[] = [
     completed: false,
   },
   {
-    id: '8',
-    title: 'Climb a V10 boulder problem',
-    description: 'Push my climbing to an elite bouldering grade',
-    completed: false,
-  },
-  {
     id: '3',
     title: 'Ship a mobile app',
     description: 'Build a mobile app and publish it to the App Store',
@@ -170,6 +164,12 @@ export const BUCKET_LIST: BucketListItem[] = [
     id: '5',
     title: 'Build a revenue-generating side project',
     description: 'Create something people value enough to pay for',
+    completed: false,
+  },
+  {
+    id: '8',
+    title: 'Climb a V10 boulder problem',
+    description: 'Push my climbing to an elite bouldering grade',
     completed: false,
   },
 ];

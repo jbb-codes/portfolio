@@ -39,6 +39,11 @@ describe('BucketListComponent', () => {
     expect(completionOrder).toEqual([...completionOrder].sort().reverse());
   });
 
+  it('should end with the V10 boulder goal', () => {
+    const pills = host.querySelectorAll('[data-testid="bucket-pill"]');
+    expect(pills[pills.length - 1].textContent).toContain('Climb a V10 boulder problem');
+  });
+
   it('should render one bar segment per item, filled up to the completed count', () => {
     const segments = Array.from(
       host.querySelectorAll('[data-testid="bucket-segment"]'),

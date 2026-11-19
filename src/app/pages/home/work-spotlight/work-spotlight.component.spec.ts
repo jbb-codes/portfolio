@@ -235,4 +235,64 @@ describe('WorkSpotlightComponent', () => {
       expect(query('.work-tab__progress')).not.toBe(barBefore);
     });
   });
+
+  describe('mobile timer segments', () => {
+    const segments = (): HTMLElement[] => queryAll('.work-timer__segment');
+
+    it('renders one segment per project', () => {
+      render();
+      expect(segments().length).toBe(PROJECTS.length);
+    });
+
+    it('fills only the active segment while rotating', () => {
+      render();
+      click('.work-tab', 1);
+      expect(queryAll('.work-timer__fill').length).toBe(1);
+      expect(segments()[1].querySelector('.work-timer__fill')).toBeTruthy();
+    });
+
+    it('marks earlier segments completed and later ones upcoming', () => {
+      render();
+      click('.work-tab', 1);
+      expect(segments().map((segment) => segment.classList.contains('work-timer__segment--completed')))
+        .toEqual([true, false, false]);
+      expect(segments().map((segment) => segment.classList.contains('work-timer__segment--active')))
+        .toEqual([false, true, false]);
+    });
+
+    it('restarts the fill when the next arrow is used', () => {
+      render();
+      const fillBefore = query('.work-timer__fill');
+      click('.work-controls__next');
+      expect(segments()[1].querySelector('.work-timer__fill')).toBeTruthy();
+      expect(query('.work-timer__fill')).not.toBe(fillBefore);
+    });
+
+    it('moves the fill back with the previous arrow', () => {
+      render();
+      click('.work-tab', 2);
+      click('.work-controls__previous');
+      expect(segments()[1].querySelector('.work-timer__fill')).toBeTruthy();
+    });
+
+    it('stops the fill while paused but keeps the active segment marked', () => {
+      render();
+      query('section#work').dispatchEvent(new Event('mouseenter'));
+      fixture.detectChanges();
+      expect(queryAll('.work-timer__fill').length).toBe(0);
+      expect(segments()[0].classList).toContain('work-timer__segment--active');
+    });
+
+    it('shows no fill when reduced motion is preferred', () => {
+      spyOn(window, 'matchMedia').and.returnValue({ matches: true } as MediaQueryList);
+      render();
+      expect(queryAll('.work-timer__fill').length).toBe(0);
+      expect(segments()[0].classList).toContain('work-timer__segment--active');
+    });
+
+    it('hides the segments from assistive tech since the counter already announces progress', () => {
+      render();
+      expect(query('.work-timer').getAttribute('aria-hidden')).toBe('true');
+    });
+  });
 });
