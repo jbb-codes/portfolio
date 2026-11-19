@@ -83,36 +83,29 @@ describe('StackComponent', () => {
       });
     });
 
-    it('hides the dash that only makes sense side by side', () => {
-      rows().forEach((row) => {
-        const separator = row.querySelector<HTMLElement>('.stack__separator')!;
-        expect(getComputedStyle(separator).display).toBe('none');
-      });
-    });
   });
 
   describe('side-by-side rows on wide containers', () => {
+    const MIN_LABEL_TO_CHIPS_GAP_PX = 12;
     const MAX_LABEL_TO_CHIPS_GAP_PX = 40;
 
     beforeEach(() => setHostWidth(1000));
 
     const parts = (row: HTMLElement) => ({
       label: row.querySelector<HTMLElement>('[data-testid="stack-label"]')!,
-      separator: row.querySelector<HTMLElement>('.stack__separator'),
       tags: row.querySelector<HTMLElement>('.stack__tags')!,
       firstTag: row.querySelector<HTMLElement>('[data-testid="stack-tag"]')!,
     });
 
-    it('keeps each label right next to its chips', () => {
+    it('keeps a little space between each label and its chips on one line', () => {
       rows().forEach((row) => {
-        const { label, separator, firstTag } = parts(row);
-        const labelEnd = Math.max(
-          label.getBoundingClientRect().right,
-          separator?.getBoundingClientRect().right ?? 0,
-        );
+        const { label, firstTag } = parts(row);
+        const labelBox = label.getBoundingClientRect();
         const firstTagBox = firstTag.getBoundingClientRect();
-        expect(firstTagBox.top).toBeLessThan(label.getBoundingClientRect().bottom);
-        expect(firstTagBox.left - labelEnd).toBeLessThan(MAX_LABEL_TO_CHIPS_GAP_PX);
+        const gap = firstTagBox.left - labelBox.right;
+        expect(firstTagBox.top).toBeLessThan(labelBox.bottom);
+        expect(gap).toBeGreaterThanOrEqual(MIN_LABEL_TO_CHIPS_GAP_PX);
+        expect(gap).toBeLessThan(MAX_LABEL_TO_CHIPS_GAP_PX);
       });
     });
 
@@ -128,12 +121,10 @@ describe('StackComponent', () => {
       });
     });
 
-    it('separates the label from its chips with a visible dash', () => {
+    it('joins the label and chips with space only, no dash', () => {
       rows().forEach((row) => {
-        const { separator } = parts(row);
-        expect(separator?.textContent?.trim()).toBe('–');
-        expect(separator?.getAttribute('aria-hidden')).toBe('true');
-        expect(getComputedStyle(separator!).display).not.toBe('none');
+        expect(row.querySelector('.stack__separator')).toBeNull();
+        expect(row.textContent).not.toMatch(/[–-]\s/);
       });
     });
   });
