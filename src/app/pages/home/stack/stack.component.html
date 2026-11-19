@@ -9,7 +9,6 @@
     @for (category of skillCategories; track category.name) {
       <article class="stack__row" data-testid="stack-row">
         <h3 class="stack__label" data-testid="stack-label">{{ category.name }}</h3>
-        <span class="stack__separator" aria-hidden="true">–</span>
         <ul class="stack__tags">
           @for (skill of category.skills; track skill) {
             <li class="stack__tag" data-testid="stack-tag">{{ skill }}</li>
