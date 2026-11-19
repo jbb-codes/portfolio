@@ -233,11 +233,8 @@
   background: var(--border-strong);
 }
 
-.work-timer__segment--completed {
-  background: var(--accent-text);
-}
-
 /* Paused or reduced motion: no fill runs, so the active segment shows a static marker. */
+.work-timer__segment--completed,
 .work-timer__segment--active {
   background: var(--accent-text);
 }

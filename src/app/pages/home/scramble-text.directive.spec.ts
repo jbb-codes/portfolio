@@ -134,6 +134,16 @@ describe('ScrambleTextDirective', () => {
       expect(accessibleText(element)).toBe(PHRASE);
     });
 
+    it('keeps the accessible phrase out of the visual layout', () => {
+      const accessible = host(setup()).querySelector<HTMLElement>(
+        '[data-testid="scramble-accessible"]',
+      )!;
+      const box = accessible.getBoundingClientRect();
+      expect(getComputedStyle(accessible).position).toBe('absolute');
+      expect(box.width).toBeLessThanOrEqual(1);
+      expect(box.height).toBeLessThanOrEqual(1);
+    });
+
     it('hides the animated characters from assistive tech', () => {
       const element = host(setup());
       expect(
@@ -150,10 +160,6 @@ describe('ScrambleTextDirective', () => {
       words.forEach((word) =>
         expect(getComputedStyle(word).whiteSpace).toBe('nowrap'),
       );
-    });
-
-    it('keeps the word breaks so the phrase can wrap', () => {
-      const element = host(setup());
       expect(visibleText(element)).toMatch(/^\S+ \S+ \S+$/);
     });
   });
@@ -171,9 +177,11 @@ describe('ScrambleTextDirective', () => {
       expect(visibleText(element)).toBe(PHRASE);
     });
 
-    it('stops its timer once the phrase is decoded', () => {
-      setup();
+    it('stops its timer once the phrase is decoded and never restarts it', () => {
+      const fixture = setup();
       clock.tick(MAX_TICKS);
+      fixture.detectChanges();
+      expect(clock.startCount).toBe(1);
       expect(clock.isRunning).toBeFalse();
     });
 
@@ -221,14 +229,6 @@ describe('ScrambleTextDirective', () => {
       const before = widths();
       clock.tick(6);
       expect(widths()).toEqual(before);
-    });
-
-    it('does not replay after finishing', () => {
-      const fixture = setup();
-      clock.tick(MAX_TICKS);
-      fixture.detectChanges();
-      expect(clock.startCount).toBe(1);
-      expect(clock.isRunning).toBeFalse();
     });
   });
 

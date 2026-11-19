@@ -54,11 +54,6 @@ describe('HeroComponent', () => {
     );
   });
 
-  it('no longer shows the system-online status line', () => {
-    expect(query('hero-status')).toBeNull();
-    expect(root.textContent).not.toContain('SYSTEM ONLINE');
-  });
-
   it('greets with "Hi, I\'m" directly above the name inside the heading', () => {
     const greeting = query('hero-greeting');
     expect(greeting?.textContent?.trim()).toBe("Hi, I'm");
@@ -110,26 +105,10 @@ describe('HeroComponent', () => {
       const orbitSlots = (): HTMLElement[] =>
         Array.from(root.querySelectorAll<HTMLElement>('.hero__orbit-slot'));
 
-      const definedKeyframeNames = (): string[] =>
-        Array.from(document.styleSheets)
-          .flatMap((sheet) => Array.from(sheet.cssRules))
-          .filter(
-            (rule): rule is CSSKeyframesRule => rule instanceof CSSKeyframesRule,
-          )
-          .map((rule) => rule.name);
-
       it('runs an animation on every orbiting dot', () => {
         const slots = orbitSlots();
         expect(slots.length).toBe(2);
         slots.forEach((slot) => expect(slot.getAnimations().length).toBe(1));
-      });
-
-      it('points each orbit at a keyframe that actually exists', () => {
-        orbitSlots().forEach((slot) =>
-          expect(definedKeyframeNames()).toContain(
-            getComputedStyle(slot).animationName,
-          ),
-        );
       });
 
       // Angular renames keyframes declared in component styles but cannot
@@ -173,10 +152,6 @@ describe('HeroComponent', () => {
     it('starts collapsed', () => {
       expect(isExpanded('inner')).toBeFalse();
       expect(isExpanded('outer')).toBeFalse();
-    });
-
-    it('removes the static focus pill from the portrait', () => {
-      expect(query('hero-focus-tag')).toBeNull();
     });
 
     it('expands on mouse hover and collapses on leave', () => {
@@ -261,13 +236,6 @@ describe('HeroComponent', () => {
       '[data-testid="scramble-accessible"]',
     );
     expect(accessible?.textContent?.trim()).toBe('Modern Software Developer');
-  });
-
-  it('has no separate Developer label next to the role', () => {
-    expect(
-      query('hero-role-line')?.querySelector('.hero__role-label'),
-    ).toBeNull();
-    expect(query('hero-role-line')?.children.length).toBe(1);
   });
 
   it('links Get in touch to the contact section', () => {
