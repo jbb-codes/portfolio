@@ -34,7 +34,7 @@ describe('ContactSectionComponent', () => {
 
   it('opens the mail client from the Email button', () => {
     expect(link('contact-email').getAttribute('href')).toBe(
-      'mailto:bessjarren@yahoo.com',
+      'mailto:jarrenb.dev@gmail.com',
     );
   });
 

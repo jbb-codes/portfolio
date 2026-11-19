@@ -19,7 +19,7 @@ export class ContactSectionComponent {
   readonly links: readonly ContactLink[] = [
     {
       label: 'Email me',
-      href: 'mailto:bessjarren@yahoo.com',
+      href: 'mailto:jarrenb.dev@gmail.com',
       testId: 'contact-email',
       icon: 'mail',
       opensNewTab: false,
