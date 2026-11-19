@@ -43,33 +43,101 @@
   border: 1px solid var(--border-strong);
 }
 
-.hero__satellite {
-  position: absolute;
-  left: 87%;
-  top: 17%;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: var(--accent-text);
+/* Each orbit layer mirrors its ring's box so the dot stays on the ring. The angle is a registered property so sin/cos can both place the dot
+   and shift the pill inward, away from the stage edge. */
+@property --orbit-angle {
+  syntax: '<angle>';
+  inherits: true;
+  initial-value: 0deg;
 }
 
-.hero__focus-tag {
+.hero__orbit {
   position: absolute;
-  left: 55%;
-  top: 86%;
+  pointer-events: none;
+}
+
+.hero__orbit--outer {
+  inset: 0;
+  --orbit-start: 48deg;
+  --orbit-duration: 40s;
+}
+
+.hero__orbit--inner {
+  inset: 9.6%;
+  --orbit-start: 200deg;
+  --orbit-duration: 25s;
+}
+
+.hero__orbit--expanded {
+  z-index: 1;
+}
+
+.hero__orbit-slot {
+  position: absolute;
+  --orbit-angle: var(--orbit-start);
+  left: calc(50% + 50% * sin(var(--orbit-angle)));
+  top: calc(50% - 50% * cos(var(--orbit-angle)));
+}
+
+.hero__orbit-dot {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform: translate(-50%, -50%);
   display: flex;
   align-items: center;
-  gap: 0.5rem;
   margin: 0;
-  padding: 0.5rem 0.875rem;
-  border: 1px solid var(--border-strong);
+  padding: 0;
+  border: 1px solid transparent;
   border-radius: 999px;
-  background: var(--bg-surface);
+  background: transparent;
+  color: var(--text-secondary);
   font-family: var(--font-mono);
   font-size: 0.625rem;
   letter-spacing: 0.15em;
   white-space: nowrap;
-  color: var(--text-secondary);
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.hero__orbit-dot .hero__dot {
+  flex: none;
+  width: 10px;
+  height: 10px;
+}
+
+/* The visible dot is 10px; this keeps a 44px target for fingers. */
+.hero__orbit-dot::before {
+  content: '';
+  position: absolute;
+  inset: -19px;
+  border-radius: 50%;
+}
+
+.hero__orbit-dot:focus-visible {
+  outline: 2px solid var(--accent-text);
+  outline-offset: 3px;
+}
+
+.hero__orbit-label {
+  max-width: 0;
+  overflow: hidden;
+  opacity: 0;
+}
+
+/* Shifting only when expanded keeps the collapsed dot exactly on its ring
+   while the pill grows toward the portrait, away from the stage edge. */
+.hero__orbit--expanded .hero__orbit-dot {
+  transform: translate(calc(-50% - 50% * sin(var(--orbit-angle))), -50%);
+  gap: 0.5rem;
+  padding: 0.5rem 0.875rem;
+  border-color: var(--border-strong);
+  background: var(--bg-surface);
+}
+
+.hero__orbit--expanded .hero__orbit-label {
+  max-width: 16rem;
+  opacity: 1;
 }
 
 .hero__status {
@@ -141,12 +209,8 @@
   color: var(--text-primary);
 }
 
-/* The desktop offset pushes the tag past the right edge on a narrow stage, so
-   centre it under the portrait. Keyed to the stage width, not the viewport. */
 @container hero-stage (max-width: 420px) {
-  .hero__focus-tag {
-    left: 50%;
-    transform: translateX(-50%);
+  .hero__orbit--expanded .hero__orbit-dot {
     padding: 0.4375rem 0.75rem;
     letter-spacing: 0.1em;
   }
@@ -167,12 +231,24 @@
     transition: filter 0.2s ease;
   }
 
-  .hero__orbit-ring {
-    animation: orbit-pulse 6s ease-in-out infinite;
+  .hero__orbit-slot {
+    animation: orbit-revolve var(--orbit-duration) linear infinite;
   }
 
-  .hero__orbit-ring--2 {
-    animation-delay: -2s;
+  .hero__orbit--expanded .hero__orbit-slot {
+    animation-play-state: paused;
+  }
+
+  .hero__orbit-dot,
+  .hero__orbit-label {
+    transition:
+      transform 0.3s ease,
+      max-width 0.3s ease,
+      opacity 0.2s ease,
+      padding 0.3s ease,
+      gap 0.3s ease,
+      background-color 0.2s ease,
+      border-color 0.2s ease;
   }
 }
 
@@ -180,8 +256,12 @@
   filter: brightness(0.85);
 }
 
-@keyframes orbit-pulse {
-  50% {
-    transform: scale(1.04);
+@keyframes orbit-revolve {
+  from {
+    --orbit-angle: var(--orbit-start);
+  }
+
+  to {
+    --orbit-angle: calc(var(--orbit-start) + 360deg);
   }
 }

@@ -39,6 +39,13 @@ describe('HeroComponent', () => {
     expect(avatar.getAttribute('fetchpriority')).toBe('high');
   });
 
+  it('keeps the orbit rings static', () => {
+    const rings = root.querySelectorAll('[data-testid="hero-orbit-ring"]');
+    rings.forEach((ring) =>
+      expect(getComputedStyle(ring).animationName).toBe('none'),
+    );
+  });
+
   it('renders decorative orbit rings hidden from assistive tech', () => {
     const rings = root.querySelectorAll('[data-testid="hero-orbit-ring"]');
     expect(rings.length).toBeGreaterThanOrEqual(2);
@@ -53,10 +60,134 @@ describe('HeroComponent', () => {
     );
   });
 
-  it('labels the avatar with the current focus badge', () => {
-    expect(query('hero-focus-tag')?.textContent?.trim()).toBe(
-      'AGENTIC AI · LLM TOOLING',
-    );
+  describe('orbiting dots', () => {
+    const INNER_TEXT = 'AGENTIC AI · LLM TOOLING';
+    const OUTER_TEXT = 'SECURE, CLEAN CODE';
+
+    const dot = (name: 'inner' | 'outer'): HTMLButtonElement =>
+      query(`hero-orbit-dot-${name}`) as HTMLButtonElement;
+
+    const pointer = (
+      target: Element,
+      type: string,
+      pointerType: 'mouse' | 'touch',
+    ): void => {
+      target.dispatchEvent(
+        new PointerEvent(type, { pointerType, bubbles: true }),
+      );
+      fixture.detectChanges();
+    };
+
+    // Synthetic events: a headless browser window is not focused, so
+    // element.focus() never fires focus handlers.
+    const focusEvent = (target: Element, type: 'focus' | 'blur'): void => {
+      target.dispatchEvent(new FocusEvent(type));
+      fixture.detectChanges();
+    };
+
+    const isExpanded =(name: 'inner' | 'outer'): boolean =>
+      dot(name).getAttribute('aria-expanded') === 'true';
+
+    it('renders one dot per ring', () => {
+      expect(dot('inner')).toBeTruthy();
+      expect(dot('outer')).toBeTruthy();
+    });
+
+    it('names each dot with its pill text', () => {
+      expect(dot('inner').getAttribute('aria-label')).toBe(INNER_TEXT);
+      expect(dot('outer').getAttribute('aria-label')).toBe(OUTER_TEXT);
+      expect(query('hero-orbit-label-inner')?.textContent?.trim()).toBe(
+        INNER_TEXT,
+      );
+      expect(query('hero-orbit-label-outer')?.textContent?.trim()).toBe(
+        OUTER_TEXT,
+      );
+    });
+
+    it('starts collapsed', () => {
+      expect(isExpanded('inner')).toBeFalse();
+      expect(isExpanded('outer')).toBeFalse();
+    });
+
+    it('removes the static focus pill from the portrait', () => {
+      expect(query('hero-focus-tag')).toBeNull();
+    });
+
+    it('expands on mouse hover and collapses on leave', () => {
+      pointer(dot('inner'), 'pointerenter', 'mouse');
+      expect(isExpanded('inner')).toBeTrue();
+
+      pointer(dot('inner'), 'pointerleave', 'mouse');
+      expect(isExpanded('inner')).toBeFalse();
+    });
+
+    it('expands on keyboard focus and collapses on blur', () => {
+      focusEvent(dot('outer'), 'focus');
+      expect(isExpanded('outer')).toBeTrue();
+
+      focusEvent(dot('outer'), 'blur');
+      expect(isExpanded('outer')).toBeFalse();
+    });
+
+    it('collapses on Escape', () => {
+      focusEvent(dot('outer'), 'focus');
+
+      dot('outer').dispatchEvent(
+        new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }),
+      );
+      fixture.detectChanges();
+
+      expect(isExpanded('outer')).toBeFalse();
+    });
+
+    it('toggles on tap and ignores the hover emulated by touch', () => {
+      pointer(dot('inner'), 'pointerdown', 'touch');
+      dot('inner').click();
+      fixture.detectChanges();
+      expect(isExpanded('inner')).toBeTrue();
+
+      pointer(dot('inner'), 'pointerdown', 'touch');
+      dot('inner').click();
+      fixture.detectChanges();
+      expect(isExpanded('inner')).toBeFalse();
+    });
+
+    it('collapses when tapping elsewhere', () => {
+      pointer(dot('outer'), 'pointerdown', 'touch');
+      dot('outer').click();
+      fixture.detectChanges();
+
+      document.body.click();
+      fixture.detectChanges();
+
+      expect(isExpanded('outer')).toBeFalse();
+    });
+
+    it('expands one dot at a time', () => {
+      pointer(dot('inner'), 'pointerdown', 'touch');
+      dot('inner').click();
+      pointer(dot('outer'), 'pointerdown', 'touch');
+      dot('outer').click();
+      fixture.detectChanges();
+
+      expect(isExpanded('outer')).toBeTrue();
+      expect(isExpanded('inner')).toBeFalse();
+    });
+
+    it('keeps an expanded pill inside a 320px wide layout', () => {
+      root.style.display = 'block';
+      root.style.width = '320px';
+
+      (['inner', 'outer'] as const).forEach((name) => {
+        pointer(dot(name), 'pointerenter', 'mouse');
+        const hostBox = root.getBoundingClientRect();
+        const dotBox = dot(name).getBoundingClientRect();
+
+        expect(dotBox.left).toBeGreaterThanOrEqual(hostBox.left - 1);
+        expect(dotBox.right).toBeLessThanOrEqual(hostBox.right + 1);
+        pointer(dot(name), 'pointerleave', 'mouse');
+      });
+    });
   });
 
   it('separates the typed role from the Developer label with a space', () => {
@@ -80,16 +211,5 @@ describe('HeroComponent', () => {
     expect(link?.getAttribute('href')).toBe('docs/Jarren_Bess_Resume.pdf');
     expect(link?.getAttribute('target')).toBe('_blank');
     expect(link?.getAttribute('rel')).toContain('noopener');
-  });
-
-  it('keeps the focus tag inside a 320px wide layout', () => {
-    root.style.display = 'block';
-    root.style.width = '320px';
-
-    const hostBox = root.getBoundingClientRect();
-    const tagBox = query('hero-focus-tag')!.getBoundingClientRect();
-
-    expect(tagBox.left).toBeGreaterThanOrEqual(hostBox.left);
-    expect(tagBox.right).toBeLessThanOrEqual(hostBox.right);
   });
 });

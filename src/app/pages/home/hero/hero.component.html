@@ -7,7 +7,6 @@
         aria-hidden="true"
       ></span>
     }
-    <span class="hero__satellite" aria-hidden="true"></span>
     <picture>
       <source srcset="assets/images/smallProfile.webp" type="image/webp" />
       <img
@@ -20,10 +19,38 @@
         fetchpriority="high"
       />
     </picture>
-    <p class="hero__focus-tag" data-testid="hero-focus-tag">
-      <span class="hero__dot" aria-hidden="true"></span>
-      AGENTIC AI · LLM TOOLING
-    </p>
+    @for (orbit of orbitDots; track orbit.name) {
+      <div
+        class="hero__orbit hero__orbit--{{ orbit.name }}"
+        [class.hero__orbit--expanded]="expandedOrbit() === orbit.name"
+      >
+        <div class="hero__orbit-slot">
+          <button
+            type="button"
+            class="hero__orbit-dot"
+            data-orbit-dot
+            [attr.data-testid]="'hero-orbit-dot-' + orbit.name"
+            [attr.aria-label]="orbit.label"
+            [attr.aria-expanded]="expandedOrbit() === orbit.name"
+            (pointerenter)="onPointerEnter(orbit.name, $event)"
+            (pointerleave)="onPointerLeave(orbit.name, $event)"
+            (pointerdown)="onPointerDown($event)"
+            (focus)="onFocus(orbit.name)"
+            (blur)="onBlur(orbit.name)"
+            (click)="onClick(orbit.name)"
+            (keydown.escape)="onEscape()"
+          >
+            <span class="hero__dot" aria-hidden="true"></span>
+            <span
+              class="hero__orbit-label"
+              aria-hidden="true"
+              [attr.data-testid]="'hero-orbit-label-' + orbit.name"
+              >{{ orbit.label }}</span
+            >
+          </button>
+        </div>
+      </div>
+    }
   </div>
 
   <p class="hero__status" data-testid="hero-status">
