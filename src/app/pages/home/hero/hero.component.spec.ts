@@ -54,10 +54,23 @@ describe('HeroComponent', () => {
     );
   });
 
-  it('introduces the hero with a system-online status eyebrow', () => {
-    expect(query('hero-status')?.textContent?.trim()).toBe(
-      "HI, I'M — SYSTEM ONLINE",
-    );
+  it('no longer shows the system-online status line', () => {
+    expect(query('hero-status')).toBeNull();
+    expect(root.textContent).not.toContain('SYSTEM ONLINE');
+  });
+
+  it('greets with "Hi, I\'m" directly above the name inside the heading', () => {
+    const greeting = query('hero-greeting');
+    expect(greeting?.textContent?.trim()).toBe("Hi, I'm");
+    expect(root.querySelector('h1')?.contains(greeting)).toBeTrue();
+    expect(
+      greeting!.compareDocumentPosition(query('hero-name')!) &
+        Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy();
+  });
+
+  it('keeps the name on its own element', () => {
+    expect(query('hero-name')?.textContent?.trim()).toBe('Jarren Bess');
   });
 
   describe('orbiting dots', () => {
