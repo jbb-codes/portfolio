@@ -125,16 +125,8 @@ export class ScrambleTextDirective implements OnInit, OnDestroy {
   private buildAccessibleText(): HTMLElement {
     const accessible = this.document.createElement('span');
     accessible.setAttribute('data-testid', 'scramble-accessible');
+    accessible.className = 'sr-only';
     accessible.textContent = this.text;
-    // Visually hidden but still read aloud.
-    Object.assign(accessible.style, {
-      position: 'absolute',
-      width: '1px',
-      height: '1px',
-      overflow: 'hidden',
-      clip: 'rect(0 0 0 0)',
-      whiteSpace: 'nowrap',
-    });
     return accessible;
   }
 
@@ -144,7 +136,6 @@ export class ScrambleTextDirective implements OnInit, OnDestroy {
     visual.setAttribute('aria-hidden', 'true');
 
     const lockTicks = this.assignLockTicks();
-    this.cells = [];
 
     // Cells are inline-blocks, which would otherwise allow a line break
     // between any two letters. Each word is kept unbreakable instead.

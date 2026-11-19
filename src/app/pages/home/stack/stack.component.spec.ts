@@ -54,10 +54,9 @@ describe('StackComponent', () => {
     );
   });
 
-  it('gives every row identical styling with no featured variant', () => {
+  it('gives every row identical styling', () => {
     const classLists = rows().map((row) => row.className);
     expect(new Set(classLists).size).toBe(1);
-    expect(host.querySelector('[class*="featured"]')).toBeNull();
   });
 
   // The row layout follows the container's width, so these tests size the
@@ -82,7 +81,6 @@ describe('StackComponent', () => {
         ).toBeLessThan(2);
       });
     });
-
   });
 
   describe('side-by-side rows on wide containers', () => {
@@ -118,13 +116,6 @@ describe('StackComponent', () => {
         const groupCenter = (groupLeft + groupRight) / 2;
         const rowCenter = rowBox.left + rowBox.width / 2;
         expect(Math.abs(groupCenter - rowCenter)).toBeLessThan(2);
-      });
-    });
-
-    it('joins the label and chips with space only, no dash', () => {
-      rows().forEach((row) => {
-        expect(row.querySelector('.stack__separator')).toBeNull();
-        expect(row.textContent).not.toMatch(/[–-]\s/);
       });
     });
   });

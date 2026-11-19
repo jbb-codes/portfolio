@@ -95,12 +95,6 @@
   cursor: pointer;
 }
 
-.hero__orbit-dot .hero__dot {
-  flex: none;
-  width: 10px;
-  height: 10px;
-}
-
 /* The visible dot is 10px; this keeps a 44px target for fingers. */
 .hero__orbit-dot::before {
   content: "";
@@ -136,8 +130,9 @@
 }
 
 .hero__dot {
-  width: 6px;
-  height: 6px;
+  flex: none;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
   background: var(--accent-text);
 }
