@@ -264,14 +264,10 @@
     height: auto;
     aspect-ratio: 16 / 9;
   }
-
-  .work-tabs {
-    grid-template-columns: 1fr;
-    gap: 0.75rem;
-  }
 }
 
-@media (max-width: 768px) {
+/* Phones and tablets: the header timer and arrows replace the tab strip. */
+@media (max-width: 1024px) {
   .work__header {
     grid-template-columns: minmax(0, 1fr);
   }
@@ -282,6 +278,7 @@
   }
 
   .work-controls {
+    justify-self: stretch;
     gap: 0.875rem;
   }
 
@@ -289,6 +286,17 @@
     display: flex;
     gap: 6px;
     width: 96px;
+    margin-right: auto;
+  }
+
+  .work-tabs {
+    display: none;
+  }
+}
+
+@media (max-width: 360px) {
+  .work-timer {
+    width: 72px;
   }
 }
 
