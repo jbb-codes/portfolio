@@ -106,6 +106,59 @@ describe('HeroComponent', () => {
       expect(dot('outer')).toBeTruthy();
     });
 
+    describe('orbit motion', () => {
+      const orbitSlots = (): HTMLElement[] =>
+        Array.from(root.querySelectorAll<HTMLElement>('.hero__orbit-slot'));
+
+      const definedKeyframeNames = (): string[] =>
+        Array.from(document.styleSheets)
+          .flatMap((sheet) => Array.from(sheet.cssRules))
+          .filter(
+            (rule): rule is CSSKeyframesRule => rule instanceof CSSKeyframesRule,
+          )
+          .map((rule) => rule.name);
+
+      it('runs an animation on every orbiting dot', () => {
+        const slots = orbitSlots();
+        expect(slots.length).toBe(2);
+        slots.forEach((slot) => expect(slot.getAnimations().length).toBe(1));
+      });
+
+      it('points each orbit at a keyframe that actually exists', () => {
+        orbitSlots().forEach((slot) =>
+          expect(definedKeyframeNames()).toContain(
+            getComputedStyle(slot).animationName,
+          ),
+        );
+      });
+
+      // Angular renames keyframes declared in component styles but cannot
+      // rewrite an `animation` shorthand that contains var(), so in the
+      // production build the dots pointed at a name that did not exist and
+      // never moved. A global keyframe keeps its plain name everywhere.
+      it('uses the global keyframe name that no build step can rename', () => {
+        orbitSlots().forEach((slot) =>
+          expect(getComputedStyle(slot).animationName).toBe('orbit-revolve'),
+        );
+      });
+
+      it('moves the dot around its ring as time passes', () => {
+        orbitSlots().forEach((slot) => {
+          const [orbit] = slot.getAnimations();
+          orbit.pause();
+          orbit.currentTime = 0;
+          const angleAtStart = getComputedStyle(slot).getPropertyValue(
+            '--orbit-angle',
+          );
+          orbit.currentTime = 10_000;
+          const angleLater = getComputedStyle(slot).getPropertyValue(
+            '--orbit-angle',
+          );
+          expect(angleLater).not.toBe(angleAtStart);
+        });
+      });
+    });
+
     it('names each dot with its pill text', () => {
       expect(dot('inner').getAttribute('aria-label')).toBe(INNER_TEXT);
       expect(dot('outer').getAttribute('aria-label')).toBe(OUTER_TEXT);
