@@ -48,6 +48,32 @@ describe('WorkSpotlightComponent', () => {
       expect(query('#work-heading')).toBeTruthy();
     });
 
+    describe('header layout', () => {
+      const centerX = (target: Element): number => {
+        const box = target.getBoundingClientRect();
+        return box.left + box.width / 2;
+      };
+      const eyebrow = (): HTMLElement =>
+        queryAll('p').find((paragraph) =>
+          paragraph.textContent?.includes('02 — WORK'),
+        ) as HTMLElement;
+
+      it('centers the eyebrow and heading like the other sections', () => {
+        const pageCenter = centerX(query('#work'));
+        expect(Math.abs(centerX(eyebrow()) - pageCenter)).toBeLessThan(2);
+        expect(Math.abs(centerX(query('#work-heading')) - pageCenter)).toBeLessThan(2);
+      });
+
+      it('keeps the project controls on the right of the centered title', () => {
+        expect(centerX(query('.work-controls'))).toBeGreaterThan(
+          centerX(query('#work-heading')),
+        );
+        const controlsRight = query('.work-controls').getBoundingClientRect().right;
+        const headingRight = query('#work-heading').getBoundingClientRect().right;
+        expect(controlsRight).toBeGreaterThanOrEqual(headingRight);
+      });
+    });
+
     it('spotlights the first project by default', () => {
       expect(query('.spotlight__title').textContent).toContain(PROJECTS[0].name);
       expect(query('.spotlight__description').textContent).toContain(

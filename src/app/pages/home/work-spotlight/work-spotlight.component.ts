@@ -10,6 +10,7 @@ import {
 } from '@angular/core';
 import { LucideArrowLeft, LucideArrowRight, LucideArrowUpRight } from '@lucide/angular';
 import { PROJECTS } from '../../../data/portfolio-content';
+import { SectionHeaderComponent } from '../../../shared/section-header/section-header.component';
 
 const ROTATION_INTERVAL_MS = 3000;
 
@@ -17,7 +18,12 @@ const ROTATION_INTERVAL_MS = 3000;
   selector: 'app-work-spotlight',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [LucideArrowLeft, LucideArrowRight, LucideArrowUpRight],
+  imports: [
+    LucideArrowLeft,
+    LucideArrowRight,
+    LucideArrowUpRight,
+    SectionHeaderComponent,
+  ],
   templateUrl: './work-spotlight.component.html',
   styleUrl: './work-spotlight.component.css',
 })
