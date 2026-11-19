@@ -4,7 +4,10 @@
   gap: 2.25rem;
 }
 
+/* Rows switch layout by the container's width (not the window's) so the
+   side-by-side layout can be tested at a known width. */
 .stack__container {
+  container-type: inline-size;
   width: 100%;
   border: 1px solid var(--glass-border);
   border-radius: 16px;
@@ -57,17 +60,27 @@
   color: var(--text-secondary);
 }
 
-@media (min-width: 769px) {
+.stack__separator {
+  display: none;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  color: var(--text-tertiary);
+}
+
+@container (min-width: 44rem) {
   .stack__row {
     flex-direction: row;
     justify-content: center;
-    gap: 1.75rem;
+    gap: 0.75rem;
     padding: 1.5rem 2rem;
   }
 
   .stack__label {
-    width: 12.5rem;
     text-align: left;
+  }
+
+  .stack__separator {
+    display: inline;
   }
 
   .stack__tags {
