@@ -4,32 +4,22 @@
   gap: 2.75rem;
 }
 
+/* The empty outer column keeps the title on the page's center axis while the
+   controls sit in the right column. */
 .work__header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: end;
   gap: 1.5rem;
-  flex-wrap: wrap;
 }
 
-.work__eyebrow {
-  margin: 0 0 0.875rem;
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  letter-spacing: 0.25em;
-  color: var(--accent-text);
-}
-
-.work__heading {
-  margin: 0;
-  font-size: clamp(2rem, 4vw, 2.75rem);
-  font-weight: 700;
-  letter-spacing: -0.036em;
-  line-height: 1.08;
-  color: var(--text-primary);
+.work__titles {
+  grid-column: 2;
 }
 
 .work-controls {
+  grid-column: 3;
+  justify-self: end;
   display: flex;
   align-items: center;
   gap: 1.25rem;
@@ -282,6 +272,15 @@
 }
 
 @media (max-width: 768px) {
+  .work__header {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .work__titles,
+  .work-controls {
+    grid-column: 1;
+  }
+
   .work-controls {
     gap: 0.875rem;
   }

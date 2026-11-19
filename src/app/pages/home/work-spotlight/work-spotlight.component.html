@@ -8,10 +8,12 @@
   (focusout)="onFocusOut()"
 >
   <div class="work__header">
-    <div>
-      <p class="work__eyebrow">02 — WORK</p>
-      <h2 id="work-heading" class="work__heading">Things I've built.</h2>
-    </div>
+    <app-section-header
+      class="work__titles"
+      eyebrow="02 — WORK"
+      heading="Things I've built."
+      headingId="work-heading"
+    />
     <div class="work-controls">
       <span class="work-controls__counter" aria-live="polite">{{ counterLabel() }}</span>
       <div class="work-timer" aria-hidden="true">
