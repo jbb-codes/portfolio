@@ -98,7 +98,7 @@ describe('HeroComponent', () => {
       fixture.detectChanges();
     };
 
-    const isExpanded =(name: 'inner' | 'outer'): boolean =>
+    const isExpanded = (name: 'inner' | 'outer'): boolean =>
       dot(name).getAttribute('aria-expanded') === 'true';
 
     it('renders one dot per ring', () => {
@@ -203,13 +203,18 @@ describe('HeroComponent', () => {
     });
   });
 
-  it('separates the typed role from the Developer label with a space', () => {
-    const roleLine = query('hero-role-line');
-    expect(roleLine?.textContent).toMatch(/\sDeveloper$/);
+  it('announces the role as one phrase', () => {
+    const accessible = query('hero-role')?.querySelector(
+      '[data-testid="scramble-accessible"]',
+    );
+    expect(accessible?.textContent?.trim()).toBe('Modern Software Developer');
   });
 
-  it('renders the typing role element', () => {
-    expect(query('hero-role')).toBeTruthy();
+  it('has no separate Developer label next to the role', () => {
+    expect(
+      query('hero-role-line')?.querySelector('.hero__role-label'),
+    ).toBeNull();
+    expect(query('hero-role-line')?.children.length).toBe(1);
   });
 
   it('links Get in touch to the contact section', () => {

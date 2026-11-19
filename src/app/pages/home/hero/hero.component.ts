@@ -5,7 +5,7 @@ import {
   signal,
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { TypingAnimationDirective } from '../typing-animation.directive';
+import { ScrambleTextDirective } from '../scramble-text.directive';
 
 type OrbitName = 'inner' | 'outer';
 
@@ -18,12 +18,12 @@ interface OrbitDot {
   selector: 'app-hero',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink, TypingAnimationDirective],
+  imports: [RouterLink, ScrambleTextDirective],
   templateUrl: './hero.component.html',
   styleUrl: './hero.component.css',
 })
 export class HeroComponent {
-  readonly roleStrings = ['Agentic', 'Full Stack', 'Modern Software'];
+  readonly rolePhrase = 'Modern Software Developer';
   readonly orbitRings = [1, 2];
   readonly orbitDots: readonly OrbitDot[] = [
     { name: 'outer', label: 'SECURE, CLEAN CODE' },

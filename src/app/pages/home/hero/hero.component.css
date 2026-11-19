@@ -46,7 +46,7 @@
 /* Each orbit layer mirrors its ring's box so the dot stays on the ring. The angle is a registered property so sin/cos can both place the dot
    and shift the pill inward, away from the stage edge. */
 @property --orbit-angle {
-  syntax: '<angle>';
+  syntax: "<angle>";
   inherits: true;
   initial-value: 0deg;
 }
@@ -108,7 +108,7 @@
 
 /* The visible dot is 10px; this keeps a 44px target for fingers. */
 .hero__orbit-dot::before {
-  content: '';
+  content: "";
   position: absolute;
   inset: -19px;
   border-radius: 50%;
@@ -169,6 +169,10 @@
   line-height: 1;
   letter-spacing: -0.042em;
   color: var(--text-primary);
+}
+
+.hero__role {
+  position: relative;
 }
 
 .hero__role-line {
