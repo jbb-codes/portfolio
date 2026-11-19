@@ -81,7 +81,7 @@ describe('AboutSectionComponent', () => {
   it('opens with the numbered eyebrow and centered heading', () => {
     expect(textOf('section-eyebrow')).toBe('01 — ABOUT');
     expect(root.querySelector('h2#about-heading')?.textContent?.trim()).toBe(
-      'Secure, Clean Code.',
+      'Clean code, thoughtful design.',
     );
   });
 
