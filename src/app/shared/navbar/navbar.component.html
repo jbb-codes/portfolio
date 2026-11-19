@@ -1,5 +1,9 @@
 <nav class="navbar" aria-label="Main navigation">
-  <a class="navbar__brand" data-testid="navbar-brand" routerLink="/"
+  <a
+    class="navbar__brand"
+    data-testid="navbar-brand"
+    routerLink="/"
+    (click)="scrollToTop($event)"
     >Jarren Bess</a
   >
   <ul class="navbar__links" data-testid="navbar-links">

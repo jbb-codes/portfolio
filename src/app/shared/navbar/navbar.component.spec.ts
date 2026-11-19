@@ -3,6 +3,26 @@ import { provideLocationMocks } from '@angular/common/testing';
 import { provideRouter, withDisabledInitialNavigation } from '@angular/router';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { NavbarComponent } from './navbar.component';
+import { PageScroller } from './page-scroller';
+
+// Declarations the stylesheet applies to `selector` inside the mobile
+// (max-width: 768px) media block.
+function mobileDeclarations(selector: string, property: string): string[] {
+  return Array.from(document.styleSheets)
+    .flatMap((sheet) => Array.from(sheet.cssRules))
+    .filter(
+      (rule): rule is CSSMediaRule =>
+        rule instanceof CSSMediaRule &&
+        rule.conditionText.includes('max-width: 768px'),
+    )
+    .flatMap((media) => Array.from(media.cssRules))
+    .filter(
+      (rule): rule is CSSStyleRule =>
+        rule instanceof CSSStyleRule &&
+        rule.selectorText.includes(selector),
+    )
+    .map((rule) => rule.style.getPropertyValue(property));
+}
 
 // Selectors (without the pseudo-class) of every element-specific :focus-visible
 // rule that draws an outline. The global `:focus-visible` rule is skipped so
@@ -27,14 +47,17 @@ function collectFocusRingSelectors(): string[] {
 
 describe('NavbarComponent', () => {
   let fixture: ComponentFixture<NavbarComponent>;
+  let scrollToTop: jasmine.Spy;
 
   beforeEach(async () => {
+    scrollToTop = jasmine.createSpy('scrollToTop');
     await TestBed.configureTestingModule({
       imports: [NavbarComponent],
       providers: [
         provideRouter([], withDisabledInitialNavigation()),
         provideLocationMocks(),
         provideAnimations(),
+        { provide: PageScroller, useValue: { scrollToTop } },
       ],
     }).compileComponents();
 
@@ -61,6 +84,41 @@ describe('NavbarComponent', () => {
         '[data-testid="navbar-brand"]',
       );
       expect(brand.getAttribute('href')).toBe('/');
+    });
+
+    it('should scroll to the top when the name is clicked', () => {
+      const brand: HTMLElement = fixture.nativeElement.querySelector(
+        '[data-testid="navbar-brand"]',
+      );
+      const click = new MouseEvent('click', { bubbles: true, cancelable: true });
+      brand.dispatchEvent(click);
+      expect(scrollToTop).toHaveBeenCalledTimes(1);
+      expect(click.defaultPrevented).toBeTrue();
+    });
+
+    it('should hide the jump links on mobile', () => {
+      expect(mobileDeclarations('.navbar__links', 'display')).toContain(
+        'none',
+      );
+    });
+
+    it('should draw no ring around the theme toggle', () => {
+      const toggle = fixture.nativeElement.querySelector(
+        '[data-testid="theme-toggle"]',
+      );
+      document.body.appendChild(fixture.nativeElement);
+      const style = getComputedStyle(toggle);
+      expect(style.borderTopWidth).toBe('0px');
+    });
+
+    it('should give the theme toggle a 44px hit area', () => {
+      const toggle: HTMLElement = fixture.nativeElement.querySelector(
+        '[data-testid="theme-toggle"]',
+      );
+      document.body.appendChild(fixture.nativeElement);
+      const { width, height } = toggle.getBoundingClientRect();
+      expect(width).toBeGreaterThanOrEqual(44);
+      expect(height).toBeGreaterThanOrEqual(44);
     });
 
     it('should pin the bar to the top of the viewport', () => {
