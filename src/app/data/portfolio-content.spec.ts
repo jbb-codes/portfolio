@@ -1,4 +1,5 @@
 import {
+  ABOUT_BIO,
   BUCKET_LIST,
   EXPERIENCE,
   INTERESTS,
@@ -9,6 +10,12 @@ import {
 } from './portfolio-content';
 
 describe('portfolio-content', () => {
+  it('ABOUT_BIO journey states the exact two-sentence story', () => {
+    expect(ABOUT_BIO.journey).toBe(
+      'I got into programming because of an interest in game development, and that later transformed into wanting to build software that makes an impact. That curiosity led me to dive deep into web development, where I found the perfect intersection of logic and creativity.',
+    );
+  });
+
   it('EXPERIENCE is an array', () => {
     expect(Array.isArray(EXPERIENCE)).toBeTrue();
   });

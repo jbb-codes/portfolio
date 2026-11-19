@@ -220,7 +220,7 @@ export const ABOUT_BIO: AboutBio = {
   blurb:
     "I build modern, performant web applications with clean code and thoughtful design. Passionate about creating seamless user experiences from front to back.",
   journey:
-    'I discovered programming through a desire to build things that solve real problems. That curiosity led me to dive deep into web development, where I found the perfect intersection of logic and creativity.',
+    'I got into programming because of an interest in game development, and that later transformed into wanting to build software that makes an impact. That curiosity led me to dive deep into web development, where I found the perfect intersection of logic and creativity.',
   passion:
     "I care deeply about developer experience, clean architecture, and creating interfaces that feel intuitive. Outside of code, I'm interested in travel, enjoy climbing, and continuous learning.",
 };
