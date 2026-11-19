@@ -64,7 +64,10 @@ describe('WorkSpotlightComponent', () => {
         expect(Math.abs(centerX(query('#work-heading')) - pageCenter)).toBeLessThan(2);
       });
 
-      it('keeps the project controls on the right of the centered title', () => {
+      it('keeps the project controls on the right of the centered title on desktop', () => {
+        if (window.innerWidth <= 1024) {
+          pending('Compact layouts stack the controls beneath the title');
+        }
         expect(centerX(query('.work-controls'))).toBeGreaterThan(
           centerX(query('#work-heading')),
         );
@@ -319,6 +322,41 @@ describe('WorkSpotlightComponent', () => {
     it('hides the segments from assistive tech since the counter already announces progress', () => {
       render();
       expect(query('.work-timer').getAttribute('aria-hidden')).toBe('true');
+    });
+  });
+
+  describe('compact layout (viewport up to 1024px)', () => {
+    const minimumGap = 24;
+
+    beforeEach(() => {
+      if (window.innerWidth > 1024) {
+        pending('Karma window is wider than the compact breakpoint');
+      }
+      render();
+    });
+
+    it('hides the project tab strip with its per-tab progress lines', () => {
+      expect(getComputedStyle(query('.work-tabs')).display).toBe('none');
+    });
+
+    it('shows the header timer segments', () => {
+      expect(getComputedStyle(query('.work-timer')).display).toBe('flex');
+    });
+
+    it('leaves clear space between the timer bars and the arrows', () => {
+      const timerRight = query('.work-timer').getBoundingClientRect().right;
+      const previousLeft = query('.work-controls__previous').getBoundingClientRect().left;
+      expect(previousLeft - timerRight).toBeGreaterThanOrEqual(minimumGap);
+    });
+
+    it('keeps the counter and timer cluster on the left content edge', () => {
+      const contentLeft = query('#work').getBoundingClientRect().left;
+      const counterLeft = query('.work-controls__counter').getBoundingClientRect().left;
+      const timer = query('.work-timer').getBoundingClientRect();
+      const arrowsLeft = query('.work-controls__previous').getBoundingClientRect().left;
+      expect(counterLeft - contentLeft).toBeLessThan(48);
+      expect(timer.right).toBeLessThan(arrowsLeft);
+      expect(timer.left).toBeLessThan(arrowsLeft / 2);
     });
   });
 });
