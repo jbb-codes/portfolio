@@ -5,13 +5,9 @@
     headingId="stack-heading"
   />
 
-  <div class="stack__grid">
-    @for (category of skillCategories; track category.name; let isLast = $last) {
-      <article
-        class="stack__tile"
-        [class.stack__tile--featured]="isLast"
-        data-testid="stack-tile"
-      >
+  <div class="stack__container" data-testid="stack-container">
+    @for (category of skillCategories; track category.name) {
+      <article class="stack__row" data-testid="stack-row">
         <h3 class="stack__label" data-testid="stack-label">{{ category.name }}</h3>
         <ul class="stack__tags">
           @for (skill of category.skills; track skill) {
