@@ -5,7 +5,7 @@ import {
   signal,
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { ScrambleTextDirective } from '../scramble-text.directive';
+import { ScrambleTextDirective } from './scramble-text.directive';
 
 type OrbitName = 'inner' | 'outer';
 

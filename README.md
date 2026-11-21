@@ -31,11 +31,18 @@ npm install
 ## Project Structure
 
 ```
+public/
+  favicons/          # Favicons, touch icon and web manifest (favicon.ico stays at the root)
+  assets/images/     # Profile photo and project screenshots
+  docs/              # Resume PDF
 src/
   app/
+    data/            # Portfolio content (single source of truth)
     pages/
-      home/          # Home page component
-    app.component.*  # Root component with theme toggle
+      home/          # Home page and its section components (hero, stack, work, ...)
+      not-found/     # 404 page
+    shared/          # Navbar, footer, backgrounds, theme and animation services
+    app.component.*  # Root component
     app.routes.ts    # Route definitions
   styles.css         # Global styles and CSS custom properties
 ```
