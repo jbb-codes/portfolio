@@ -104,12 +104,6 @@ body {
     color 0.3s ease;
 }
 
-.glass {
-  background: var(--glass-bg);
-  backdrop-filter: var(--glass-blur);
-  -webkit-backdrop-filter: var(--glass-blur);
-}
-
 /* Backdrop blur re-samples whatever is behind it; on phone GPUs that stalls
    scrolling. Without the blur, a translucent panel lets text and particles
    show through, so the panels go near-opaque instead. Declared after both
