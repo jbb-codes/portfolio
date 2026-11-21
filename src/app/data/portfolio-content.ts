@@ -1,14 +1,6 @@
 // Used Claude to help design the data model interfaces and structure all content
 // as a single source of truth, keeping it separate from the presentation layer
 // so any component can import exactly what it needs.
-export interface ExperienceCard {
-  title: string;
-  company: string;
-  startDate: string;
-  endDate: string;
-  details: string;
-}
-
 export interface SkillCategory {
   name: string;
   skills: string[];
@@ -42,8 +34,6 @@ export interface Project {
   technologies: string[];
   whatILearned: string;
 }
-
-export const EXPERIENCE: ExperienceCard[] = [];
 
 export const SKILLS: SkillCategory[] = [
   {
@@ -79,13 +69,6 @@ export const SKILLS: SkillCategory[] = [
       'LLM-Integrated Tooling',
     ],
   },
-];
-
-export const LEARNING_NEXT: string[] = [
-  'Rust programming language',
-  'WebAssembly (WASM)',
-  'Three.js / WebGL',
-  'Advanced RxJS patterns',
 ];
 
 export const INTERESTS: InterestCard[] = [

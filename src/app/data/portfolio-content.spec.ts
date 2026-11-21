@@ -1,9 +1,7 @@
 import {
   ABOUT_BIO,
   BUCKET_LIST,
-  EXPERIENCE,
   INTERESTS,
-  LEARNING_NEXT,
   SKILLS,
   TIMELINE_ENTRIES,
   PROJECTS,
@@ -16,10 +14,6 @@ describe('portfolio-content', () => {
     );
   });
 
-  it('EXPERIENCE is an array', () => {
-    expect(Array.isArray(EXPERIENCE)).toBeTrue();
-  });
-
   it('SKILLS is non-empty', () => {
     expect(SKILLS.length).toBeGreaterThan(0);
   });
@@ -28,10 +22,6 @@ describe('portfolio-content', () => {
     for (const category of SKILLS) {
       expect(category.skills.length).toBeGreaterThan(0);
     }
-  });
-
-  it('LEARNING_NEXT is non-empty', () => {
-    expect(LEARNING_NEXT.length).toBeGreaterThan(0);
   });
 
   it('INTERESTS is non-empty', () => {

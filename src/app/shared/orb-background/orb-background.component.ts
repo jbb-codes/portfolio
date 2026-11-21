@@ -6,8 +6,6 @@ import {
 } from '@angular/core';
 import { AnimationLoopService } from '../../shared/animation-loop/animation-loop.service';
 
-export const ORB_RANGE_MIN = -10;
-export const ORB_RANGE_MAX = 70;
 export const ORB_RADIUS_PX = 200;
 const ORB_DRIFT_SPEED = 0.012; // % of viewport per frame, normalized to 60fps
 const FRAME_BASELINE_MS = 1000 / 60; // 16.67ms — reference frame duration for speed normalization
